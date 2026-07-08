@@ -1,0 +1,7 @@
+print("Hello, Waterloo!")
+print("My name is Kaveri.")
+print("Today I officially started my coding journey.")
+print("Future goal: Computer Science + Mathematics.")
+print("I am excited to learn and grow in this field.")
+name = input("What is your name? ")
+print(f"Nice to meet you, {name}!")
