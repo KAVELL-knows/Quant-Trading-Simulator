@@ -1,0 +1,27 @@
+{
+    "kav": {
+        "Starting Balance": 2500000.0,
+        "Current Cash": 2477535.02,
+        "Portfolio Value": 22464.980000000003,
+        "Total Equity": 2500000.0,
+        "Current Holdings": {
+            "GME": 998.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "GME",
+                1000.0,
+                22510.0
+            ],
+            [
+                "Sell",
+                "GME",
+                2.0,
+                45.02
+            ]
+        ],
+        "User Name": "kav",
+        "Encrytion code": "LADHDJ"
+    }
+}
