@@ -830,5 +830,305 @@ trends.py and from here i feel like we can run that code to see next day prices
 and record all the prices
 
 i want to be in main.py when you select see trends
-you get options to view charts, run calcs, see next day predicitons
+you get options to view charts, run calcs, see next day predicitons.
+Highest price, lowest average median , variance, sd etc
 
+To do this i feel we need to first create the data from future days so as the user loads it form there read it all and save it to trends.py
+
+I will have to create a new json file too 
+so there will be one for accounts and another for market prices.
+
+
+
+First would be read that data put onto history_of_prices
+        with open("history_of_prices.json", "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
+( An empty dictionary is created if the file is not found)
+
+Then from there set up an array so go through each stock and prices one at a time in a loop so 
+    for stock, price in stocks.items():
+        if stock not in data:
+            
+If the stick doesnt exist an empty file is created  - data[stock] = []
+        data[stock].append(price)
+
+Writes over everything into the json file
+    with open("history_of_prices.json", "w") as file:
+        json.dump(data, file, indent=4)
+
+DAY 26
+31/07/2026
+
+So i fixed a bug with the exit on creating an account
+i imported sys
+so i can use the sys.exit() to exit safely
+
+it also has the print(sys.version) feature to show the python version
+
+I fixed a problem where the user would be stock in an infinite loop if they didnt remember their password. I simple ran the create_account function within the create account funciton. 
+
+
+DAY 27
+1/08/2026
+Doing testing today.
+
+When i create an account im askined to log in again.
+Delete account works
+The  login feature works
+Exit works
+Create account works
+In see next day prices its updating but its not what i invissioned 
+Right now for the see next day prices it dosntshow them next 2 each other in an arry it just shows one price at a time not a line .
+I want to create this section where you type in the stock you want and from there you access data on the stock.
+
+DAY 28 
+2/08/2026
+I want to do some front end development to amek everything look better.
+
+PROBLEM : Eeverytime the code run you are them brought back to this large menu with 8 different option taking up the entire screen. I want to group them so it look like youre going another page on the website:
+
+My plan:
+Main Menu
+Account - delete account, change your password, return to main menu, portfolio
+Market - View market prices, buy, sell, see prices next day, charts, calculations
+Exit 
+
+if option = 1 Account 
+create own module
+
+Okay i did all the code by myself and everything worked just the way I wanted it.
+I put in while loops, transferred code, group them up.
+
+Future Plans i decided to add in a Short Stock Section also a place to input more money in your account, as well as withdraw
+
+Tomorrow i want to Get the see next day prices to look better. If i could get a table potential to show Day and Price
+
+DAY 29 
+3/08/2026
+
+ I want to do fix up the see next day into a clean table with all the data layed like you type day 1 2 3 4 5 6 7 all line up next 2 one.
+
+We could do this with like a matrix kinda of set up i feel with like row and column displaying in index nation so like [0][0] , [0][1] 
+I dont want to hard code 5 stocks for the columns. The user should input the stocks they want to compare and across how many days.
+
+I was able to code in the columns and rows and go through each one by theuse of a for loop but curret it still isnt doing what I want it to do so tomorrow I will add in a table function
+
+Day 30
+04/08/26
+
+I have gotten to code to do what I wanted it to do so here is a run through of it:
+
+firstly we ask for how many stocks the user wants to compare we call this the column
+as also ask for how many days the user wants to predict - rows
+
+we create an empty array for the stocks so predicted_stocks = []
+
+then we prompt the user to enter the names of the stock that they want to enter 
+in a for loop which ranges from the "number of columns entered"
+
+everytime the the loop is ran and the user inputs the stock they program searches to see if that stock exists, if it isnt the code is re ran if not, and a valid is enterred the stock is added into the empty array we set up earlier
+
+ie predicted_stocks(stock).append
+recall : .append allows us to add something new to the end of a list
+
+Now that we have set up the number of stocks its time to set up the number of days
+
+so i created an empty array predicted_day = []
+
+and the same process is ran here except we are running the for loop for rows
+from range(1 to rows+1) the reason for this is because 
+we need to specify firstly that day 1 is starting at 1 and since the for loop always stop 1 iteration before what the stop should be we need to do rows + 1
+
+unlike for i in range(columns) the number of columns is not not listed so it is not
+necessary to give a start and a finish but in Days they are lablled Day 1 Day 2 Day3 
+
+Everytime to for loop for the number of days is ran, we update the prices using the update prices function which I previously developed
+
+everytime the price is updated within this there is now another for loop the for loop which checks every stock inside the predicted stock array 
+and then assigned the updated value to the specific stock using
+
+predicted_day.append(stocks[stock])
+
+DAY 31
+05/08/2026
+
+Now that we have the rows and columns sorted out we need to put this into a table format 
+Okay so the make the day it should like something like this
+
+STOCK  GME  TSLA MPWR
+DAY 1    #   #    #
+DAY 2
+DAY 2
+
+so to set this up we need to have the prices updated within the inside 
+so firstly 
+do print()
+so skip a line and not over write the line with STOCK GME TSLA MPWR
+next we dont want to write over DAY so we are going to leave space 
+so print("       " =end"") so we leave 7 blank spaces to not interrupt DAY # 
+=end means dont go to the next line
+so 
+print("hi"=end"")
+print("bro")
+outputs hibro
+
+ Now that this is set up 
+  for stock in predicted_stocks:
+        print(f"{stock:>10}", end="")
+this prints the stock which were chosen to be predicted
+:>10  means to right allign in a space which is 10 characters wide so it allows all Stocks to displayed nicely space and easy to read
+
+enumerate - it is used to track index number and the item at the same time
+
+it goes through 
+ for i, day in enumerate(prediction_table, start=1):
+        print(f"Day {i:<3}", end="")
+    This prints the day number for the ith iteration and it is left alliged with 3 wide space
+        for price in day:
+            print(f"${price:>9.2f}", end="")
+    :>9 is used to make sure each price takes up 9 spaces
+
+        print()
+
+
+DAY 32
+06/08/2026
+Today I want to start getting to that point where we do some advanced calculations so 
+
+The idea:
+Create a new module called Advanced Calculations
+Within this there will be an option to see historical prices AND also and options to do many different calculations
+On top of all this to get historical prices i want to download real data. To do this i will use data from yahoo finance.
+
+I would ideally like to download 5 years of data for 100 stocks
+
+The data i want to download includes
+Date, Ticker, Open, High, Low, Close, Volume, Daily Change, Change %, 5-Day Change, 20-Day Change
+
+To do this I am going to use yfinance
+
+to install this we are going to type "pip install yfinance" into the terminal
+
+Got an error using that so instead I am going to use python -m pip install yfinance
+
+I created a new file called yfinance_downloaded
+Within it I ran this code:
+import yfinance as yf - from now one i ca njust type yf instead of yfinance
+
+stock = yf.Ticker("GME") - I want information from GME
+
+data = stock.history(period="20y")
+.history - request information from past market history
+period="20y" mean its installing data from the last 20 years
+
+print(data.head())
+shows all the data python  has gathered
+.head gives the information from the first few days of trading so since i did period = 20y it would be data from 2006
+.tail would give recent data
+
+python code/yfinance_downloaded.py
+loaded the data from 20 years ago 
+
+The next step is to save the data into a CSV file
+
+to do this I created a folder called saved_data and added 
+data.to_csv("saved_data/GME.csv") to my code 
+
+data.to_csv("saved_data/GME.csv") - takes the DataFrame stored in data and save it as a CSV file called GME.csv inside the data folder.
+
+I now have 5333 lines of GME data saved on my computer 
+
+DAY 33
+07/08/2026
+I installed 'Rainbow CSV'
+
+Currently, the GME files i downloaded display Date,Open,High,Low,Close,Volume,Dividends,Stock Splits
+
+To use this information we must first read the GME.csv file
+
+import pandas as pd 
+data = pd.read_csv("saved_data/GME.csv")  all the pandas read from the GME.csv file in saved_data folder is stored as a variable data 
+
+print(data.head())
+
+1. Daily Change
+I want to create an option for daily change
+data["Daily_Change"] = data["Close"] - data["Close"].shift(1)
+
+It works on the principal of subtracting the current closing price from the previous day's price
+
+data["Daily_Change"] - creates a new column inside the GME.csv called Daily_Change because the variable data was used to save the data in GME.csv
+
+.shift(1) shifts off the values down by 1 row
+eg
+Close    Shift Close
+  2         -
+  56        2
+  43        56
+            43
+so to get the daily change we do close - the shifted close 
+
+Now I want to create daily return, and return for 5 days 20 days 100 days 365 days, and also volume return
+
+2. Daily Return
+To create daily return = current (close - previous close)/previous close
+this code was straight forward 
+data["Daily Return"] = (data["Close"] / data["Close"].shift(1))-1
+
+3. 5 Day Return
+for this you would do (current close - 5 days ago close)/5 days ago close
+so my thought process is to shift the close down by 5 rows to get the 5 days ago
+
+data["5 Day Return"] = (data["Close"] / data["Close"].shift(5))-1
+
+4. Repeating for 10 days
+5. Repeating for 20 days
+6. Repeating for 100 days
+7. Repeating for 200 days
+8. Repeating for  1 year NB the stock market has 252 days of trading per year
+9. Repeating for 2 years ie 504 days
+10. Repeating for 5 years
+11. Repeating for 10 years
+
+DAY 34
+08/08/2026
+
+Today I want to build the volatility 
+
+volatility  = Standard Deviation(R) x sqrtN where N = 252 trading days
+I am implemnting 
+1. Daily Volatiltiy N would be 252
+2. 20 days  
+3. 1 year
+
+data["20 Day Volatility"] = data["Daily Return"].rolling(20).std() * (252**0.5)
+
+.std - calculates the standard deviation of the values
+.rolling - allows us to say how many rows we want to specify the data from
+so .rolling(20) - takes data from 20 rows. It maybe start at Day 1 and end at Day 20and then after that Start on Day 2 and end on Day 21 ( This is formally called moving window)
+
+next I am going to do Moving Average ( This is the average Stock prices across a period of time)
+20 day moving average
+100 day moving average 
+1 year moving average
+5 year moving average 
+10 year moving average
+
+data["20 Day Moving Average"] = data["Close"].rolling(20).mean()
+
+.mean - calculates the average of the values
+
+Next I am going to add one Volume Averages 
+
+Volume average is the numebr of shares moved that day (sold or bought)
+It is quite useful when it comes to figuring out how active the market is that particular day
+
+I want to do the volume average for :
+1 day
+20 days
+1 year
+5 years
+10 years
+data["20 Day Average Volume"] = data["Volume"].rolling(20).mean()

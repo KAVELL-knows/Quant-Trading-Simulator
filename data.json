@@ -23,5 +23,212 @@
         ],
         "User Name": "kav",
         "Encrytion code": "LADHDJ"
+    },
+    "kav123": {
+        "Starting Balance": 1.2222222222222222e+24,
+        "Current Cash": 1.2222222222222222e+24,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "kav123",
+        "Encrytion code": "UAFRTV"
+    },
+    "KAV123": {
+        "Starting Balance": 15000000000000.0,
+        "Current Cash": 15000000000000.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "KAV123",
+        "Encrytion code": "UAFRTV"
+    },
+    "KAV1234": {
+        "Starting Balance": 1.2222222222222223e+25,
+        "Current Cash": 1.2222222222222223e+25,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "KAV1234",
+        "Encrytion code": "UAFRTVX"
+    },
+    "kav344": {
+        "Starting Balance": 2e+21,
+        "Current Cash": 2e+21,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "kav344",
+        "Encrytion code": "UAFVXX"
+    },
+    "kav67": {
+        "Starting Balance": 6e+17,
+        "Current Cash": 6e+17,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "kav67",
+        "Encrytion code": "UAF13"
+    },
+    "kav12345": {
+        "Starting Balance": 15000000000000.0,
+        "Current Cash": 15000000000000.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "kav12345",
+        "Encrytion code": "UAFRTVXZ"
+    },
+    "hi67": {
+        "Starting Balance": 1500000.0,
+        "Current Cash": 1500000.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "hi67",
+        "Encrytion code": "OQ13"
+    },
+    "satboy": {
+        "Starting Balance": 6.767676767676777e+21,
+        "Current Cash": 6.767676767676777e+21,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "satboy",
+        "Encrytion code": "#ABC2L"
+    },
+    "satboy12satboy12": {
+        "Starting Balance": 6.777777777777778e+17,
+        "Current Cash": 6.777777777777778e+17,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "satboy12satboy12",
+        "Encrytion code": "#ABC2LRT"
+    },
+    "KAV123456767": {
+        "Starting Balance": 3.444444444444444e+35,
+        "Current Cash": 3.444444444444444e+35,
+        "Portfolio Value": 93791.82,
+        "Total Equity": 3.444444444444444e+35,
+        "Current Holdings": {
+            "TSLA": 233.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "TSLA",
+                233.0,
+                93791.82
+            ]
+        ],
+        "User Name": "KAV123456767",
+        "Encrytion code": "UAFRTVXZ1313"
+    },
+    "3": {
+        "Starting Balance": 3.0,
+        "Current Cash": 3.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "3",
+        "Encrytion code": "V"
+    },
+    "23": {
+        "Starting Balance": 3000000000000.0,
+        "Current Cash": 2999999994755.17,
+        "Portfolio Value": 5244.83,
+        "Total Equity": 3000000000000.0,
+        "Current Holdings": {
+            "GME": 233.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "GME",
+                233.0,
+                5244.83
+            ]
+        ],
+        "User Name": "23",
+        "Encrytion code": "TV"
+    },
+    "9": {
+        "Starting Balance": 999999999999.0,
+        "Current Cash": 999999999999.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "9",
+        "Encrytion code": "7"
+    },
+    "kave": {
+        "Starting Balance": 3.4444444444444443e+21,
+        "Current Cash": 3.4444444444444443e+21,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "kave",
+        "Encrytion code": "UAFI8"
+    },
+    "67": {
+        "Starting Balance": 1e+198,
+        "Current Cash": 1e+198,
+        "Portfolio Value": 8.594199999999998e+25,
+        "Total Equity": 1e+198,
+        "Current Holdings": {
+            "AXON": 1e+23
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "AXON",
+                1e+23,
+                8.594199999999998e+25
+            ]
+        ],
+        "User Name": "67",
+        "Encrytion code": "1313"
+    },
+    "2": {
+        "Starting Balance": 2.3333333333333334e+41,
+        "Current Cash": 2.3333333333333334e+41,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "2",
+        "Encrytion code": "T"
+    },
+    "f": {
+        "Starting Balance": 25000000000000.0,
+        "Current Cash": 25000000000000.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "f",
+        "Encrytion code": "K"
+    },
+    "d": {
+        "Starting Balance": 2500000000000000.0,
+        "Current Cash": 2500000000000000.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "d",
+        "Encrytion code": "G"
     }
 }

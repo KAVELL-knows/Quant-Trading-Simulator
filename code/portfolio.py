@@ -1,5 +1,6 @@
 #this is my portfolio
 import json
+import sys
 from cipher import encrypt_password
 from cipher import new_encrypt_password
 starting_balance = 0.0
@@ -81,12 +82,14 @@ def create_account():
                 break
             else:
                 print("Invalid password. Please try again.")
+                return create_account()
+                
     elif option == "3":
         print("You have exited!")
-        return
+        sys.exit()
     else:
         print("Invalid option. Please select a valid option.")
-        return
+        return 
 
 
 def change_password():
