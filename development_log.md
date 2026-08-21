@@ -1132,3 +1132,301 @@ I want to do the volume average for :
 5 years
 10 years
 data["20 Day Average Volume"] = data["Volume"].rolling(20).mean()
+
+DAY 35
+09/08/2026
+
+Today I want to do Volume vs Day Average
+
+Volume vs average = Volume / Average Volume
+1. Volume vs 20 Day avg = data["Volume"] / data["20 Day Average Volume"]
+2. Volume vs 100 Day avg
+3. Volume vs 1 Year avg
+4. Volume vs 5 Year avg
+
+All time High 
+1. All time high = data["Close"].cummax()
+
+.cummax() - highest point reache so far
+
+Drawdown Dollar
+
+.max() - finds the highest value anywhere in the data 
+1. Drawdown Dollar = Peak Value - Current Value
+Drawdown % 
+2. Drawdown Percentage = ((Peak Value - Current Value) / Peak Value ) * 100
+Max Drawdown $
+3. max drawdown dollar = data["Drawdown $"].max()
+Max Drawdown %
+4. max drawdown percentage = data["Drawdown %"].max()
+
+DAY 36 
+10/08/2026
+
+I want to get started with correlation so to do this I will have to  download more stocks 
+
+I downloaded a few of the stocks I like... stocks = ["GME","MPWR", "CLS", "AXON", "TSLA", "PNRG", "AAPL", "MSFT", "NVDA", "ADBE", "AMD", "ORCL", " WLFC", "GOOG", "PLTR", "AVGO", "CVNA", "POWL", "SPOT", "LULU", "HUBS", "ASML", "CRM",
+          "WIX", "WING", "TDG", "RBLX", "DUO", "ORLY", "COST", "SONY", "JPM", "V", "LLY", "CVS", "SBUX", "AMZN", "META"]
+
+DAY 37 11/09/2026
+.corr() - two sets of numbers and calculates correlation
+
+so in this case to get the correlation I want to get the correlation between the daily return so I would 
+calc te daily return for two different stocks and then do 
+
+gme["Daily Return"].corr(tdg["Daily Return"])
+
+
+So I want to get the correlation between GME and TDG so 
+firstly I will read the information from GME and TDG
+gme = pd.read_csv("saved_data/GME.csv")
+tdg = pd.read_csv("saved_data/TDG.csv")
+
+Next ill calculate the daily return for both
+gme["Daily Return"] = (gme["Close"] / gme["Close"].shift(1))-1
+tdg["Daily Return"] = (tdg["Close"] / tdg["Close"].shift(1))-1
+
+Finally the correlation
+correlation = gme["Daily Return"].corr(tdg["Daily Return"])
+
+to get the value of the correlation we are going to do 
+print(f"GME vs TDG Correlation: {correlation:.6f}")
+.6f does 6 decimal places. 
+
+
+Now  I want to be able to do this for every stock 
+returns = {}
+returns is now an empty dictionary
+
+
+i used a for loop to help me with this so all the stock symbols are enterred into a returns dictionary 
+for symbol in stocks:
+    stock_data = pd.read_csv(f"saved_data/stock_data.csv") #NB: the f loads a different stock on each iteration 
+    stock_data["Daily Return"] = (stock_data["Close"] / stock_data["Close"].shift(1))-1
+    returns[symbol] = stock_data["Daily Return"]
+
+
+pd.DataFrame is a panda function which creates a table of data so its taking the data from each stock enterred and giving it data
+returns = pd.DataFrame(returns)
+
+
+1. correlation_matrix = returns.corr()
+
+i then found the correlation between all the data in the return dictionary 
+
+print(correlation_matrix)
+i outpted the correlation calculated. 
+
+DAY 38
+12/09/2026
+
+Today its time to calculate the covariance.
+so all i have to do is use .cov()
+
+1. covariance_matrix = returns.cov()
+
+Next, I want to get the overall returns of my portfolio
+1. The expected returns would be the dot product of the equal weight and average return 
+
+1. Average return = average_returns = returns.mean()
+
+to do weights ( weight tell us where each % of money is invested)
+
+1. weights = [1/len(stocks)] * len(stocks)
+this creates equally weighted portfolio. 
+
+Now to do the actual dot product. To find dot product you use @
+average_return[:] @ equal_weights
+
+1. Calculate the Annualized Return
+
+the formula for Annualized return = (1 + Daily Return)^252 -1
+
+Tomorrow I want to do portfolio risks.
+DAY 39
+13/09/2026
+
+1. To get the volatilty, we can tak square root of portfolio variance
+
+2. recall : portfolio variance = vector of weight * transposed weight vector * covariance matrix 
+
+3. annulized volatility = daily volality x square of number of trading days (252)
+
+Next, is the VaR - Value at Risk which is how much the portfolio can lose over a certain time period given a certain confidence interval . 
+
+4. recall : Parametric VaR = porfolio return * ( z score * daily volatiltiy  - expected return) 
+
+5. Historical VaR(%) = 5% percentile of the dot product between returns and equal weights
+6. HistoricalVaR($) = portfolio value * abs(Historical VaR(%))
+
+.quantile(0.05) - calculates the 5th percentile of the data set 
+
+DAY 40 
+14/09/2026  
+
+7. Sharpe Ratio
+Sharpe Ratio = (Expected return of the portfolio or asset - Risk-free rate of return)/ Standard deviation of the portfolio's excess return
+
+8. Excess return = annualized return - risk free return
+Set Risk_free_return to anything for now* so I am using 
+I am using 4.72 as thats 10 year treasury note yield in US. 
+
+9. Beta
+Beta is given by the Covariance between the returns of the asset and the returns of the market divided by the the Variance of the market's returns
+
+the code for that would be 
+aligned_returns = pd.concat([returns, market_returns], axis=1, join="inner")
+aligned_returns = aligned_returns.rename(columns={"Daily Return": "Market"}, inplace=True)
+
+concat() is contentate and it combines data frames
+right now we have 2 datasets the data set with all the stocks listed WLFC TSLA etc and then we have the benchmark S&P500
+we combine them with concat()
+
+to combine them we can put the coloumnsto right axes = 1 or axes = 0 for rows below
+
+join="inner" is used so that the rows allign by index values this is important so that dates arent mis-matched.
+
+
+aligned_returns.rename(columns={"Daily Return": "Market"}, inplace=True)
+
+.rename is used to change the name of the columns only and this is only done for alligned returns 
+
+
+
+DAY 40 14/08/2026
+I want to implement the CAPM now that I have beta estabilished 
+
+10. CAPM
+
+For CAPM we need to a bench mark. So I am going to use the S%P500 
+in python under yfinance library the S&P500 symbol is given by ^GSPC
+
+Capital Asset Pricing Model (CAPM) calculates the expected return of an asset based on its systematic risk (Beta) and the expected return of the market
+
+CAPM = Risk-free rate of return +  Beta of the asset * (Expected return -  Market Risk Premium (MRP))
+
+DAY 41 15/08/2026
+Very confused very lost
+introduced numpy today
+
+made equal weights into numpy 
+average_return is still panda
+ORGANIZATION
+Okay so all the calculation need to get re done into separate modules. 
+1. Market Data
+    Historical Data
+
+2. Stock Analysis
+    Return
+    Drawn down
+    Voltaility
+    Volume
+    Moving Averages
+
+3. Portfolio Analysis
+    Sharpe Ratio
+    Portfolio variance
+    Portfolio volatility 
+    Portfolio weights
+    Portfolio weights
+
+4. Risk Analysis
+    VaR
+    Monte Carlo
+    Risk Distrubtions 
+
+5. Asset Pricing 
+    CAPM
+    Black Scholes
+
+6. Visualizaiton
+    Charts
+    Web UI
+
+Now that i have it mapped out, today I started work on the Portfolio anlysis
+
+I introduced numpy
+numpy is a library used for large mathematical calcs involing matrices etc 
+
+equal_weights = np.array([1/len(stocks)] * len(stocks))
+equal weight now uses numpy becuase it makes the caluclation faster and it equal weight is an array calculation 
+
+we will be using equal weight in matrix calc such as equal_weights @ covariance_matrix @ equal_weights to get dot product and find the total portfolio variance 
+
+to create a numpy array we can use
+np.array()
+
+I moved expected portfolio returns to Portfolio anlysis but i am having problems importing. 
+I do not want to import from yfinance_donwloaded as that would mean re downloadeding all 40 files which is inefficient. 
+
+DAY 41
+16/08/2026
+I fixed the problem 
+
+I want to my calculation to be inside th Portfolio Analysis so what that means is i can import the stock from yfinance into Portfolio Analysis just as I did when I was creating the yfinance_downloaded file.
+
+I am just transfering the calculation from yfinance_downloaded to this next file Portfolio Anlysis.
+
+To this the first few lines like i said would be the exact same as what was in the yfinance file
+
+import numpy as np 
+import pandas as pd
+
+I am importing stocks because the yfinance folder should just store data for the 20 years. All other files like Portfolio Analysis just read that data using pd.read_csv(f"saved_data/s{symbol}.csv")
+
+
+from yfinance_downloaded import stocks
+
+
+returns = {}
+for symbol in stocks:
+    stock_data = pd.read_csv(f"saved_data/{symbol}.csv")
+    stock_data["Daily Return"] = (stock_data["Close"] / stock_data["Close"].shift(1)) - 1
+    returns[symbol] = stock_data["Daily Return"]
+
+So for the selected stock we are going read that data which is stored in the yfinance file. We will use that data to calulcate the 
+
+daily return, average return, weight, expected portfolio return. 
+
+Everytime we calculate the Daily Return for some symbol that is stored in an array "returns = {}"
+
+Next we want to turn the data in return = {} INTO  very nice neat organized table
+
+to do this we usitlise panadas 
+
+returns = pd.DataFrame(returns)
+
+this creates a table of data so we can now perform calculations
+
+average_return = returns.mean()
+
+once again we use np.array (using number py for the array ) because weights is an matrix calculation and numpy makes matrix calculations faster. 
+
+equal_weights = np.array([1 / len(stocks)] * len(stocks))
+portfolio_return = (average_return * equal_weights).sum()
+print(f"Portfolio Expected Daily Return: {portfolio_return * 100:.4f}%")
+
+The point of all this is 
+1. We have the data more orgnized by putting it into its own file 
+2. By the use of using seprate files we can use numpy py to make the numberical calcs and matricies faster and pandas for tables 
+
+DAY 42
+17/08/2026
+
+Today I am going to go through all the calculation in the yfinance_downloaded file and put comments on everyhting for where they are going to go and then i will copy and paste them into their respective sections after. 
+
+Copy and pasted the covariance maxtrix into portfolio anlysis
+
+I transferred
+daily returns
+average returns
+equal weights
+expected portfolio return
+correlation matrix
+covariance matrix
+portfolio variance
+daily volatility
+annualized volatility
+
+Tomorrow I want to complete this file and start the stock anlysis section. 
+
