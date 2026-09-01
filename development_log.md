@@ -1428,5 +1428,304 @@ portfolio variance
 daily volatility
 annualized volatility
 
-Tomorrow I want to complete this file and start the stock anlysis section. 
+Tomorrow I want to complete this file.
 
+DAY 43 18/08/2026
+
+I added to portfolio anlysis.py 
+1 VaR
+2 Sharpe Ratio
+
+for the beta it uses 
+market = yf.Ticker("^GSPC")
+market_data = market.history(period="20y")
+
+so that data itself is already stored in yfinance_downloaded
+All we have to do is read it in portfolio anlysis
+
+so market_data = pd.read_csv("saved_data/^GSPC.csv")
+I trasnferred Beta
+
+I transferred CAPM in from yfinance file
+
+Tomorrow i begin wrok on the stock analysis. 
+
+DAY 44 19/08/2026
+I want stock anlysis to contain
+A way to input a stock of your choice:
+1. returns (Daily, yearly etc)
+2. volatility
+3. moving averages
+4. volume
+5. drawdowns
+6. correlation(comparasion in which we input a second stock)
+7. Beta
+8. CAPM
+9. Sharpe Ratio
+10. VaR
+11. Summary Page
+
+To begin we wnat to read data from the 20 year from in yfinance 
+so 
+symbol = input("Enter the stock symbol of your choice").upper()
+data = pd.read_csv(f"saved_data/{symbol}.csv")
+
+Then one we choose that stock
+I pasted in the Daily return formula and editted it to be for {symbol}
+
+I then pasted in the calcs for volatility, moving average, volum and draw downs
+
+Tomorrow i want to do correlation:
+
+DAY 45 20/08/2026
+Today i want to do correlation and Beta
+
+So for correlation i want to compare to specific stocks so i would prompt for input of a second stock
+hence sec_stock
+I then transferred all the previous code i had for correation and editted the names 
+
+Next for Beta i started by copying over the code from yfinance, including the data which read the S%P500
+i prompted to choose a specifc stock calculate allign returns
+aligned_returns.columns = [symbol, "Market"]
+stock_returns = aligned_returns[symbol]
+
+and the rest of the beta was transfered from what was in yfinance
+
+
+DAY 46 
+21/08/2026
+Today i want to hoepfully complete stock analysis
+
+For the CAPM
+I did the same thing i did with beta, i removed the for loop and instead prompted for a stock of the user choice, all further calculations where just transferred. 
+
+For SHARPE RATIO
+Most of the code remained the same here too 
+excess_return = annualized_return - risk_free_rate
+sharpe_ratio = excess_return / annualized_volatility
+
+However i editted the calc for annualized return and annualized volatility so it would be for the s
+specific stock enterred rather than the entire portfolio.
+annualized_return = ((1 + stock_returns.mean()) ** 252) - 1
+annualized_volatility = stock_returns.std() * (252 ** 0.5)
+
+For VALUE AT RISK
+It is basically the same just i changed dollar value to % value
+confidence_level = 0.05
+var_95 = stock_returns.quantile(confidence_level)
+print(f"95% Daily VaR: {var_95 * 100:.2f}%")
+
+Tomorrow ill do the last part of stock analysis
+DAY 47
+22/08/2026
+
+Today I am going to work on a summary page for the stock anlysis section to end it off 
+
+Okay so the summary sheet will display this data:
+Current Price
+All time high 
+Previous Close
+
+RETURNS
+Monthly return
+yearly return
+5 year return
+
+RISK
+volatiltiy 
+draw down 
+beta
+95% VaR
+
+Risk Adjustment
+CAPM
+Sharpe 
+
+CAPM expcted return
+
+COMAPRSION
+correlation
+
+
+To print a banner like a aheader i can do a pattern of ==+==+==+==+==+==+==+==+==+==+==+==+==+==+
+print("==+") * 30
+
+to get the current price we want to use the last closing value so 
+we would go into the data,  specific the column for close and we would use iloc to access the last row 
+so current_price = data["Close"].iloc[-1]
+iloc[-1] is  a panda which gives the last positon 
+
+
+DAY 48
+23/08/2026
+So today I wnat to start working on the technical anlysis.
+It will contain:
+1. Moving Average
+2. Volume Analysis
+3. Trend
+4. Momentum
+5. RSI signals, MACD
+6. Bullish or Bearish 
+
+I created a file called technical anlysis.py and read the data for stock
+once the user inputs the symbol they want they then get to analyze the data
+
+to get the moving.. just like I did the stock anlysis... I recalculated the data rather than trying to import it for time purposes dont have ot redownload all the files. 
+
+The first Feature I want to implement is the test whether the current prices is above or below to moving average. To do this, I wrote code for the moving average and current price 
+
+Its pretty simple. if the current price is more than moving average then it is above, is it less, then it is below. 
+
+DAY 49
+24/08/2026
+
+Today I finished the trends section. So its the calculte bullish or bearish. I did this for long term and Short term.
+
+Shorter term is less than 1 year
+Long term is 1 year or more
+
+DAY 50
+25/08/2026
+
+Today I am going to create the momentum analysis
+Momentum Analysis is much has the stock's price changed compared with x trading days ago
+
+in the pandas library use pct_change() is used to calculate the percentage growth or drop between the current element and the prior one
+
+data["20 Day Momentum"] = data["Close"].pct_change(20)
+
+to get 20 day moment we do pct_changes starting from present date to 20 years.
+
+I then did signal to show if the momentum was + or - 
+if momentum20d > 0:
+    momentum20_posneg = "Positive"
+else:
+    momentum20_posneg = "Negative"
+
+DAY 51
+26/08/2026
+
+What is RSI?
+The relative strength index is is a momentum oscillator used in technical analysis to measure the speed and change of price movements.
+
+to calculate it RSI:
+
+Relative strength = average gain/ average loss
+
+RSI = 100 - (100/1+RS)
+
+data["Price Change"] = data["Close"].diff()
+.diff() calculates the difference between current close and previous close. 
+
+.diff() exists only within the pandas library
+.clip() exists only within the pandas library and its use is to set LIMITS
+
+for examples .clip(lower=0) means the number can be less than 0 and can be infinitely larger than 0 
+.clip(upper=0) means the number can be more than 0 and can be infinitely small than 0 
+this number will be negative 
+
+to get around this we would just muliplty by -1 since loss it self is postive
+
+data["Average Gain"] = data["Gain"].rolling(14).mean()
+the data is collected from the last 14 days ( Relative Strength Index (RSI) is calculated over a standard default period of 14)
+
+relative_strength_index = gain_rsi / loss_rsi
+
+rsi = 100 - (100 / (1 + relative_strength_index))
+
+DAY 52
+27/08/2026
+RSI is over bought if it is > 70 and under bought if it is less than 30 
+so i coded this using simple if statements 
+
+#MACD - Moving Average Convergence Divergence is a trend-following momentum indicator that shows the relationship between two moving averages of an asset’s price.
+
+The MACD is actually made up of three separate lines:
+1. MACD LINE
+    = 12 period EMA - 26 period EMA
+
+2. Signal Line 
+    = 9 period EMA of the MACD line
+
+3. Historgram
+    = MACD line - Signal Line
+
+
+MACD = 12 DAY EMA - 26 DAY EMA
+
+To calculate MACD line
+to get the 12 period EMA 
+data["12 Day EMA"] = data["Close"].ewm(span=12, adjust=False).mean()
+.ewm() is used to calc the exponentially weight moving
+span means it check its across 12 periods of trading days
+ajudtstment = False ..  In pandas this is used to calc the recursive EMA method.
+
+EMA:
+Recent days get more importance
+Older days get less importance
+
+I thing calculated the 26 day EMA and found the difference ( that is the MAC) 
+
+When the MACD is positive (above 0): The 12-day EMA is higher than the 26-day EMA.
+ This means short-term upward momentum is accelerating faster than the long-term trend.
+ 
+ When the MACD is negative (below 0): The 12-day EMA is lower than the 26-day EMA. 
+ This means short-term selling momentum is accelerating downward.
+
+MACD is exactly 0, it means that the 12-Day EMA and the 26-Day EMA are perfectly equal.
+the value only becomes zero when those two moving averages cross paths and hit the exact same price.
+
+Tomorrow i want to set up the SIGNAL line and as well as the options for Buy Sell HOLD
+
+DAY 53
+28/08/2026
+Today I want to Add in the Volume Analysis
+IN PANDAS 
+ data["Volume"].rolling(10).mean() is the same as 
+ data["Volume"].rolling(window = 10).mean()
+
+Relative Volume (RVOL) = Current Volume / Average Volume
+
+1. Institutional Surge
+a Z-score greater than 2 and is backed by long-term liquidity.
+to get a z score greater than 2 we do nu + 2 sd
+
+long term liquid is if volume is greater than 100 days 
+
+2. High Volume
+Volume is > than 1.5 * mu
+
+3. Low Volume (Illiquid / Drying Up)
+Volume is < than 0.5 * mu
+
+4. Normal / Average Volume
+Volume is 0.5*mu < V < 1.5*mu
+
+I did the vol analysis for 10 days 
+Tomorrow I want to complete the Volume Analysis and include more days
+
+
+DAY 54
+29/08/2026
+Today  I upgraded to Volume Analysis
+
+I am adding a second signal for comparing
+1. current vol > avg vol == high
+2. current vol < avg vol == low
+3. current vol == avg vol == average
+I then spent time copying code and adding in 
+ 20 day 50 day 100 day 200day and 1 year
+
+DAY 55
+30/08/2026
+
+Okay so for the BUY SELL HOLD, we will use a point system 
+Bullish signal  +1
+Bearish signal  -1
+Neutral          0
+Score >= +3       BUY
+Score between    HOLD
+Score <= -3       SELL
+
+DAY 56
+31/08/2026
