@@ -1,65 +1,99 @@
-# Technical Analysis
+#Backtesting 
 import pandas as pd
-import numpy as np
+import numpy as np 
 symbol = input("Enter the stock symbol you want to analyze: ").upper()
 data = pd.read_csv(f"saved_data/{symbol}.csv")
 
 rsi_posneg = "" 
 
+
+#Moving Average
 data["20 Day Moving Average"] = data["Close"].rolling(20).mean()
 data["100 Day Moving Average"] = data["Close"].rolling(100).mean()
 data["1 Year Moving Average"] = data["Close"].rolling(252).mean()
 data["5 Year Moving Average"] = data["Close"].rolling(252*5).mean()
-current_price = data["Close"].iloc[-1]
-moving_average20d = data["20 Day Moving Average"].iloc[-1]
-moving_average100d = data["100 Day Moving Average"].iloc[-1] 
-moving_average1y = data["1 Year Moving Average"].iloc[-1]
-moving_average5y = data["5 Year Moving Average"].iloc[-1]
-if current_price > moving_average20d:
-    print("Price is above the 20 Day Moving Average")
-else:
-    print("Price is below the 20 Day Moving Average")
-if current_price > moving_average100d:
-    print("Price is above the 100 Day Moving Average")
-else:
-    print("Price is below the 100 Day Moving Average")
-if current_price > moving_average1y:
-    print("Price is above the 1 Year Moving Average")
-else:
-    print("Price is below the 1 Year Moving Average")
-if current_price > moving_average5y:
-    print("Price is above the 5 Year Moving Average")
-else:
-    print("Price is below the 5 Year Moving Average")
-    
-#TRENDS
-if current_price > moving_average20d:
-    short_trend = "Bullish"
-else:
-    short_trend = "Bearish"
-if current_price > moving_average100d:
-    medium_trend = "Bullish"
-else:
-    medium_trend = "Bearish"
-print(f"Medium-Term Trend: {medium_trend}")
-if current_price > moving_average1y:
-    long_trend = "Bullish"
-else:
-    long_trend = "Bearish"
-if current_price > moving_average5y:
-    vlong_trend = "Bullish"
-else:
-    vlong_trend = "Bearish"
-print(f"Long-Term Trend: {long_trend}")
-print(f"Very Long-Term Trend: {vlong_trend}")
-print(f"Short-Term Trend: {short_trend}")
-print(f"Short-Term Trend: {short_trend}")
-
-#Momentum Analysis
+#Momentum
 data["20 Day Momentum"] = data["Close"].pct_change(20)
 data["100 Day Momentum"] = data["Close"].pct_change(100)
-momentum20d = data["20 Day Momentum"].iloc[-1]
-momentum100d = data["100 Day Momentum"].iloc[-1]
+
+#RSI Analysis
+data["Price Change"] = data["Close"].diff()
+data["Gain"] = data["Price Change"].clip(lower=0)
+data["Loss"] = -data["Price Change"].clip(upper=0)
+data["Average Gain"] = data["Gain"].rolling(14).mean()
+data["Average Loss"] = data["Loss"].rolling(14).mean()
+
+#MACD ANALYSIS
+data["12 Day EMA"] = data["Close"].ewm(span=12, adjust=False).mean()
+data["26 Day EMA"] = data["Close"].ewm(span=26, adjust=False).mean()
+data["MACD"] = data["12 Day EMA"] - data["26 Day EMA"]
+
+
+#Volume Analysis
+data["10 Day Average Volume"] = data["Volume"].rolling(10).mean()
+data["20 Day Average Volume"] = data["Volume"].rolling(20).mean()
+data["50 Day Average Volume"] = data["Volume"].rolling(50).mean()
+data["100 Day Average Volume"] = data["Volume"].rolling(100).mean()
+data["200 Day Average Volume"] = data["Volume"].rolling(200).mean()
+data["1 Year Average Volume"] = data["Volume"].rolling(252).mean()
+data["10 Day Volume Standard Deviation"] = data["Volume"].rolling(10).std()
+data["20 Day Volume Standard Deviation"] = data["Volume"].rolling(20).std()
+data["50 Day Volume Standard Deviation"] = data["Volume"].rolling(50).std()
+data["100 Day Volume Standard Deviation"] = data["Volume"].rolling(100).std()
+data["200 Day Volume Standard Deviation"] = data["Volume"].rolling(200).std()
+data["1 Year Volume Standard Deviation"] = data["Volume"].rolling(252).std()
+
+#FOR LOOP SET UP
+for i in range(252*5, len(data) - 20):
+    current_price = data["Close"].iloc[-1]
+    moving_average20d = data["20 Day Moving Average"].iloc[i]
+    moving_average100d = data["100 Day Moving Average"].iloc[i] 
+    moving_average1y = data["1 Year Moving Average"].iloc[i]
+    moving_average5y = data["5 Year Moving Average"].iloc[i]
+    if current_price > moving_average20d:
+        print("Price is above the 20 Day Moving Average")
+    else:
+        print("Price is below the 20 Day Moving Average")
+    if current_price > moving_average100d:
+        print("Price is above the 100 Day Moving Average")
+    else:
+        print("Price is below the 100 Day Moving Average")
+    if current_price > moving_average1y:
+        print("Price is above the 1 Year Moving Average")
+    else:
+        print("Price is below the 1 Year Moving Average")
+    if current_price > moving_average5y:
+        print("Price is above the 5 Year Moving Average")
+    else:
+        print("Price is below the 5 Year Moving Average")
+    #TRENDS
+    if current_price > moving_average20d:
+        short_trend = "Bullish"
+    else:
+        short_trend = "Bearish"
+    if current_price > moving_average100d:
+        medium_trend = "Bullish"
+    else:
+        medium_trend = "Bearish"
+    print(f"Medium-Term Trend: {medium_trend}")
+    if current_price > moving_average1y:
+        long_trend = "Bullish"
+    else:
+        long_trend = "Bearish"
+    if current_price > moving_average5y:
+        vlong_trend = "Bullish"
+    else:
+        vlong_trend = "Bearish"
+    print(f"Long-Term Trend: {long_trend}")
+    print(f"Very Long-Term Trend: {vlong_trend}")
+    print(f"Short-Term Trend: {short_trend}")
+    print(f"Short-Term Trend: {short_trend}")
+
+
+
+#Momentum Analysis
+momentum20d = data["20 Day Momentum"].iloc[i]
+momentum100d = data["100 Day Momentum"].iloc[i]
 print(f"20 Day Momentum: {momentum20d * 100:.2f}%")
 print(f"100 Day Momentum: {momentum100d * 100:.2f}%")
 if momentum20d > 0:
@@ -75,38 +109,25 @@ print(f"20 Day Momentum Signal: {momentum20_posneg}")
 print(f"100 Day Momentum Signal: {momentum100_posneg}")
 
 
+
 # RSI Analysis
-data["Price Change"] = data["Close"].diff()
-data["Gain"] = data["Price Change"].clip(lower=0)
-data["Loss"] = -data["Price Change"].clip(upper=0)
-data["Average Gain"] = data["Gain"].rolling(14).mean()
-data["Average Loss"] = data["Loss"].rolling(14).mean()
-gain_rsi = data["Average Gain"].iloc[-1]
-loss_rsi = data["Average Loss"].iloc[-1]
-relative_strength_index = gain_rsi / loss_rsi
-rsi = 100 - (100 / (1 + relative_strength_index))
-if rsi < 30:
-    rsi_posneg = "Oversold"
-
-elif rsi < 45:
-    rsi_posneg = "Bearish"
-
-elif rsi <= 55:
-    rsi_posneg = "Neutral"
-
-elif rsi <= 70:
-    rsi_posneg = "Bullish"
+gain_rsi = data["Average Gain"].iloc[i]
+loss_rsi = data["Average Loss"].iloc[i]
+if loss_rsi == 0:
+    loss_rsi = 0.0001
+    relative_strength_index = gain_rsi / loss_rsi
+    rsi = 100 - (100 / (1 + relative_strength_index))
+    print(f"RSI: {rsi:.2f}")
+    print("RSI_Losss was 0 but to avoid undefined, 0.0001 was used")
 else:
-    rsi_posneg = "Overbought"
-print(f"RSI: {rsi:.2f}")
-print(f"RSI Signal: {rsi_posneg}")
+    relative_strength_index = gain_rsi / loss_rsi
+    rsi = 100 - (100 / (1 + relative_strength_index))
+    print(f"RSI: {rsi:.2f}")
+
 
 
 # MACD Analysis
-data["12 Day EMA"] = data["Close"].ewm(span=12, adjust=False).mean()
-data["26 Day EMA"] = data["Close"].ewm(span=26, adjust=False).mean()
-data["MACD"] = data["12 Day EMA"] - data["26 Day EMA"]
-macd = data["MACD"].iloc[-1]
+macd = data["MACD"].iloc[i]
 if macd > 0:
     print("The 12-day EMA is higher than the 26-day EMA. Short-term upward momentum is accelerating faster than the long-term trend.")
 elif macd < 0:
@@ -115,7 +136,7 @@ else:
     print("MACD is exactly 0.The 12-Day EMA and the 26-Day EMA are perfectly equal. ")
 print(f"MACD: {macd:.2f}")
 data["MACD Signal Line"] = data["MACD"].ewm(span=9, adjust=False).mean()
-bull_bear = data["MACD Signal Line"].iloc[-1]
+bull_bear = data["MACD Signal Line"].iloc[i]
 if macd > bull_bear:
     signal = "Bullish"
 elif macd < bull_bear:
@@ -125,33 +146,21 @@ else:
 print(f"MACD Signal Line: {bull_bear:.2f}")
 print(f"MACD Signal: {signal}")
 
-# Volume Analysis
-data["10 Day Average Volume"] = data["Volume"].rolling(10).mean()
-data["20 Day Average Volume"] = data["Volume"].rolling(20).mean()
-data["50 Day Average Volume"] = data["Volume"].rolling(50).mean()
-data["100 Day Average Volume"] = data["Volume"].rolling(100).mean()
-data["200 Day Average Volume"] = data["Volume"].rolling(200).mean()
-data["1 Year Average Volume"] = data["Volume"].rolling(252).mean()
-data["10 Day Volume Standard Deviation"] = data["Volume"].rolling(10).std()
-data["20 Day Volume Standard Deviation"] = data["Volume"].rolling(20).std()
-data["50 Day Volume Standard Deviation"] = data["Volume"].rolling(50).std()
-data["100 Day Volume Standard Deviation"] = data["Volume"].rolling(100).std()
-data["200 Day Volume Standard Deviation"] = data["Volume"].rolling(200).std()
-data["1 Year Volume Standard Deviation"] = data["Volume"].rolling(252).std()
 
-current_vol = data["Volume"].iloc[-1]
-average_vol10d = data["10 Day Average Volume"].iloc[-1]
-average_vol20d = data["20 Day Average Volume"].iloc[-1]
-average_vol50d = data["50 Day Average Volume"].iloc[-1]
-average_vol100d = data["100 Day Average Volume"].iloc[-1]
-average_vol200d = data["200 Day Average Volume"].iloc[-1]
-average_vol1y = data["1 Year Average Volume"].iloc[-1]
-std_vol10d = data["10 Day Volume Standard Deviation"].iloc[-1]
-std_vol20d = data["20 Day Volume Standard Deviation"].iloc[-1]
-std_vol50d = data["50 Day Volume Standard Deviation"].iloc[-1]
-std_vol100d = data["100 Day Volume Standard Deviation"].iloc[-1]
-std_vol200d = data["200 Day Volume Standard Deviation"].iloc[-1]
-std_vol1y = data["1 Year Volume Standard Deviation"].iloc[-1]
+# Volume Analysis
+current_vol = data["Volume"].iloc[i]
+average_vol10d = data["10 Day Average Volume"].iloc[i]
+average_vol20d = data["20 Day Average Volume"].iloc[i]
+average_vol50d = data["50 Day Average Volume"].iloc[i]
+average_vol100d = data["100 Day Average Volume"].iloc[i]
+average_vol200d = data["200 Day Average Volume"].iloc[i]
+average_vol1y = data["1 Year Average Volume"].iloc[i]
+std_vol10d = data["10 Day Volume Standard Deviation"].iloc[i]
+std_vol20d = data["20 Day Volume Standard Deviation"].iloc[i]
+std_vol50d = data["50 Day Volume Standard Deviation"].iloc[i]
+std_vol100d = data["100 Day Volume Standard Deviation"].iloc[i]
+std_vol200d = data["200 Day Volume Standard Deviation"].iloc[i]
+std_vol1y = data["1 Year Volume Standard Deviation"].iloc[i]
 if average_vol10d > 0:
     rvol10d = current_vol / average_vol10d  
 else :
@@ -182,6 +191,7 @@ print(f"50 Day Relative Volume: {rvol50d:.2f}")
 print(f"100 Day Relative Volume: {rvol100d:.2f}")
 print(f"200 Day Relative Volume: {rvol200d:.2f}")
 print(f"1 Year Relative Volume: {rvol1y:.2f}")
+
 
 #Volume Confirmation
 if rvol20d >= 2:

@@ -1720,12 +1720,243 @@ DAY 55
 30/08/2026
 
 Okay so for the BUY SELL HOLD, we will use a point system 
-Bullish signal  +1
-Bearish signal  -1
-Neutral          0
-Score >= +3       BUY
-Score between    HOLD
-Score <= -3       SELL
+The point system should be out of 14.
++8 to +14  == Strong buy
+ +4 to  +7  == Buy
+ -3 to  +3  == Hold
+ -4 to  -97  == Sell
+-8 to -14  == Strong sell
+Short   = 1
+Medium  = 2
+Long    = 3
+Very Long  =2
+20 Day Momentum = 1
+100 Day Momentum = 2
+RSI = 1
+MACD = 2
+
+Implemneted using if statments 
 
 DAY 56
 31/08/2026
+
+Today I want to do testing and maintence to make sure everything works fine. 
+
+for RSI, i added more possible outcomes to the if statement
+
+RSI SIGNAL
+Over sold < 30
+Bearish < 45 
+Neutral <= 55
+Bullish <= 70
+over bought  > 
+ 
+I then updated this in the scoring system.
+
+Everything works fine. 
+
+I introduced Volume confirmation
+
+AI Mode conversation: no eplxain the code the like financ ena f fomula behind it
+
+#Volume Confirmation
+if rvol20d >= 2:
+    vol_confirm = "Very Strong"
+elif rvol20d >= 1.5:
+    vol_confirm = "Strong"
+elif rvol20d >= 0.8:
+    vol_confirm = "Normal"
+else:
+    vol_confirm = "Weak"
+print(f"Volume Confirmation: {vol_confirm}")no eplxain the code the like financ ena f fomula behind it
+
+#Volume Confirmation
+If the assest is trading at more than 200% of its 20 day average volume,  then the relative volume RVOL
+would be very strong and >= 2
+Strong >= 1.5 so 150 - 199%
+Normal is >= 0.8 so 80% to 149%
+Weak < 0.8 so less than 80% 
+
+i also multiplied rvol * 100 to get the %. 
+
+DAY 57
+1/08/2026
+Today I am going to implement the confirmed signal
+
+this is done by combining the final signal and the volume signal 
+
+if the final signal from the scoring board is 
+"x" 
+
+x = strong buy, strong sell, hold, buy , sell
+
+1. then its very strong volume means extremely strong x confirmed 
+
+2. then it strong volume means strong x confirmed 
+
+3. normal = strong x ( potentially )
+
+4. weak = strong x ( weak volume)
+
+DAY 58
+02/08/2026
+Today I want to complete the technical analysis by adding in the confluence 
+
+ confluence occurs when multiple independent technical indicators or analysis tools point to the same market direction at the same time
+
+ so in this case, I am getting data from 8 indicators 
+1.  Short term trend
+2. Medium term trend
+3. Long term trend
+4. Very long term trend
+5. 20 day momentum
+6. 100 day momentum 
+7. MACD
+8. relative strength indicator (RSI)
+
+
+Agreement(%) = ( directional signal / total active signal ) * 100
+Possible outcomes
+Extremely Strong Agreement >= 87.5%
+Strong Agreement >= 75%
+Moderate Agreement >= 62.5%
+Mixed Signals < 62.5%
+bullish_signals = 0
+bearish_signals = 0
+
+The rule of thumb here to get the total directional would be to sum the total brearish + bullish 
+bullish agreement would be the bullish/total 
+bearish agreement would be the bearish/total
+
+for each item + 1 if they occur 
+SHORT-TERM TREND
+Bullish = 1
+Bearish = 1
+
+MEDIUMmTERM TREND
+Bullish = 1
+Bearish = 1
+
+LONG TERM TREND
+Bullish = 1
+Bearish = 1
+
+VERY LONG TERM TREND
+Bullish = 1
+Bearish = 1
+
+20 DAY MOMENTUM
+Positive ( Bullish )= 1
+Negative ( Bearish ) = 1
+
+100 DAY MOMENTUM
+Positive ( Bullish )= 1
+Negative ( Bearish ) = 1
+
+RSI
+Bullish = 1
+Bearish = 1
+
+MACD
+Bullish = 1
+Bearish = 1
+
+DAY 59
+03/08/2026
+Making final touches to techncial anlysis testing everything out
+
+Changes made: 
+I updated the scoring system in the RSI section
+
+for the RSI section i introudced over bought and over sold. Mathemtically, this makes no difference
+the reason being that it simples adds 0 to the score
+
+elif rsi_posneg == "Oversold":
+    signal_score += 0
+elif rsi_posneg == "Overbought":
+    signal_score += 0
+
+The reason for the change that is +0 is because, over bought indicates a very fast and therefore
+the asset is technically "cheap" and due for a bounceor 
+for bearish assets stay oversold as panic selling continues
+the assest's value is dropped very fast so  
+
+
+Simply put over bought is too dangerous to put bullish and over sold is too bearish to put bearish 
+
+
+Addtionally, i updated the Confluence as well although, mathematically, it makes no  differene. In that case
+of over sold or under bought it would imply just pass 
+
+elif rsi_posneg == "Oversold":
+    pass
+elif rsi_posneg == "Overbought":
+    pass
+
+DAY 60
+04/08/2026
+Today I am going to implement backtesting
+
+Backtesting in a quantitative trading simulator is the process of testing a trading strategy or algorithm using historical market data to see how it would have performed in the past.
+
+It work using input rules, historical runs, performance metrics. 
+
+I spent today mostly planning and trying to figure how I would go about implementing back testing
+
+okay so from what i get I have gathered. I need to recalculate the TECHNICAl indicators but with past stocks and i want to see how the out come is in the past and compare it to a potential result in the future. For exmaple if past stocks gave me buliish and it was right. I would compare and test how reliable those results wereand use it to Make a prediction. 
+
+Back testing is its own section so I created backtesting.py 
+
+It is basic repition of what I previously coded in the technical anlysis 
+
+today I spent time 
+
+importing numpy, pandas, reading the file for the stock information. 
+
+I then pasted back in the Moving Averages and Momentum as a start.
+Overall it is really simple. All I had to do was change 
+current_price = data["Close"].iloc[-1]
+to 
+current_price = data["Close"].iloc[i]
+
+for every line in which .loc[] was used we change that -1 to i. The reason is that it allows us to set up a
+for loop which can used to look at the data given across different dates. 
+
+
+Tomorrow Ill finish up the transferring. 
+
+
+DAY 61
+04/08/2026
+
+I finished back testing today. 
+I transfered Volume, RSI, MACD, Volality 
+The rest of the code form technical analysis such as the scoring system is the exact same since
+it is using data from the indicators which we used above. 
+
+DAY 62
+05/08/2026
+
+Today I began the for loop set up. 
+
+For the for loop itself I used : for i in range(252*5, len(data) - 20):
+
+Since the oldest indicator we used was 5 years, it only made sense to use data from 5 years ago.
+
+Len(data) is just how many rows are in the Panda Data frame. Alternativley i would just use 5332 as that covers the 20 years of data I have downloaded. Len(data) is more suitable incase I increase the amount of data Downloaded. 
+
+
+DAY 63
+06/08/2026
+
+I then had to split up the data which I downloaded. 
+As for the intialization of  the data such a recalling the columns date and value ( eg 20 Day movoing average), I moved that into a section above the loop.
+
+I moved the data for Moving Average, Momentum, RSI, Volume, MACD. 
+
+After added the pieces with loc[i] into the loop for the Moving average and the Momentum. 
+
+Tomorrow I will complete this. 
+
+DAY 64
+07/08/2026
