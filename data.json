@@ -230,5 +230,25 @@
         "Trade History": [],
         "User Name": "d",
         "Encrytion code": "G"
+    },
+    "JAVA": {
+        "Starting Balance": 2.0,
+        "Current Cash": 2.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "JAVA",
+        "Encrytion code": "9"
+    },
+    "HIIIII": {
+        "Starting Balance": 5e+35,
+        "Current Cash": 5e+35,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "HIIIII",
+        "Encrytion code": "C"
     }
 }
