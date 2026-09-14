@@ -250,5 +250,24 @@
         "Trade History": [],
         "User Name": "HIIIII",
         "Encrytion code": "C"
+    },
+    "aIDIAN": {
+        "Starting Balance": 2.5e+31,
+        "Current Cash": 2.5e+31,
+        "Portfolio Value": 77534434.44000001,
+        "Total Equity": 2.5e+31,
+        "Current Holdings": {
+            "GME": 3444444.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "GME",
+                3444444.0,
+                77534434.44000001
+            ]
+        ],
+        "User Name": "aIDIAN",
+        "Encrytion code": "RIL6DD5"
     }
 }

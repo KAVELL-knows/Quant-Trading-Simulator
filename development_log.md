@@ -1960,3 +1960,73 @@ Tomorrow I will complete this.
 
 DAY 64
 07/08/2026
+
+I moved MACD RSI, Volume and  Momentum, Scoring System and Confluence into the for loop. 
+I alo decided from today I want to push everything to my Git and update it regularly.  
+
+
+DAY 65 
+08/08/2026
+Today, I added in the newest part of the backtesting. That would be to get the predicated future value.
+From here I would compare it to the actual future value and see how accurate it actaully was. 
+
+Future prices = (new prices - current prices)/current_price
+
+To get the future return i would need the new price(later date) and the current prices( the value of i)
+
+so to get the new prices( all I have to do is choose an arbitary number for how far ahead i want the calculation to be for and add that to i). In this case i chose 20 days ahead I did i + 20 
+
+future_price = data["Close"].iloc[i + 20]
+future_return = (future_price / current_price) - 1
+future_return_percent = future_return * 100
+
+I implemented the if statements 
+    if its Buy or Strong buy then check if the future price return > 0. That would mean its correct.
+
+    if its Sell or Strong sell then check if the future price return > 0. That would mean its correct.
+
+    else: 
+        Hold
+
+DAY 66 
+09/08/2026
+
+Today I want to work on saving the results which are attained. To do this i need to create a list.
+
+So i introduced the list backtesting_summary and i appended all the data to the list. This data includes all the techncial indictors so Current Prices, Final Singal, Technical Score, Future Prices, Future Return(%) and Prediction Result
+
+Similarly the i added all the indictors to a list in backtest_list the reason. That would include
+Volume, MACD, RSI, Trends, Signals and Directional Agreement. 
+
+Lastly i wrote code to give the name of the date, we we can know from when the data came from. This was easy all I had to do was 
+
+To create the list i appended a simple string so  for exmaple "Date": date
+
+    date = data["DATE"].iloc[i]
+
+
+    Tomorrow I want to sort of the testing phase where we try different things and see how well they work. 
+
+
+DAY 67 
+10/08/2026
+
+Testing the backtesting data and comparing them to how accurate they are. 
+
+I put the back_test summary into a data frame and i also added the back test indicator to a data frame
+backtest_dataframe_summary = pd.DataFrame(backtest_summary)
+backtest_dataframe_indicators = pd.DataFrame(backtest_indicators)
+
+I then merged these 2 data frames
+now that they are in table format it is easy to perform calculations between the 2. 
+
+backtest_results = pd.merge(backtest_dataframe_summary, backtest_dataframe_indicators,on="Date")
+
+pd.merge - used ot merge 2 dataframes
+on="Date" = this alligns the rows according to date so all the data macthes up 
+
+For my first comparision:
+We group all the rows according to RSI Signal
+We then look at the future return for each signal and calculate the return. 
+return_per_rsi_signal = backtest_results.groupby("RSI Signal")["Future Return(%)"].mean()
+print(return_per_rsi_signal)
