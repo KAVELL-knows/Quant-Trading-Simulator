@@ -446,6 +446,9 @@ for i in range(252*5, len(data) - 20):
         pass
     elif rsi_posneg == "Overbought":
         pass
+
+
+
     # MACD
     if signal == "Bullish":
         bullish_signals += 1
@@ -506,24 +509,39 @@ for i in range(252*5, len(data) - 20):
         else:
             prediction_result = "Incorrect"
     else:
-        prediction_result = "Hold"
+        if -1 <= future_return_percent <= 1:
+            prediction_result = "Correct"
+        else:
+            prediction_result = "Incorrect"
     print(f"Prediction Result: {prediction_result}")
     backtest_summary.append({"Date": date, "Current Prices": current_price, "Final Singal": final_signal, 
                      "Technical Score": signal_score, "Future Prices": future_price, 
-                     "Future Return(%)": future_return_percent, "Prediction Result": prediction_result})
+                     "Future Return (%)": future_return_percent, "Prediction Result": prediction_result})
 
 #end of the loop 
 backtest_dataframe_summary = pd.DataFrame(backtest_summary)
 backtest_dataframe_indicators = pd.DataFrame(backtest_indicators)
-return_per_signal = backtest_dataframe_summary.groupby("RSI Signal")["Future Return (%)"].mean()
-print(return_per_signal)
+backtest_results = pd.merge(backtest_dataframe_summary, backtest_dataframe_indicators, on="Date")
+return_per_signal = (backtest_results.groupby("RSI Signal")["Future Return (%)"].mean())
 
 
-# End of the loop
+#accuracy of RSI 
+rsi_signal_counts = (backtest_results["RSI Signal"].value_counts())
+prediction_counts = backtest_results["Prediction Result"].value_counts()
+print(f"Average Future Returns by RSI Signals {return_per_signal}")
+print(f"Signal Counts {rsi_signal_counts}")
+print(f"Prediction Counts {prediction_counts}")
 
-backtest_dataframe_summary = pd.DataFrame(backtest_summary)
-backtest_dataframe_indicators = pd.DataFrame(backtest_indicators)
+correct_predictions = (backtest_results["Prediction Result"] == "Correct").sum()
+total_predictions = (backtest_results["Prediction Result"].isin(["Correct", "Incorrect"])).sum()
+if total_predictions > 0:
+    accuracy = (correct_predictions / total_predictions) * 100
+    print(f"Prediction Accuracy: {accuracy:.2f}%")
+else:
+    print("Prediction Accuracy: No valid predictions available.")
 
-backtest_results = pd.merge(backtest_dataframe_summary, backtest_dataframe_indicators,on="Date")
-return_per_rsi_signal = backtest_results.groupby("RSI Signal")["Future Return(%)"].mean()
-print(return_per_rsi_signal)
+
+return_per_final_signal = (backtest_results.groupby("Final Singal")["Future Return (%)"].mean())
+print(f"Average Future Return by Final Technical Signal: {return_per_final_signal}")
+final_signal_counts = (backtest_results["Final Singal"].value_counts())
+print(f"Number of Times Each Final Signal Appeared: {final_signal_counts}")

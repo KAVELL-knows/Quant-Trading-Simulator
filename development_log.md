@@ -2030,3 +2030,76 @@ We group all the rows according to RSI Signal
 We then look at the future return for each signal and calculate the return. 
 return_per_rsi_signal = backtest_results.groupby("RSI Signal")["Future Return(%)"].mean()
 print(return_per_rsi_signal)
+
+Day 68
+11/08/2026
+
+So my plan is to 
+
+RSI performance — whether RSI signals were useful.
+Prediction accuracy — compare the predictions to the future return direction
+Final signal performance — did the technical-analysis system worked better for BUY, SELL etc. 
+
+.groupby("RSI Signal") - This sorts all rows into groups based on the RSI Signal so if it is Over Bought, Under Bought etc
+
+DAY 69
+12/08/2026
+
+Today I evalulated the accuracy of the RSI signal. To do this all i have to do is 
+
+.value_counts() - this total ups the unique values in the data set
+
+rsi_signal_counts = (backtest_results["RSI Signal"].value_counts())
+
+what we are doing is we access the back test results datafram e and we are looking specifically at 
+the RSI Signals Column, and we are counting all the Unqiue times we got the value appearing.
+
+I also did  this with the Prediction Result Column
+
+correct_predictions = (backtest_results["Prediction Result"] == "Correct").sum()
+
+.sin() - It check for if the row is correct or incorrect, else it returns false. 
+the accuracy is given correct predictions / total prediction 
+
+DAY 70 
+13/09/2026
+
+I implemnted an if statement to only calc the accuracy if the total predicition was more than 0, else
+an error is given . 
+
+I am confused with the panda tables and I spent today trying to understand it thoroughly 
+
+
+return_per_final_signal = (backtest_results.groupby("Final Singal")["Future Return (%)"].mean())
+
+
+So we have a table like this 
+
+Date      Stratergy Signal     Final Siganl       Future Return(%)
+
+
+we what we are do is we access the back test dataframe 
+from the final signal column we want to then group it so grouping according to Buy Sell Hold
+
+so that what we call grouping them into buckets. We now have 3 buckets, buy sell and hold
+
+Now that it is grouped by final signals
+("Final Signal")["Future Return(%)] usilitzes data from the Future Return Column only, it forgets
+Dates Stratgergy Signals and leaves just NUMERICAL Values beloning to Future Returns 
+
+.mean()
+would find the mean of each of the 3 buckets
+
+so for example we found the mean of the Buy bucket. once we do this it is in the variable return_per_final_signal 
+
+
+Ideally what we want to do is used the future return for 20 days and compare what it actuallly was 20 days down the road and see how accurate it was. 
+
+
+final_signal_counts = (backtest_results["Final Singal"].value_counts())
+
+This line now displays the list ["Buy", "Hold", "Buy", "Sell"]
+and what it is doing is counting each on 
+so we are count the number of Buys the number of Sell and the number of Holds
+
+so it just gives us a better idea on the accuracy with numbers
