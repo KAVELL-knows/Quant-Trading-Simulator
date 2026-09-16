@@ -541,7 +541,22 @@ else:
     print("Prediction Accuracy: No valid predictions available.")
 
 
-return_per_final_signal = (backtest_results.groupby("Final Singal")["Future Return (%)"].mean())
+return_per_final_signal = (backtest_results.groupby("Final Signal")["Future Return (%)"].mean())
 print(f"Average Future Return by Final Technical Signal: {return_per_final_signal}")
-final_signal_counts = (backtest_results["Final Singal"].value_counts())
+final_signal_counts = (backtest_results["Final Signal"].value_counts())
 print(f"Number of Times Each Final Signal Appeared: {final_signal_counts}")
+
+print("=" * 50)
+print("SUMMARY")
+print("=" * 50)
+overall_average_return = backtest_results["Future Return (%)"].mean()
+print(f"Overall Average: {overall_average_return:.2f}%")
+if overall_average_return > 0:
+    print(f"Across 20 day periods in the history of {symbol}, there has been an  increase of {overall_average_return:.2f}%")
+elif overall_average_return < 0:
+    print(f"Across 20 day periods in the history of {symbol}, there has been a decrease of {overall_average_return:.2f}%")
+else:
+    print(f"Across 20 day periods in the history of {symbol}, it has remained around the same price moving only {overall_average_return:.2f}%")
+signal_comparison = (return_per_final_signal - overall_average_return)
+print(f"Signal Comparision: {signal_comparison}")
+

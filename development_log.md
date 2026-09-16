@@ -2103,3 +2103,16 @@ and what it is doing is counting each on
 so we are count the number of Buys the number of Sell and the number of Holds
 
 so it just gives us a better idea on the accuracy with numbers
+
+DAY 71 
+14/09/2026
+
+BUY or STRONG BUY is correct if the future return is positive.
+SELL or STRONG SELL is correct if the future return is negative.
+HOLD is correct if the return is approximately flat.
+
+I implemented an if else statement into the future retrn (%) higher up in my code.
+so that the HOLD is correct if its includivse of 1 but incorrect otherwise. 
+
+I now did some test to run the code and the terminal gave me 200 lines od code 
+So i spent some time removing print statements which were inside my loop 
