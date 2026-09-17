@@ -2114,5 +2114,30 @@ HOLD is correct if the return is approximately flat.
 I implemented an if else statement into the future retrn (%) higher up in my code.
 so that the HOLD is correct if its includivse of 1 but incorrect otherwise. 
 
-I now did some test to run the code and the terminal gave me 200 lines od code 
-So i spent some time removing print statements which were inside my loop 
+I now did some test to run the code and the terminal gave me 200 lines of code. It accurately showed the count for each buy sell etc, also it gave an accuracy prediction. Right now it is around 50%
+
+DAY 72 
+15/09/2026
+Today I did a summary sheet for the the backtesting.
+
+So i followed the same concept i used for when i did the last summary where i used the "=" * 50
+to create a boarder from there
+within the summary sheet i wrote some code for the overage all average.
+
+Which would just be the average/ mean of the fuutre return column 
+( Note that within the future column, each value is formed from the mean of the 20 days period)
+
+The overall average of the future column(%) gives us a percentage idea
+how the stock has moved within the histroy of the last  20 years. 
+
+So i then wrote some if statement to explain this for people for who dont understand finance
+for exmaple if the overal future average is more than 0 then it increased
+if it less than 0 then it has decreased
+if it is the same then it hasnt changed
+
+The next thing i tried to do is write some code 
+for the final comparision but I am currently getting an error so i need to try and
+figure that out tomorrow
+
+DAY 73
+16/09/2026

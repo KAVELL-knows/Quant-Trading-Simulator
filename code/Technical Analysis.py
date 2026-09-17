@@ -2,7 +2,7 @@
 import pandas as pd
 import numpy as np
 symbol = input("Enter the stock symbol you want to analyze: ").upper()
-data = pd.read_csv(f"saved_data/{symbol}.csv")
+data = pd.read_csv(f"../saved_data/{symbol}.csv")
 
 rsi_posneg = "" 
 

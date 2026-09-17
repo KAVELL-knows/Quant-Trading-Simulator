@@ -514,7 +514,7 @@ for i in range(252*5, len(data) - 20):
         else:
             prediction_result = "Incorrect"
     print(f"Prediction Result: {prediction_result}")
-    backtest_summary.append({"Date": date, "Current Prices": current_price, "Final Singal": final_signal, 
+    backtest_summary.append({"Date": date, "Current Prices": current_price, "Final Signal": final_signal, 
                      "Technical Score": signal_score, "Future Prices": future_price, 
                      "Future Return (%)": future_return_percent, "Prediction Result": prediction_result})
 
@@ -558,5 +558,4 @@ elif overall_average_return < 0:
 else:
     print(f"Across 20 day periods in the history of {symbol}, it has remained around the same price moving only {overall_average_return:.2f}%")
 signal_comparison = (return_per_final_signal - overall_average_return)
-print(f"Signal Comparision: {signal_comparison}")
-
+print(f"Signal Comparison: {signal_comparison}")
