@@ -2141,3 +2141,23 @@ figure that out tomorrow
 
 DAY 73
 16/09/2026
+
+I started of the day with all the code closed on visual studio so I had to re open it. At first when
+i reopened it i was getting alot of trouble and i didnt know what to do so with a quick google search i was able to figure out what to do and open the files properly 
+
+so basically what i learned to make sure you have all the files you downloaded is downloaded properly is that you can do 
+
+import os
+print()
+
+also i learnt that if you do ../save/etc you can folder one above into the other. I did not complete understand what was going on here so i had to continue googling to figure out what was wrong. Then  i leanred i could go back on my git hub and reopen everything so i was back to here i started yesterday
+
+So now to address the problem i was having yesterday. Well simply put
+
+The panadas dataframe for backtestinc couldnt find the Future Signal column
+so i checked my Future Signal Column by typing in 
+
+print(backtest_results.columns.tolist())
+
+From what i saw i typed Singal not Signal so that caused on error so i fixed that. 
+
