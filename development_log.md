@@ -2161,3 +2161,43 @@ print(backtest_results.columns.tolist())
 
 From what i saw i typed Singal not Signal so that caused on error so i fixed that. 
 
+DAY 74 17/09/2026
+
+Today, I continued with Stratification. 
+final_signal_performance = backtest_results.groupby("Final Signal")["Future Return (%)"].agg(["mean", "count"])
+
+we went to the final signal column and we grouped by Buy Sell Hold fomr here we used to future returns
+to calculate the mean and the count. 
+
+NB: .agg(["mean", "count"])
+.agg mean to aggragate and calculate multiple stats at the same time rather than doing them separately
+so what we did is find the mean the average return for each signal as well as a total count of each signal occuring. 
+
+I spent some time writing code to make the terminal look better by adding spaces and indenting fixing decimal places. etc
+
+
+Future Plans:
+From next day I want to continue into 
+Win rate by Final Signal -  how often each signal worked
+
+Cumulative strategy return - what would happen if you followed the signals through the historical periods
+
+Maximum drawdown - how large the worst historical decline was
+
+But I need to do more research on this first. 
+
+DAY 75 18/09/2026
+
+Today I want to implement win rate by final signal
+
+win rate by final signal  =  correct predictions * 100 / total predicitions
+
+this was the line of code i wrote:
+winrate_by_final_signal = backtest_results.groupby("Final Signal")["Prediction Result"].apply(lambda x: (x == "Correct").mean() * 100)
+
+so we are doing here is going in the back test dataframe,  going to the final signal column ( Buy Sell Hold Strong buy Strong Sell) and grouping by if it was correct or incorrect ( Prediction Result)
+
+.apply() works like a loop so in this case 
+so what is doing is applying this function lambda to every single group of data we just created
+
+lambda - is like defining a function but inside pandas so the variable x is going through the entire list and if x == correct it counts as 1 else its 0. So it then does is sums all the 1s and calcs the mean ( aka correct predicitions / total prediction) 
