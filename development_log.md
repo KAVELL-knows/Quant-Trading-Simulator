@@ -2201,3 +2201,53 @@ so we are doing here is going in the back test dataframe,  going to the final si
 so what is doing is applying this function lambda to every single group of data we just created
 
 lambda - is like defining a function but inside pandas so the variable x is going through the entire list and if x == correct it counts as 1 else its 0. So it then does is sums all the 1s and calcs the mean ( aka correct predicitions / total prediction) 
+
+DAY 76 19/09/2026
+
+Today I want the implement is Cumulative Statergy Return 
+
+Rt - is the return over a period of time so in my case that would be in a period of 20 days. 
+In this case Rt is given the position return (Signal t) * R asset 
+
+Long position 
+if the Stratergy has a Buy signal, it means you are holding the asset. Your return is the same as the market's return.
+
+If your stratgery is to SELL and your return is opposite of the market's return
+
+Flat position if Rt is 0 and there is no signal, no matter how much the asset moves up or down, the return for the day is 0.
+
+I spent like an hour on this trying to properly understand it. 
+
+So firstly we created a new columb called Stratergy Return (%)
+
+np.where - this is like a i statement so 
+The baasic stucture is np.where(condition, value_if_true, value_if_false)
+
+eg np.where(5 > 3, "Yes", "No")
+output = yes
+
+and inside the backtest_result Dataframe we are going to Final Signal Columnand if we see Buy
+then that means both buy and strong buy would return true and everything else would just be false
+
+the same goes for sell 
+
+
+
+
+backtest_results["Strategy Return (%)"] = np.where(backtest_results["Final Signal"].str.contains("BUY"),
+backtest_results["Future Return (%)"], np.where(backtest_results["Final Signal"].str.contains("SELL"),
+-backtest_results["Future Return (%)"], 0 ))
+
+
+For sell we used to negative sign to reverse the sign of the return 
+
+0 - means to HOLD
+
+
+.cumprod = means cumulative product
+
+Tomorrow I want to start the Maximum Draw down. 
+
+DAY 77 
+20/09/2026
+

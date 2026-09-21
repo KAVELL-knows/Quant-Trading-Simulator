@@ -568,3 +568,13 @@ print()
 winrate_by_final_signal = backtest_results.groupby("Final Signal")["Prediction Result"].apply(lambda x: (x == "Correct").mean() * 100)
 print(f"Win Rate by Final Signal: {winrate_by_final_signal}")
 print()
+
+backtest_results["Strategy Return (%)"] = np.where(backtest_results["Final Signal"].str.contains("BUY"),
+backtest_results["Future Return (%)"], np.where(backtest_results["Final Signal"].str.contains("SELL"),
+-backtest_results["Future Return (%)"], 0 ))
+backtest_results["Cumulative Strategy Return (%)"] = ((1 + backtest_results["Strategy Return (%)"] / 100).cumprod() - 1) * 100
+print(f"Cumulative Strategy Return: {backtest_results['Cumulative Strategy Return (%)'].iloc[-1]:.2f}%")
+
+backtest_results["Strategy Return (%)"] = (backtest_results["Cumulative Strategy Return (%)"].cummax())
+backtest_results["Drawdown (%)"] = (backtest_results["Cumulative Strategy Return (%)"]- backtest_results["Strategy Peak (%)"])
+print(f"Maximum Drawdown: {backtest_results['Drawdown (%)'].min():.2f}%")
