@@ -269,5 +269,24 @@
         ],
         "User Name": "aIDIAN",
         "Encrytion code": "RIL6DD5"
+    },
+    "AASIHSIH": {
+        "Starting Balance": 250000000000000.0,
+        "Current Cash": 249999999983898.4,
+        "Portfolio Value": 16101.6,
+        "Total Equity": 250000000000000.0,
+        "Current Holdings": {
+            "TSLA": 40.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "TSLA",
+                40.0,
+                16101.6
+            ]
+        ],
+        "User Name": "AASIHSIH",
+        "Encrytion code": "34H#C7ZQR"
     }
 }

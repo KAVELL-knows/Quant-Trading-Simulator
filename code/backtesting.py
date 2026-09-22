@@ -578,3 +578,12 @@ print(f"Cumulative Strategy Return: {backtest_results['Cumulative Strategy Retur
 backtest_results["Strategy Return (%)"] = (backtest_results["Cumulative Strategy Return (%)"].cummax())
 backtest_results["Drawdown (%)"] = (backtest_results["Cumulative Strategy Return (%)"]- backtest_results["Strategy Peak (%)"])
 print(f"Maximum Drawdown: {backtest_results['Drawdown (%)'].min():.2f}%")
+
+risk_free_rate = 0.0472
+average_strategy_return = backtest_results["Strategy Return (%)"].mean()
+strategy_volatility = backtest_results["Strategy Return (%)"].std()
+sharpe_ratio = ((average_strategy_return - risk_free_rate)// strategy_volatility)
+
+print(f"Strategy Average Return: {average_strategy_return:.2f}%")
+print(f"Strategy Volatility: {strategy_volatility:.2f}%")
+print(f"Backtest Sharpe Ratio: {sharpe_ratio:.3f}")

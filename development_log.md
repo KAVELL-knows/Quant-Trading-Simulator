@@ -2251,3 +2251,14 @@ Tomorrow I want to start the Maximum Draw down.
 DAY 77 
 20/09/2026
 
+backtest_results["Strategy Return (%)"] = (backtest_results["Cumulative Strategy Return (%)"].cummax())
+backtest_results["Drawdown (%)"] = (backtest_results["Cumulative Strategy Return (%)"]- backtest_result["Strategy Peak (%)"])
+print(f"Maximum Drawdown: {backtest_results['Drawdown (%)'].min():.2f}%")
+
+Today i implmented the maximum drawdown 
+first i calculated the stratergy return which is the the max cumulative value from the stratergy return 
+
+and drawdown is given by cumulative stratergy return - stratergy peak 
+
+DAY 78
+21/09/2026
