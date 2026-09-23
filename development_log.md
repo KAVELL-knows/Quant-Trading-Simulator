@@ -2260,5 +2260,13 @@ first i calculated the stratergy return which is the the max cumulative value fr
 
 and drawdown is given by cumulative stratergy return - stratergy peak 
 
+Tomorrow i want to do the back testing for sharpe ratio and complete backtesting
+
 DAY 78
 21/09/2026
+
+Today i implemented the sharpe ratio. 
+
+Recall that the sharpe ratio is given by Stratergy Return - Risk Free Rate / Volaility 
+
+I did hard code in the risk free rate to be 0.0472

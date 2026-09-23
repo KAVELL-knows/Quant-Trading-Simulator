@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np 
 symbol = input("Enter the stock symbol you want to analyze: ").upper()
+days_back = int(input("Enter the number of days you want to backtest: "))
 data = pd.read_csv(f"saved_data/{symbol}.csv")
 
 #Moving Average
@@ -46,7 +47,7 @@ backtest_summary = []
 backtest_indicators = []
 
 #FOR LOOP SET UP
-for i in range(252*5, len(data) - 20):
+for i in range(252*5, len(data) - days_back):
     date = data["Date"].iloc[i]
     current_price = data["Close"].iloc[i]
     moving_average20d = data["20 Day Moving Average"].iloc[i]
@@ -492,7 +493,7 @@ for i in range(252*5, len(data) - 20):
                                 "MACD": macd, "Volume Confirmation":vol_confirm, "Volume 20 Days": rvol20d, 
                                 "Bullish Signals": bullish_signals, "Bullish Directional Agreement(%)": bullish_directional_agreement,
                                 "Bearish Signals": bearish_signals, "Bearish Directional Agreement": bearish_directional_agreement})
-    future_price = data["Close"].iloc[i + 20]
+    future_price = data["Close"].iloc[i + days_back]
     future_return = (future_price / current_price) - 1
     future_return_percent = future_return * 100
     print(f"Future Return: {future_return:.2f}")
@@ -553,11 +554,11 @@ print("=" * 50)
 overall_average_return = backtest_results["Future Return (%)"].mean()
 print(f"Overall Average: {overall_average_return:.2f}%")
 if overall_average_return > 0:
-    print(f"Across 20 day periods in the history of {symbol}, there has been an  increase of {overall_average_return:.2f}%")
+    print(f"Across {days_back} day periods in the history of {symbol}, there has been an  increase of {overall_average_return:.2f}%")
 elif overall_average_return < 0:
-    print(f"Across 20 day periods in the history of {symbol}, there has been a decrease of {overall_average_return:.2f}%")
+    print(f"Across {days_back} day periods in the history of {symbol}, there has been a decrease of {overall_average_return:.2f}%")
 else:
-    print(f"Across 20 day periods in the history of {symbol}, it has remained around the same price moving only {overall_average_return:.2f}%")
+    print(f"Across {days_back} day periods in the history of {symbol}, it has remained around the same price moving only {overall_average_return:.2f}%")
 print()
 signal_comparison = (return_per_final_signal - overall_average_return)
 print(f"Signal Comparison: {signal_comparison}")
@@ -575,15 +576,14 @@ backtest_results["Future Return (%)"], np.where(backtest_results["Final Signal"]
 backtest_results["Cumulative Strategy Return (%)"] = ((1 + backtest_results["Strategy Return (%)"] / 100).cumprod() - 1) * 100
 print(f"Cumulative Strategy Return: {backtest_results['Cumulative Strategy Return (%)'].iloc[-1]:.2f}%")
 
-backtest_results["Strategy Return (%)"] = (backtest_results["Cumulative Strategy Return (%)"].cummax())
+backtest_results["Strategy Peak (%)"] = (backtest_results["Cumulative Strategy Return (%)"].cummax())
 backtest_results["Drawdown (%)"] = (backtest_results["Cumulative Strategy Return (%)"]- backtest_results["Strategy Peak (%)"])
 print(f"Maximum Drawdown: {backtest_results['Drawdown (%)'].min():.2f}%")
 
 risk_free_rate = 0.0472
 average_strategy_return = backtest_results["Strategy Return (%)"].mean()
 strategy_volatility = backtest_results["Strategy Return (%)"].std()
-sharpe_ratio = ((average_strategy_return - risk_free_rate)// strategy_volatility)
-
+sharpe_ratio = ((average_strategy_return - risk_free_rate) / strategy_volatility)
 print(f"Strategy Average Return: {average_strategy_return:.2f}%")
 print(f"Strategy Volatility: {strategy_volatility:.2f}%")
 print(f"Backtest Sharpe Ratio: {sharpe_ratio:.3f}")
