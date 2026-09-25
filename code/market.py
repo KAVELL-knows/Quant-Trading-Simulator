@@ -1,18 +1,18 @@
 #market.py
+import pandas as pd
 import random
 
-stocks = {
-    "GME".upper().strip(): 22.51,
-    "AXON".upper().strip(): 859.42,
-    "MPWR".upper().strip(): 770.01,
-    "CLS".upper().strip(): 220.42,
-    "TSLA".upper().strip(): 402.54
-}
 
-price_history = {
-    stock: [price]
-    for stock, price in stocks.items()
-}
+stocks = {}
+stock_symbols = ["GME", "AXON", "MPWR", "CLS", "TSLA", "AAPL", "ADBE", "AMD", "AMZN", "ASML", "AVGO", "AXON", "CLS", "COST", "CRM",
+                 "CVNA", "CVS", "DUO", "GOOG", "HUBS", "JPM", "LLY", "LULU", "META", "MSFT", "NVDA", "ORCL", "ORLY", "PLTR", "PNRG",
+                 "POWL", "RBLX", "SBUX", "SONY", "SPOT", "TDG", "TSLA", "V", "WING", "WIX", "WLFC"]
+
+for symbol in stock_symbols:
+    data = pd.read_csv(f"saved_data/{symbol}.csv")
+    stocks[symbol] = data["Close"].iloc[-1]
+
+price_history = {stock: [price] for stock, price in stocks.items()}
 
 def stock_price():
     print("Current stock prices:")
@@ -45,9 +45,11 @@ def predict_prices():
         print(predicted_stocks)
 
     prediction_table = []
-    predicted_day = []
     for i in range(1, rows+1):
         update_prices()
+
+        predicted_day = []
+
         for stock in predicted_stocks:
             predicted_day.append(stocks[stock])
         prediction_table.append(predicted_day)

@@ -2270,3 +2270,35 @@ Today i implemented the sharpe ratio.
 Recall that the sharpe ratio is given by Stratergy Return - Risk Free Rate / Volaility 
 
 I did hard code in the risk free rate to be 0.0472
+
+DAy 79
+22/09/2026
+
+I started off by fixing 2 bugs from yesterday that is i accdient wrote statergy return instead
+of stratergy peak.  Also i thought floor division would be the idea to use here but instead it should be / because its 2dp i wont affect it.
+
+So now my backest should be complete. I am running some test and verifying everything to make sure it works. 
+
+As of right now my back test has:
+
+1. Technical indicator calculations
+2. Multi-indicator confluence
+3. Technical scoring system
+3. Final BUY / SELL / HOLD signals
+4. X day forward returns
+5. Prediction correctness
+6. Overall prediction accuracy
+7. RSI performance
+8. Final signal performance
+9. Signal frequency
+10. Signal comparison against baseline
+11. Win rate by Final Signal
+12. Strategy returns
+13. Cumulative strategy return
+14. Maximum drawdown
+15. Sharpe
+
+Ideally would i would like to is improve the formatting and make it should that you can group the days based on what the user inputs. 
+
+Overal to make it so that th user chooses the number of days was not hard and super easy to do.
+All i had to do was introduce an input statement to get the number of days and i just had to change 20 to my new variable 
