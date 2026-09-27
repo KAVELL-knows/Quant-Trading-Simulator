@@ -298,5 +298,15 @@
         "Trade History": [],
         "User Name": "c",
         "Encrytion code": "EEE"
+    },
+    "h": {
+        "Starting Balance": 24000000000000.0,
+        "Current Cash": 24000000000000.0,
+        "Portfolio Value": 0.0,
+        "Total Equity": 0.0,
+        "Current Holdings": {},
+        "Trade History": [],
+        "User Name": "h",
+        "Encrytion code": "NONONON"
     }
 }

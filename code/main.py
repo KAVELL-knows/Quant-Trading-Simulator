@@ -15,6 +15,7 @@ from trends import data_collected
 from My_Account import my_account
 from Market_Place_and_Calculations import market_place_and_calculations
 
+
 create_account()
 while True:
     print(f"Welcome to the stock market simulator, {name}!")

@@ -7,6 +7,8 @@ from market import update_prices
 from portfolio import total_equity
 from trends import data_collected
 from market import predict_prices
+from Technical_Analysis import technical_analysis
+
 
 def buy_stock():
         print("What stock do you want to buy?")
@@ -79,6 +81,23 @@ def sell_stock():
 def short_stock():
     print("Work is to be done in this section!!! COMING SOON")
 
+
+def technical_analysis_menu():
+    print("What stock do you want to analyze?")
+    stock = input("Enter the stock symbol: ").upper().strip()
+    if stock in stocks:
+        print(f"{stock}: ${stocks[stock]:.2f}")
+    else:
+        print("404 error stock not found. Please enter a valid stock symbol.")
+        while stock not in stocks:
+            print("Select a different stock to analyze")
+            stock = input("Enter the stock symbol: ").upper().strip()
+    if stock in stocks:
+        technical_analysis_results = technical_analysis(stock)
+        print(technical_analysis_results)
+
+
+
 def market_place_and_calculations():
     while True:
         print("1. See Market Prices")
@@ -86,7 +105,8 @@ def market_place_and_calculations():
         print("3. Sell Stock")
         print("4. Short Stock")
         print("5. See next day stock prices")
-        print("6. Return to Main Menu")
+        print("6. Perform a Technical Analysis")
+        print("7. Return to Main Menu")
         option = input("Please select your preferred option:")
         if option == "1":
             stock_price()
@@ -99,6 +119,8 @@ def market_place_and_calculations():
         elif option == "5":
             predict_prices()
         elif option == "6":
+            technical_analysis_menu()
+        elif option == "7":
             return
         else:
             print("Invalid option. Please select a valid option.")

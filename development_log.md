@@ -2302,3 +2302,45 @@ Ideally would i would like to is improve the formatting and make it should that 
 
 Overal to make it so that th user chooses the number of days was not hard and super easy to do.
 All i had to do was introduce an input statement to get the number of days and i just had to change 20 to my new variable 
+
+
+DAy 80
+23/09/2026
+
+Now that the backktest is completed i want to bridge. The part of the market with fake data to the part of the market with real data. 
+
+so i have to mak changes
+
+Firstly on market.py which is where the hard coded data is, I imported pandas. 
+
+What I did was remove the hard coded stock values and listed all the stock i downloaded data for in the  list
+
+essentially what we wnat to do is read the current value so that would just be the last value in the table therefore i wrote
+
+for symbol in stock_symbols:
+    data = pd.read_csv(f"saved_data/{symbol}.csv")
+    stocks[symbol] = data["Close"].iloc[-1]
+
+This is normal code which i stole form the backtesting
+
+Day 81
+24/09/2026
+
+Today i spent alot of time trying ot figure out how to connect the technical analysis to the market.
+
+Which was tricker than what i thought. The idea is if i make technical analysis a really big function and then in the portfolio.py, i import the technical analysis function.
+
+So i firstly made the entire technical analysis a function and indetented to whole thing
+
+ALSO : i learnt that in visual studio if you highlight all the text and press tab, it idents all the 
+highlight lines.
+
+What i then did was create a new a file to test out the values before incoprating it into the BIG PORTFOLIO File because i want to make sure this actually works and does not break any code.
+
+What i did in this new file is 
+i imported the technical analysis function
+and i ran that function and printed the result.
+
+From what i have gathered it works fine but i am still thinking about how i am going to incorparate and
+bridge it in to the main project.
+
