@@ -1,10 +1,12 @@
 # Technical Analysis
 import pandas as pd
 import numpy as np
+
+
+
 def technical_analysis(symbol):
     data = pd.read_csv(f"saved_data/{symbol}.csv")
     rsi_posneg = "" 
-
     data["20 Day Moving Average"] = data["Close"].rolling(20).mean()
     data["100 Day Moving Average"] = data["Close"].rolling(100).mean()
     data["1 Year Moving Average"] = data["Close"].rolling(252).mean()
@@ -495,15 +497,17 @@ def technical_analysis(symbol):
     else:
         confluence = "Mixed Signals"
 
-    
+    print("=" * 50)
     print("SIGNAL CONFLUENCE")
+    print("=" * 50)
     print(f"Bullish Indicators: {bullish_signals}")
     print(f"Bullish Agreement: {bullish_directional_agreement:.3f}%")
     print(f"Bearish Indicators: {bearish_signals}")
     print(f"Bearish Agreement: {bearish_directional_agreement:.3f}%")
     print(f"Total Active Signals: {total_active_signals}")
     print(f"Confluence: {confluence}")
-
+    print("")
+    print("")
     return {
         "Technical Score": signal_score,
         "Final Signal": final_signal,

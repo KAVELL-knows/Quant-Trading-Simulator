@@ -2344,3 +2344,52 @@ and i ran that function and printed the result.
 From what i have gathered it works fine but i am still thinking about how i am going to incorparate and
 bridge it in to the main project.
 
+Day 82
+25/09/2026
+
+Yesterday, I did the hard part.. today all I have to do is just update the options and main manu and introduce the technical anlysis
+
+Firstly i created a 7th option in the menu for the technical anlysis
+
+then i created a function for the technical anlysis menu. That menu allows you to select the stock 
+which you want to analyze. It does the usual, if the stock inst there give an error message and repromt
+and if it is there the message continues and technical anlsys is ran 
+
+Also since I had some time left, i decided to would just add in a nice order for the confluence in the tech analysis to make it look nice and also some white spaces. 
+
+Day 83
+26/09/2026
+
+Today, I began work on the Black Scholes Model 
+
+As usual, I created a file called black_scholes
+
+so my idea is to lay out the assumptions of the black scholes and then the input and perform the calculations
+
+the reason is people like me wont fully understand what the calculations do and i want to have an explanation of the data as well as remove the memory aspect of things
+
+So i listed the assumptions
+and then prompted for the 5 inputs of the black scholes
+
+1. Current stock price (S)
+2. Strike price (K)
+3. Time to expiration (t or T)
+4. Risk-free interest rate (r)
+5. Volatility (σ)
+
+Assumptions
+
+1. European exercise style: Options can only be exercised on the exact expiration date, not before.
+2. Constant volatility and interest rates: Volatility and the risk-free rate remain steady over the life of the option.
+3. No dividends: The underlying stock does not pay out dividends during the option term (though modified versions adjust for this).
+4. Frictionless market: There are no transaction costs or taxes, and buying/selling fractional shares is allowed. 
+
+Main uses
+1. Fair value pricing: Traders use it to see if a market option is overvalued or undervalued.
+2. Implied volatility: Traders reverse-engineer the formula using current market prices to find out what volatility the market expects.
+3.  It helps calculate the Option Greeks (like Delta and Gamma) to manage hedging strategies.
+
+Tomorrow, what I plan to do is create functions so that when you click the function you are able to view these different types of information. 
+
+Day 84
+27/09/2026

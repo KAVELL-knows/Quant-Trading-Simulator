@@ -3,6 +3,7 @@ import json
 import sys
 from cipher import encrypt_password
 from cipher import new_encrypt_password
+from market import stocks 
 starting_balance = 0.0
 current_cash = 0.0
 equity = 0.0
