@@ -24,6 +24,7 @@ volatility = float(input("Enter the volatility: "))
 
 d1 = (math.log(stock_price / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
 d2 = d1 - (volatility * math.sqrt(time_to_expiration))
+print("")
 print(f"The Asset Distribution Adjuster (d1):{d1:.4f}")
 print(f"The Probability of Exercise (d2): {d2:.4f}")
 
@@ -56,3 +57,18 @@ if math.isclose(parity_left_side, parity_right_side, rel_tol=1e-9):
     print("Put-Call Parity: VERIFIED")
 else:
     print("Put-Call Parity: FAILED")
+
+#greek delta option
+print("")
+call_delta = Normal_d1
+put_delta = Normal_d1 - 1
+print(f"Call Option Delta: {call_delta:.4f}")
+print(f"Put Option Delta: {put_delta:.4f}")
+print("")
+#Gamma 
+def normal_density(x):
+    return (math.exp(-0.5 * x ** 2)) / math.sqrt(2 * math.pi)
+
+gamma = normal_density(d1) / (stock_price * volatility * math.sqrt(time_to_expiration))
+print(f"Call Gamma: {gamma:.4f}")
+print(f"Put Gamma: {gamma:.4f}")
