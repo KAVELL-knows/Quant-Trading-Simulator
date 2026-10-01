@@ -2393,3 +2393,76 @@ Tomorrow, what I plan to do is create functions so that when you click the funct
 
 Day 84
 27/09/2026
+
+Today i wrote code and created the function for the main use as well as the assumption of a black scholes
+
+i then calculated the Asset Distribution Adjust d1
+and the probability of exercise d2
+
+the formula for d1 is
+
+log(stock_price/strike_price)  + (risk_free_rate + (volatility^2) / 2) * time_to_expiration / (volatility * (time_to_expiration)^1/2)
+
+d2 = d1 - (volatility * sqrt(time_to_expiration))
+
+I learnt that if we wanted to find the log of a number ( x ) we have to use the math library
+so import math
+and then math.log(x)
+
+to do square too of x  it would be math.sqrt(x)
+
+Day 85
+28/09/2026
+
+The Black-Scholes model assumes that logarithmic stock returns are normally distributed, which means the actual stock prices themselves follow a lognormal distribution.
+
+so d1 and d2 are normally distributed 
+
+recall the Cumulative Distribution Function of the Standard Normal Distribution 
+
+
+1/2(1 + erf(x/root2))
+this formula is derived from 
+
+integral bewteen x and - infiniti  (1/root 2pi) * e^(-t^2/2) dt
+
+
+from the math library, we can use math.erf()
+this calculated the error function ( Guass Error )
+the math.erf function is perfectly symmetrical around 0 and ranges from -1 to 1 
+
+Now that we have made the d1 and d2 normally distributed, we can do 
+set up the Call and Put pricing 
+
+Call Option Pricing = 	Value of buying the stock minus the cost of the strike
+
+Formula
+        C = SN(d1) - K(e^-rT)N(d2)
+
+Put Option Pricing =  Value of securing the strike minus the cost of the stock
+
+Formula 
+        P = K(e^-rT) N(-d2) SN(-d1)
+
+S - Current stock price
+K - Strike price
+r - Risk-free interest rate
+T - Time to expiration
+
+i coded in these 2 formulae and fromatted everything to 4 DP
+
+
+DAY 86 
+29/09/2026
+
+Today I implemented the Put-Call Parity Verification 
+
+parity left side = call option pricing - put option pricing
+parity right side = stock_price - (strike_price * e^(-risk free rate * time to expiration))
+
+math.isclose
+checks if the values are close. True if it close and false if it not close 
+
+rel_tol=1e-9
+It specifies how much relative difference Python allows when comparing the two values
+A smaller tolerance means a stricter comparison

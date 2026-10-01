@@ -45,3 +45,14 @@ print(f"Theoretical Call Option Price: ${call_option_pricing:.4f}")
 #P = K(e^-rT) N(-d2) SN(-d1)
 put_option_pricing = (strike_price * math.exp(-risk_free_rate * time_to_expiration)) * Normal_negd2 - (stock_price * Normal_negd1)
 print(f"Theoretical Put Option Price: ${put_option_pricing:.4f}")
+
+# Put-Call Parity
+parity_left_side = call_option_pricing - put_option_pricing
+parity_right_side = stock_price - (strike_price * math.exp(-risk_free_rate * time_to_expiration))
+print("Put-Call Parity Verification")
+print(f"Left Side: {parity_left_side:.4f}")
+print(f"Right Side: {parity_right_side:.4f}")
+if math.isclose(parity_left_side, parity_right_side, rel_tol=1e-9):
+    print("Put-Call Parity: VERIFIED")
+else:
+    print("Put-Call Parity: FAILED")
