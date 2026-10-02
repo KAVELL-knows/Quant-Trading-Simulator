@@ -72,3 +72,5 @@ def normal_density(x):
 gamma = normal_density(d1) / (stock_price * volatility * math.sqrt(time_to_expiration))
 print(f"Call Gamma: {gamma:.4f}")
 print(f"Put Gamma: {gamma:.4f}")
+
+#
