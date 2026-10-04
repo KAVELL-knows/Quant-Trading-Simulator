@@ -118,3 +118,25 @@ print(f"{'Theta':<17}{call_theta:>17.4f}{put_theta:>17.4f}")
 print(f"{'Vega (1%)':<17}{call_vega_1_percent:>17.4f}{put_vega_1_percent:>17.4f}")
 print(f"{'Rho (1%)':<17}{call_rho_1_percent:>17.4f}{put_rho_1_percent:>17.4f}")
 print("-" * 51)
+
+
+#Option Price Sensitivity Simulator
+print("=" * 51)
+print("STOCK PRICE SENSITIVITY SIMULATOR".center(51))
+print("=" * 51)
+print("")
+starting_stock_price = float(input("Enter the starting stock price for sensitivity analysis: "))
+ending_stock_price = float(input("Enter the ending stock price for sensitivity analysis: "))
+price_increment = float(input("Enter the price increment for sensitivity analysis: "))
+
+for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price_increment)):
+    simulated_d1 = (math.log(i / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
+    simulated_d2 = simulated_d1 - (volatility * math.sqrt(time_to_expiration))
+    simulated_Normal_d1 = normal_distribution(simulated_d1)
+    simulated_Normal_negd1 = normal_distribution(-simulated_d1)
+    simulated_Normal_d2 = normal_distribution(simulated_d2)
+    simulated_Normal_negd2 = normal_distribution(-simulated_d2)
+
+    simulated_call_price = (i * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
+    simulated_put_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (i * simulated_Normal_negd1)
+    print(f"Stock Price: ${i:.2f} | Call Option Price: ${simulated_call_price:.4f} | Put Option Price: ${simulated_put_price:.4f}")
