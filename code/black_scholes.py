@@ -73,4 +73,48 @@ gamma = normal_density(d1) / (stock_price * volatility * math.sqrt(time_to_expir
 print(f"Call Gamma: {gamma:.4f}")
 print(f"Put Gamma: {gamma:.4f}")
 
-#
+#Call Theta
+
+call_theta = (- (stock_price * normal_density(d1) * volatility) / (2 * math.sqrt(time_to_expiration))) - (risk_free_rate * strike_price * math.exp(-risk_free_rate * time_to_expiration) * Normal_d2)
+put_theta = (- (stock_price * normal_density(d1) * volatility) / (2 * math.sqrt(time_to_expiration))) + (risk_free_rate * strike_price * math.exp(-risk_free_rate * time_to_expiration) * Normal_negd2)
+print(f"Call Theta: {call_theta:.4f}")
+print(f"Put Theta: {put_theta:.4f}")
+call_daily_theta = call_theta / 365
+put_daily_theta = put_theta / 365
+print(f"Call Daily Theta: {call_daily_theta:.4f}")
+print(f"Put Daily Theta: {put_daily_theta:.4f}")
+
+#Vega
+vega = stock_price * normal_density(d1) * math.sqrt(time_to_expiration)
+print(f"Call Vega: {vega:.4f}")
+print(f"Put Vega: {vega:.4f}")
+call_vega_1_percent = vega / 100
+put_vega_1_percent = vega / 100
+print(f"Call Vega for 1% change in volatility: {call_vega_1_percent:.4f}")
+print(f"Put Vega for 1% change in volatility: {put_vega_1_percent:.4f}")
+
+#Rho
+call_rho = strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * Normal_d2
+put_rho = -strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * Normal_negd2
+print(f"Call Rho: {call_rho:.4f}")
+print(f"Put Rho: {put_rho:.4f}")
+
+call_rho_1_percent = call_rho / 100
+put_rho_1_percent = put_rho / 100
+print(f"Call Rho for 1% change in interest rate: {call_rho_1_percent:.4f}")
+print(f"Put Rho for 1% change in interest rate: {put_rho_1_percent:.4f}")   
+
+
+# Greeks Summary
+print("")
+print("=" * 51)
+print("BLACK-SCHOLES GREEKS SUMMARY".center(51))
+print("=" * 51)
+print(f"{'Greek':<17}{'Call Option':>17}{'Put Option':>17}")
+print("-" * 51)
+print(f"{'Delta':<17}{call_delta:>17.4f}{put_delta:>17.4f}")
+print(f"{'Gamma':<17}{gamma:>17.4f}{gamma:>17.4f}")
+print(f"{'Theta':<17}{call_theta:>17.4f}{put_theta:>17.4f}")
+print(f"{'Vega (1%)':<17}{call_vega_1_percent:>17.4f}{put_vega_1_percent:>17.4f}")
+print(f"{'Rho (1%)':<17}{call_rho_1_percent:>17.4f}{put_rho_1_percent:>17.4f}")
+print("-" * 51)
