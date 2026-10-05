@@ -139,4 +139,16 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
 
     simulated_call_price = (i * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
     simulated_put_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (i * simulated_Normal_negd1)
-    print(f"Stock Price: ${i:.2f} | Call Option Price: ${simulated_call_price:.4f} | Put Option Price: ${simulated_put_price:.4f}")
+    simulated_call_delta = simulated_Normal_d1
+    simulated_put_delta = simulated_Normal_d1 - 1
+    simulated_gamma = normal_density(simulated_d1) / (i * volatility * math.sqrt(time_to_expiration))
+
+    simulated_vega = i * normal_density(simulated_d1) * math.sqrt(time_to_expiration)
+
+    simulated_call_theta = (- (i * normal_density(simulated_d1) * volatility) / (2 * math.sqrt(time_to_expiration))) - (risk_free_rate * strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
+    simulated_put_theta = (- (i * normal_density(simulated_d1) * volatility) / (2 * math.sqrt(time_to_expiration))) + (risk_free_rate * strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2)
+
+    simulated_call_rho = strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2
+    simulated_put_rho = -strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2
+
+    print(f"Stock Price: ${i:.2f} | Call Price: ${simulated_call_price:.4f} | Put Price: ${simulated_put_price:.4f} | Call Delta: {simulated_call_delta:.4f} | Put Delta: {simulated_put_delta:.4f} | Gamma: {simulated_gamma:.4f} | Vega: {simulated_vega:.4f} | Call Theta: {simulated_call_theta:.4f} | Put Theta: {simulated_put_theta:.4f} | Call Rho: {simulated_call_rho:.4f} | Put Rho: {simulated_put_rho:.4f}")
