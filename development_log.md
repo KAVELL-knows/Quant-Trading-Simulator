@@ -2466,3 +2466,122 @@ checks if the values are close. True if it close and false if it not close
 rel_tol=1e-9
 It specifies how much relative difference Python allows when comparing the two values
 A smaller tolerance means a stricter comparison
+
+DAY 87 
+30/09/2026
+
+Delta measures how sensitive an option's price is to a change in the underlying stock price.
+
+For example, if a Call Option has a Delta of 0.60, a $1 increase in the stock price corresponds to an approximately $0.60 increase in the option price, assuming other inputs remain unchanged.
+
+Call option delta = N(d1)
+Put Option Delta = N(d1) - 1
+
+Gamma (Γ): How quickly Delta changes as the stock price changes.
+
+Gamma = N'(d1)/S * small sigma * T
+
+
+N'(d1)  - Standard normal probability density function evaluated at d1
+S  -  Current stock price
+σ  -  Volatility
+T  -  Time to expiration
+
+DAY 88 
+01/10/2026
+Today, I completed the Greek 
+Theta (Θ): How an option's value changes as time passes.
+
+Call Theta = (SN'(d1)r/Root T) - rK(e^(-rT))N(d2)
+Put Theta = (SN'(d1)r/Root T) + rK(e^(-rT))N(-d2)
+
+K - Strike price 
+r - risk free interest rate
+
+
+Vega (ν): Sensitivity to changes in volatility.
+
+Vega = S * rootT * N'(d1)
+In this case the put vega and the call vega are the same 
+
+Rho (ρ): Sensitivity to changes in the risk-free interest rate.
+
+Call rho = KTe^(-rT)N(d2)
+Put rho = -KTe^(-rT)N(-d2)
+
+DAY 89
+02/10/2026
+
+I started off the day by adding in the daily Theta which would just be the normal Yearly theta i have divided by the 360 
+
+I also added in the Call and Put Rho/Vega for 1% change in interest rate
+
+I began to work on the summary feature 
+
+th4 table i made consisted of:
+greek symbol    call option   option 
+
+print(f"{'Delta':<17}{call_delta:>17.4f}{put_delta:>17.4f}")
+
+reverses a spacing of 17 characters for eacg column
+
+to seprate each column i did 51 * -
+
+DAY 90
+03/10/2026
+
+Here is a development plan for the black scholes
+
+1. Black-Scholes price
+2. Greeks
+3. Option Price Sensitivity Simulator
+4. Volatility Sensitivity
+5. Time Decay Simulator
+6. Visualisation
+7. Implied Volatility Calculator
+
+Today, I want to begin to do the Option Price Sensitivity Simulator
+
+So essentially what is going on here is that you input 3 values
+the starting price, end price and the increment
+
+from here i set up a for loop that goes through the increment and calculated the d1 d2 as well as call and put option pricing. In terms of the code it would just be the same formula as before just changing the variable name and also using i instead of stock_price variable 
+
+
+DAY 91
+04/10/2026
+
+I completed the Option Price Sensitivity Simulator
+
+What I did was copy over the same code forthe greek but i altered the variables and added the word simulator
+
+in the end i tried to print a table format so for example
+
+print(f"Stock Price: ${i:.2f} | Call Price: ${simulated_call_price:.4f} | Put Price: ${simulated_put_price:.4f} | Call Delta: {simulated_call_delta:.4f} | Put Delta: {simulated_put_delta:.4f}")
+
+I then tested out the data and it worked fine. 
+
+Tomorrow what I wnat to do is volatiltiy sensivity 
+
+DAY 91
+05/10/2026
+
+Today, I wnat to beging to do the 
+
+Volatility Sensitivity Simulator
+So what I did was firstly prompt starting volatiltiy, ending volality, volatility increment 
+
+I then set up the for loop 
+
+DAY 92
+06/10/2026
+
+Today, I set up the loop 
+What i did is essentially the same calc i previously did but i altered the voltiltiy 
+
+I wrote code for simulated_volatility simulated d1, simulated d2, simulated Normal values , simulated Call and Put prices
+
+Tomorrow I will do the greek part for volatiltiy 
+
+DAY 93
+07/10/2026

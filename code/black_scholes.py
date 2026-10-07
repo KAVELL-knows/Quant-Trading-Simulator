@@ -152,3 +152,30 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
     simulated_put_rho = -strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2
 
     print(f"Stock Price: ${i:.2f} | Call Price: ${simulated_call_price:.4f} | Put Price: ${simulated_put_price:.4f} | Call Delta: {simulated_call_delta:.4f} | Put Delta: {simulated_put_delta:.4f} | Gamma: {simulated_gamma:.4f} | Vega: {simulated_vega:.4f} | Call Theta: {simulated_call_theta:.4f} | Put Theta: {simulated_put_theta:.4f} | Call Rho: {simulated_call_rho:.4f} | Put Rho: {simulated_put_rho:.4f}")
+
+
+# Volatility Sensitivity Simulator
+print("=" * 51)
+print("VOLATILITY SENSITIVITY SIMULATOR".center(51))
+print("=" * 51)
+print("")
+
+starting_volatility = float(input("Enter the starting volatility for sensitivity analysis: "))
+ending_volatility = float(input("Enter the ending volatility for sensitivity analysis: "))
+volatility_increment = float(input("Enter the volatility increment for sensitivity analysis: "))
+
+for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1, int(volatility_increment * 100)):
+    simulated_volatility = i / 100
+    simulated_d1 = (math.log(stock_price / strike_price) + (risk_free_rate + (simulated_volatility ** 2) / 2) * time_to_expiration) / (simulated_volatility * math.sqrt(time_to_expiration))
+    simulated_d2 = simulated_d1 - (simulated_volatility * math.sqrt(time_to_expiration))
+
+    simulated_Normal_d1 = normal_distribution(simulated_d1)
+    simulated_Normal_negd1 = normal_distribution(-simulated_d1)
+    simulated_Normal_d2 = normal_distribution(simulated_d2)
+    simulated_Normal_negd2 = normal_distribution(-simulated_d2)
+
+    simulated_call_price = (stock_price * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
+    simulated_put_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
+
+    simulated_call_delta = simulated_Normal_d1
+    simulated_put_delta = simulated_Normal_d1 - 1
