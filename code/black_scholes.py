@@ -179,3 +179,32 @@ for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1,
 
     simulated_call_delta = simulated_Normal_d1
     simulated_put_delta = simulated_Normal_d1 - 1
+
+    simulated_gamma = normal_density(simulated_d1) / (stock_price * simulated_volatility * math.sqrt(time_to_expiration))
+    simulated_vega = stock_price * normal_density(simulated_d1) * math.sqrt(time_to_expiration)
+
+    simulated_vega_1_percent = simulated_vega / 100
+    
+    simulated_call_theta = (-(stock_price * normal_density(simulated_d1) * simulated_volatility) / (2 * math.sqrt(time_to_expiration))) - (risk_free_rate * strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
+    simulated_put_theta = (-(stock_price * normal_density(simulated_d1) * simulated_volatility) / (2 * math.sqrt(time_to_expiration))) + (risk_free_rate * strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2)
+
+    simulated_call_rho = strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2
+    simulated_put_rho = -strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2
+
+    simulated_call_rho_1_percent = simulated_call_rho / 100
+    simulated_put_rho_1_percent = simulated_put_rho / 100
+
+    print("")
+    print("-" * 51)
+    print(f"{'Volatility:':<15} {simulated_volatility:>8.2%}")
+    print("-" * 51)
+    print(f"{'Call Price:':<15} ${simulated_call_price:>10.4f} | {'Put Price:':<12} ${simulated_put_price:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Delta:':<15} {simulated_call_delta:>10.4f} | {'Put Delta:':<12} {simulated_put_delta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Gamma:':<15} {simulated_gamma:>10.4f} | {'Vega:':<12} {simulated_vega:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Theta:':<15} {simulated_call_theta:>10.4f} | {'Put Theta:':<12} {simulated_put_theta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
+    print("-" * 51)

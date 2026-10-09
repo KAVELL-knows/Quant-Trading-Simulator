@@ -308,5 +308,24 @@
         "Trade History": [],
         "User Name": "h",
         "Encrytion code": "NONONON"
+    },
+    "ethan": {
+        "Starting Balance": 265000000000000.0,
+        "Current Cash": 264999999812508.66,
+        "Portfolio Value": 187491.3552703857,
+        "Total Equity": 265000000000000.0,
+        "Current Holdings": {
+            "WLFC": 3444.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "WLFC",
+                3444.0,
+                187491.3552703857
+            ]
+        ],
+        "User Name": "ethan",
+        "Encrytion code": "8TURS"
     }
 }
