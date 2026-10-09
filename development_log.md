@@ -2585,3 +2585,29 @@ Tomorrow I will do the greek part for volatiltiy
 
 DAY 93
 07/10/2026
+
+What I did was re did my old code for the greek but changed the variable names
+d1 - simulated_d1
+volatility - simulated_volatility
+Normal_d2 - simulated_Normal_d2
+Normal_negd2 - simulated_Normal_negd2
+
+It did this for rho, theta, gamma, delta 
+finally, i printed th summary table
+
+print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
+    
+    
+and I separated each column with print("-" * 51)
+
+DAY 94
+08/10/2026
+
+Today, what I want to do is the Time-to-Expiration Sensitivity Simulator. This is very similar to Volailtiy which simulator and so it becomes a matter of copying code and changing the variables.
+So ideally, i want to try to copy over the volatilty code and complete the entire section today 
+
+I understand how the code works and I was able to change all the simulated volality back to regular volatility 
+and make the expiration time into simulated time
+
+I also had to prompt for the starting time, increment and ending time.
+

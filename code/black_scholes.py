@@ -151,7 +151,20 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
     simulated_call_rho = strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2
     simulated_put_rho = -strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2
 
-    print(f"Stock Price: ${i:.2f} | Call Price: ${simulated_call_price:.4f} | Put Price: ${simulated_put_price:.4f} | Call Delta: {simulated_call_delta:.4f} | Put Delta: {simulated_put_delta:.4f} | Gamma: {simulated_gamma:.4f} | Vega: {simulated_vega:.4f} | Call Theta: {simulated_call_theta:.4f} | Put Theta: {simulated_put_theta:.4f} | Call Rho: {simulated_call_rho:.4f} | Put Rho: {simulated_put_rho:.4f}")
+    print("")
+    print("-" * 51)
+    print(f"{'Stock Price:':<15} ${i:>10.2f}")
+    print("-" * 51)
+    print(f"{'Call Price:':<15} ${simulated_call_price:>10.4f} | {'Put Price:':<12} ${simulated_put_price:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Delta:':<15} {simulated_call_delta:>10.4f} | {'Put Delta:':<12} {simulated_put_delta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Gamma:':<15} {simulated_gamma:>10.4f} | {'Vega:':<12} {simulated_vega:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Theta:':<15} {simulated_call_theta:>10.4f} | {'Put Theta:':<12} {simulated_put_theta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
+    print("-" * 51)
 
 
 # Volatility Sensitivity Simulator
@@ -197,6 +210,64 @@ for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1,
     print("")
     print("-" * 51)
     print(f"{'Volatility:':<15} {simulated_volatility:>8.2%}")
+    print("-" * 51)
+    print(f"{'Call Price:':<15} ${simulated_call_price:>10.4f} | {'Put Price:':<12} ${simulated_put_price:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Delta:':<15} {simulated_call_delta:>10.4f} | {'Put Delta:':<12} {simulated_put_delta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Gamma:':<15} {simulated_gamma:>10.4f} | {'Vega:':<12} {simulated_vega:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Theta:':<15} {simulated_call_theta:>10.4f} | {'Put Theta:':<12} {simulated_put_theta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
+    print("-" * 51)
+
+
+
+# Time-to-Expiration Sensitivity Simulator
+print("=" * 51)
+print("TIME-TO-EXPIRATION SENSITIVITY SIMULATOR".center(51))
+print("=" * 51)
+print("")
+
+starting_time = float(input("Enter the starting time to expiration in years: "))
+ending_time = float(input("Enter the ending time to expiration in years: "))
+time_increment = float(input("Enter the time increment in years: "))
+
+for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_increment * 100)):
+    simulated_time = i / 100
+
+    simulated_d1 = (math.log(stock_price / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * simulated_time) / (volatility * math.sqrt(simulated_time))
+    simulated_d2 = simulated_d1 - (volatility * math.sqrt(simulated_time))
+
+    simulated_Normal_d1 = normal_distribution(simulated_d1)
+    simulated_Normal_negd1 = normal_distribution(-simulated_d1)
+    simulated_Normal_d2 = normal_distribution(simulated_d2)
+    simulated_Normal_negd2 = normal_distribution(-simulated_d2)
+
+    simulated_call_price = (stock_price * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_d2)
+    simulated_put_price = (strike_price * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
+
+    simulated_call_delta = simulated_Normal_d1
+    simulated_put_delta = simulated_Normal_d1 - 1
+
+    simulated_gamma = normal_density(simulated_d1) / (stock_price * volatility * math.sqrt(simulated_time))
+    simulated_vega = stock_price * normal_density(simulated_d1) * math.sqrt(simulated_time)
+
+    simulated_vega_1_percent = simulated_vega / 100
+
+    simulated_call_theta = (-(stock_price * normal_density(simulated_d1) * volatility) / (2 * math.sqrt(simulated_time))) - (risk_free_rate * strike_price * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_d2)
+    simulated_put_theta = (-(stock_price * normal_density(simulated_d1) * volatility) / (2 * math.sqrt(simulated_time))) + (risk_free_rate * strike_price * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_negd2)
+
+    simulated_call_rho = strike_price * simulated_time * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_d2
+    simulated_put_rho = -strike_price * simulated_time * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_negd2
+
+    simulated_call_rho_1_percent = simulated_call_rho / 100
+    simulated_put_rho_1_percent = simulated_put_rho / 100
+
+    print("")
+    print("-" * 51)
+    print(f"{'Time to Expiration:':<22} {simulated_time:>8.2f} years")
     print("-" * 51)
     print(f"{'Call Price:':<15} ${simulated_call_price:>10.4f} | {'Put Price:':<12} ${simulated_put_price:>10.4f}")
     print("-" * 51)
