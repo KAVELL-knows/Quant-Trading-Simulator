@@ -2611,3 +2611,21 @@ and make the expiration time into simulated time
 
 I also had to prompt for the starting time, increment and ending time.
 
+
+DAY 95
+09/10/2026
+Today, I want to implement and complete the Risk-Free Rate Sensitivity Simulator
+
+This should be fairly straight forward as its just as the others have been so far a matter of copying over the code and adjusting the variables 
+
+What i did was a copied over the same code form the time expiration and adjusted the variables so
+
+starting_time - starting_rate
+ending_time - ending_rate
+time_increment - rate_increment
+
+risk_free_rate - simulated_rate
+simulated_time  - time_to_expiration
+
+DAY 96
+10/10/2026
