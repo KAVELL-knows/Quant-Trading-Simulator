@@ -327,5 +327,24 @@
         ],
         "User Name": "ethan",
         "Encrytion code": "8TURS"
+    },
+    "Charles": {
+        "Starting Balance": 25000000000.0,
+        "Current Cash": 24999992180.920197,
+        "Portfolio Value": 7819.079803466797,
+        "Total Equity": 25000000000.0,
+        "Current Holdings": {
+            "TSLA": 23.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "TSLA",
+                23.0,
+                7819.079803466797
+            ]
+        ],
+        "User Name": "Charles",
+        "Encrytion code": "YE42O"
     }
 }
