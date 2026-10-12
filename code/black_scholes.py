@@ -1,5 +1,6 @@
 #Blackscholes Model 
 import math
+import matplotlib.pyplot as plt
 def black_scholes_assumptions():
     print("Below are the Assumptions of the Black Scholes listed")
     print("1. European exercise style: Options can only be exercised on the exact expiration date, not before.")
@@ -129,6 +130,12 @@ starting_stock_price = float(input("Enter the starting stock price for sensitivi
 ending_stock_price = float(input("Enter the ending stock price for sensitivity analysis: "))
 price_increment = float(input("Enter the price increment for sensitivity analysis: "))
 
+
+stock_prices = []
+call_prices = []
+put_prices = []
+
+
 for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price_increment)):
     simulated_d1 = (math.log(i / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
     simulated_d2 = simulated_d1 - (volatility * math.sqrt(time_to_expiration))
@@ -139,6 +146,12 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
 
     simulated_call_price = (i * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
     simulated_put_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (i * simulated_Normal_negd1)
+
+    stock_prices.append(i)
+    call_prices.append(simulated_call_price)
+    put_prices.append(simulated_put_price)
+
+
     simulated_call_delta = simulated_Normal_d1
     simulated_put_delta = simulated_Normal_d1 - 1
     simulated_gamma = normal_density(simulated_d1) / (i * volatility * math.sqrt(time_to_expiration))
@@ -166,6 +179,20 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
     print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
     print("-" * 51)
 
+#Stock Price Sensitivity Graph
+plt.figure(figsize=(10, 6))
+
+plt.plot(stock_prices, call_prices, label="Call Option Price")
+plt.plot(stock_prices, put_prices, label="Put Option Price")
+
+plt.title("Option Prices vs Stock Price")
+plt.xlabel("Stock Price($)")
+plt.ylabel("Option Price($)")
+
+plt.legend()
+plt.grid(True)
+
+plt.show()
 
 # Volatility Sensitivity Simulator
 print("=" * 51)
@@ -324,6 +351,62 @@ for i in range(int(starting_rate * 100), int(ending_rate * 100) + 1, int(rate_in
     print("")
     print("-" * 51)
     print(f"{'Risk-Free Rate:':<22} {simulated_rate:>8.2%}")
+    print("-" * 51)
+    print(f"{'Call Price:':<15} ${simulated_call_price:>10.4f} | {'Put Price:':<12} ${simulated_put_price:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Delta:':<15} {simulated_call_delta:>10.4f} | {'Put Delta:':<12} {simulated_put_delta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Gamma:':<15} {simulated_gamma:>10.4f} | {'Vega:':<12} {simulated_vega:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Theta:':<15} {simulated_call_theta:>10.4f} | {'Put Theta:':<12} {simulated_put_theta:>10.4f}")
+    print("-" * 51)
+    print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
+    print("-" * 51)
+
+#Strike Price Sensitivity Simulator
+print("=" * 51)
+print("STRIKE PRICE SENSITIVITY SIMULATOR".center(51))
+print("=" * 51)
+print("")
+
+starting_strike = float(input("Enter the starting strike price: "))
+ending_strike = float(input("Enter the ending strike price: "))
+strike_increment = float(input("Enter the strike price increment: "))
+
+for i in range(int(starting_strike * 100), int(ending_strike * 100) + 1, int(strike_increment * 100)):
+    simulated_strike = i / 100
+
+    simulated_d1 = (math.log(stock_price / simulated_strike) + (risk_free_rate + (volatility ** 2) / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
+    simulated_d2 = simulated_d1 - (volatility * math.sqrt(time_to_expiration))
+
+    simulated_Normal_d1 = normal_distribution(simulated_d1)
+    simulated_Normal_negd1 = normal_distribution(-simulated_d1)
+    simulated_Normal_d2 = normal_distribution(simulated_d2)
+    simulated_Normal_negd2 = normal_distribution(-simulated_d2)
+
+    simulated_call_price = (stock_price * simulated_Normal_d1) - (simulated_strike * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
+    simulated_put_price = (simulated_strike * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
+
+    simulated_call_delta = simulated_Normal_d1
+    simulated_put_delta = simulated_Normal_d1 - 1
+
+    simulated_gamma = normal_density(simulated_d1) / (stock_price * volatility * math.sqrt(time_to_expiration))
+    simulated_vega = stock_price * normal_density(simulated_d1) * math.sqrt(time_to_expiration)
+
+    simulated_vega_1_percent = simulated_vega / 100
+
+    simulated_call_theta = (-(stock_price * normal_density(simulated_d1) * volatility) / (2 * math.sqrt(time_to_expiration))) - (risk_free_rate * simulated_strike * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
+    simulated_put_theta = (-(stock_price * normal_density(simulated_d1) * volatility) / (2 * math.sqrt(time_to_expiration))) + (risk_free_rate * simulated_strike * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2)
+
+    simulated_call_rho = simulated_strike * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2
+    simulated_put_rho = -simulated_strike * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2
+
+    simulated_call_rho_1_percent = simulated_call_rho / 100
+    simulated_put_rho_1_percent = simulated_put_rho / 100
+
+    print("")
+    print("-" * 51)
+    print(f"{'Strike Price:':<22} ${simulated_strike:>8.2f}")
     print("-" * 51)
     print(f"{'Call Price:':<15} ${simulated_call_price:>10.4f} | {'Put Price:':<12} ${simulated_put_price:>10.4f}")
     print("-" * 51)
