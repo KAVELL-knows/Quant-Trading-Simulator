@@ -135,6 +135,14 @@ stock_prices = []
 call_prices = []
 put_prices = []
 
+call_deltas = []
+put_deltas = []
+gammas = []
+vegas = []
+call_thetas = []
+put_thetas = []
+call_rhos = []
+put_rhos = []
 
 for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price_increment)):
     simulated_d1 = (math.log(i / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
@@ -164,6 +172,16 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
     simulated_call_rho = strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2
     simulated_put_rho = -strike_price * time_to_expiration * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2
 
+    call_deltas.append(simulated_call_delta)
+    put_deltas.append(simulated_put_delta)
+    gammas.append(simulated_gamma)
+    vegas.append(simulated_vega)
+    call_thetas.append(simulated_call_theta)
+    put_thetas.append(simulated_put_theta)
+    call_rhos.append(simulated_call_rho)
+    put_rhos.append(simulated_put_rho)
+
+
     print("")
     print("-" * 51)
     print(f"{'Stock Price:':<15} ${i:>10.2f}")
@@ -180,19 +198,72 @@ for i in range(int(starting_stock_price), int(ending_stock_price) + 1, int(price
     print("-" * 51)
 
 #Stock Price Sensitivity Graph
-plt.figure(figsize=(10, 6))
+fig, axes = plt.subplots(3, 2, figsize=(14, 12))
 
-plt.plot(stock_prices, call_prices, label="Call Option Price")
-plt.plot(stock_prices, put_prices, label="Put Option Price")
+#Graph1 Option Prices
+axes[0, 0].plot(stock_prices, call_prices, label="Call Price", color = "blue")
+axes[0, 0].plot(stock_prices, put_prices, label="Put Price", color = "green")
 
-plt.title("Option Prices vs Stock Price")
-plt.xlabel("Stock Price($)")
-plt.ylabel("Option Price($)")
+axes[0, 0].set_title("Option Prices vs Stock Price")
+axes[0, 0].set_xlabel("Stock Price ($)")
+axes[0, 0].set_ylabel("Option Price ($)")
 
-plt.legend()
-plt.grid(True)
+axes[0, 0].legend()
+axes[0, 0].grid(True)
 
+#Graph2 Delta
+axes[0, 1].plot(stock_prices, call_deltas, label="Call Delta", color = "blue")
+axes[0, 1].plot(stock_prices, put_deltas, label="Put Delta", color = "red")
+axes[0, 1].set_title("Delta vs Stock Price")
+axes[0, 1].set_xlabel("Stock Price ($)")
+axes[0, 1].set_ylabel("Delta")
+axes[0, 1].legend()
+axes[0, 1].grid(True)
+
+#Graph3 Gamma
+plasma_color = plt.cm.plasma(0.5) 
+axes[1, 0].plot(stock_prices, gammas, label="Gamma", color=plasma_color, linewidth=2.5)
+axes[1, 0].set_title("Gamma vs Stock Price")
+axes[1, 0].set_xlabel("Stock Price ($)")
+axes[1, 0].set_ylabel("Gamma")
+axes[1, 0].legend()
+axes[1, 0].grid(True)
+
+#Graph4 Vega
+plasma_purple = plt.cm.plasma(0.1)
+axes[1, 1].plot(stock_prices, vegas, label="Vega", color=plasma_purple, linewidth=2)
+axes[1, 1].set_title("Vega vs Stock Price")
+axes[1, 1].set_xlabel("Stock Price ($)")
+axes[1, 1].set_ylabel("Vega")
+axes[1, 1].legend()
+axes[1, 1].grid(True)
+
+#Graph5 Theta
+vibrant_pink = plt.cm.plasma(0.55)
+axes[2, 0].plot(stock_prices, call_thetas, label="Call Theta", color=vibrant_pink )
+axes[2, 0].plot(stock_prices, put_thetas, label="Put Theta", color = "purple")
+axes[2, 0].set_title("Theta vs Stock Price")
+axes[2, 0].set_xlabel("Stock Price ($)")
+axes[2, 0].set_ylabel("Theta")
+axes[2, 0].legend()
+axes[2, 0].grid(True)
+
+#Graph6 Rho
+axes[2, 1].plot(stock_prices, call_rhos, label="Call Rho", color = "cyan")
+axes[2, 1].plot(stock_prices, put_rhos, label="Put Rho", color = "magenta")
+axes[2, 1].set_title("Rho vs Stock Price")
+axes[2, 1].set_xlabel("Stock Price ($)")
+axes[2, 1].set_ylabel("Rho")
+axes[2, 1].legend()
+axes[2, 1].grid(True)
+
+plt.tight_layout(pad=3.0, h_pad=4.0, w_pad=3.0)
 plt.show()
+
+
+
+
+
 
 # Volatility Sensitivity Simulator
 print("=" * 51)
@@ -203,6 +274,12 @@ print("")
 starting_volatility = float(input("Enter the starting volatility for sensitivity analysis: "))
 ending_volatility = float(input("Enter the ending volatility for sensitivity analysis: "))
 volatility_increment = float(input("Enter the volatility increment for sensitivity analysis: "))
+
+
+volatilities = []
+call_prices_volatility = []
+put_prices_volatility = []
+
 
 for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1, int(volatility_increment * 100)):
     simulated_volatility = i / 100
@@ -216,6 +293,10 @@ for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1,
 
     simulated_call_price = (stock_price * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
     simulated_put_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
+
+    volatilities.append(simulated_volatility)
+    call_prices_volatility.append(simulated_call_price)
+    put_prices_volatility.append(simulated_put_price)
 
     simulated_call_delta = simulated_Normal_d1
     simulated_put_delta = simulated_Normal_d1 - 1
@@ -250,6 +331,21 @@ for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1,
     print("-" * 51)
 
 
+# Volatility Sensitivity Graph
+plt.figure(figsize=(10, 6))
+
+plt.plot(volatilities, call_prices_volatility, label="Call Option Price")
+plt.plot(volatilities, put_prices_volatility, label="Put Option Price")
+
+plt.title("Option Prices vs Volatility")
+plt.xlabel("Volatility")
+plt.ylabel("Option Price ($)")
+
+plt.legend()
+plt.grid(True)
+
+plt.show()
+
 
 # Time-to-Expiration Sensitivity Simulator
 print("=" * 51)
@@ -260,6 +356,10 @@ print("")
 starting_time = float(input("Enter the starting time to expiration in years: "))
 ending_time = float(input("Enter the ending time to expiration in years: "))
 time_increment = float(input("Enter the time increment in years: "))
+
+times = []
+call_price_time = []
+put_price_time = []
 
 for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_increment * 100)):
     simulated_time = i / 100
@@ -274,6 +374,10 @@ for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_in
 
     simulated_call_price = (stock_price * simulated_Normal_d1) - (strike_price * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_d2)
     simulated_put_price = (strike_price * math.exp(-risk_free_rate * simulated_time) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
+
+    times.append(simulated_time)
+    call_price_time.append(simulated_call_price)
+    put_price_time.append(simulated_put_price)
 
     simulated_call_delta = simulated_Normal_d1
     simulated_put_delta = simulated_Normal_d1 - 1
@@ -306,6 +410,24 @@ for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_in
     print("-" * 51)
     print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
     print("-" * 51)
+
+
+# Volatility Sensitivity Graph
+plt.figure(figsize=(10, 6))
+
+plt.plot(volatilities, call_prices_volatility, label="Call Option Price")
+plt.plot(volatilities, put_prices_volatility, label="Put Option Price")
+
+plt.title("Option Prices vs Time to Expiration")
+plt.ylabel("Option Price ($)")
+plt.xlabel("Time to Expiration (Years)")
+
+
+plt.legend()
+plt.grid(True)
+
+plt.show()
+
 
 # Risk-Free Rate Sensitivity Simulator
 print("=" * 51)

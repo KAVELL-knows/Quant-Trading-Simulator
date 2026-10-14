@@ -2629,3 +2629,57 @@ simulated_time  - time_to_expiration
 
 DAY 96
 10/10/2026
+Today, I wrote up code for the Strike Price Sensitivity Simulator
+
+As usual, it was a matter of just copying over the risk free rate simulator and just changing the variables
+
+so what I changed was:
+starting rate  -  starting strike
+ending rate  - ending strike 
+rate increment  - strike increment
+strike price - simulated strike
+
+tomorrow what I want to do is learn to Matplotlib or Mnaim so that we can visual how to prices change 
+
+DAY 97
+11/10/2026
+Today, I worked on the visualization and graphs which i thought was so cool
+
+what I did was install Matplotlib
+python -m pip install matplotlib
+
+What I did with the black scholes is at the top of the file I imported the library
+
+import matplotlib.pyplot as plt
+
+i then introudced 3 lists
+stock_prices = []
+call_prices = []
+put_prices = []
+
+and in the for loop after every iteration i appended the value of i into the list
+
+
+so essentially what we did is we created a list and after each iteraiotn of i we added i to the 3 lists which we make and then the plot it  through the values of in the 3 list and that is used in the code to generate the graph 
+
+
+under all the code I introduced the graph 
+
+
+plt.figure(figsize=(10, 6))
+this is used to set the size of the graph which woud be 10 inches horiztontal and 6 inches vertical
+
+plt.plot(stock_prices, call_prices, label="Call Option Price")
+this is used to plot the actual line. What it does is creates a box to say what the line represents and also 
+for each value of the call_prices it plots it
+
+plt.title("") - this is used to add in a title
+
+plt.xlabel("") - this is used to label the x axis
+plt.ylabel("") - this is used to label the y axis
+
+plt.legend() - puts a box around the graph
+
+plt.grid(True)  this adds in grid lines in the back ground so that it becomes easier to read 
+
+plt.show() - renders and displays the final formatted graph on the screen
