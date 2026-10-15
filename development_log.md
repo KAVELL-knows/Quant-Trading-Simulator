@@ -2683,3 +2683,84 @@ plt.legend() - puts a box around the graph
 plt.grid(True)  this adds in grid lines in the back ground so that it becomes easier to read 
 
 plt.show() - renders and displays the final formatted graph on the screen
+
+DAY 98
+12/10/2026
+
+What I did today, it try to get all 6 graphs ot show together in 1 run so the simulator graph as well as the greeks values
+
+But i am currently having problems with it.
+What I did was introduce more list this time for all the greeks and it appended all
+
+as for each graph this is what i wrote ( and I am still working on)
+
+
+What i want to do it is have a  14 x 12 grid and put the graphs like this
+
+graph 1      graph 2 
+graph 3      graph 4
+graph 5      graph 6 
+
+python has a built in feature to place graphs
+Graph 1: axes[0, 0] (Top-Left)
+Graph 2: axes[0, 1] (Top-Right)
+Graph 3: axes[1, 0] (Middle-Left)
+Graph 4: axes[1, 1] (Middle-Right)
+Graph 5: axes[2, 0] (Bottom-Left)
+Graph 6: axes[2, 1] (Bottom-Right)
+
+so what I did was i took all the values from yesterday and put axes[0,0].plot() infront of it
+which indicates the graph it should be on 
+
+fig, axes = plt.subplots(3, 2, figsize=(14, 12))
+
+axes[0, 0].plot(stock_prices, call_prices, label="Call Price")
+axes[0, 0].plot(stock_prices, put_prices, label="Put Price")
+
+
+axes[0, 0].set_title("Option Prices vs Stock Price")
+axes[0, 0].set_xlabel("Stock Price ($)")
+axes[0, 0].set_ylabel("Option Price ($)")
+
+
+axes[0, 0].legend()
+axes[0, 0].grid(True)
+
+DAY 99
+13/10/2026
+
+Today, I worked on understanding the visuals and what the code does.
+
+I test ran the graphs and what I found was that the text on the x axis with colliding with the title of the graph
+so I had to fix that 
+
+plt.tight_layout(pad=3.0, h_pad=4.0, w_pad=3.0)
+
+what this does is 
+pad	Space between the edges of the entire figure and its contents	3
+h_pad	Vertical spacing between rows of graphs	4
+w_pad	Horizontal spacing between columns of graphs	3
+
+I also set the colours of the graph
+axes[0, 0].plot(stock_prices, call_prices, label="Call Price", color="blue")
+
+all you have to do is color ="The colour you want"
+
+I also tried to learn about different shades and colours that i can use for example, i used the plasma colour
+
+plt.cm.plasma(value)
+
+Here, value is between 0 and 1.
+- 0 selects a colour near the beginning of the colour map.
+- 0.5 selects a colour around the middle.
+- 1 selects a colour near the end.
+
+here are some of the colours available
+color="blue"
+color="green"
+color="red"
+color="purple"
+color="cyan"
+color="magenta"
+color="orange"
+color="black"
