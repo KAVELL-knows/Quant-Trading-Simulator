@@ -2764,3 +2764,22 @@ color="cyan"
 color="magenta"
 color="orange"
 color="black"
+
+
+DAY 100
+14/10/2026
+
+Today, I completed the visualization for volitility
+
+Ot was veyr straight forward to make.. it was essentially the same as the stock price simulator
+
+what I did was firtsly i created new list for the call and put prices as well as the greeks
+
+After that I appended the values as normal and for the graph I just changed stock prices to volatility and I changed the variables to the new one in the list
+
+I did not have enough time to complete the rest of the visualization but I atleast was able to make the list for each one and tomorrow I can append everything as well as try and do the graphs
+
+DAY 101
+15/10/2026
+
+Today I continued doing work on the graphs. I was able to finish Time and I started risk free rate but didnt get a enough time to complete it. 
