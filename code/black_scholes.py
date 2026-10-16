@@ -263,8 +263,6 @@ plt.show()
 
 
 
-
-
 # Volatility Sensitivity Simulator
 print("=" * 51)
 print("VOLATILITY SENSITIVITY SIMULATOR".center(51))
@@ -280,6 +278,14 @@ volatilities = []
 call_prices_volatility = []
 put_prices_volatility = []
 
+call_deltas_volatility = []
+put_deltas_volatility = []
+gammas_volatility = []
+vegas_volatility = []
+call_thetas_volatility = []
+put_thetas_volatility = []
+call_rhos_volatility = []
+put_rhos_volatility = []
 
 for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1, int(volatility_increment * 100)):
     simulated_volatility = i / 100
@@ -315,6 +321,15 @@ for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1,
     simulated_call_rho_1_percent = simulated_call_rho / 100
     simulated_put_rho_1_percent = simulated_put_rho / 100
 
+    call_deltas_volatility.append(simulated_call_delta)
+    put_deltas_volatility.append(simulated_put_delta)
+    gammas_volatility.append(simulated_gamma)
+    vegas_volatility.append(simulated_vega)
+    call_thetas_volatility.append(simulated_call_theta)
+    put_thetas_volatility.append(simulated_put_theta)
+    call_rhos_volatility.append(simulated_call_rho)
+    put_rhos_volatility.append(simulated_put_rho)
+
     print("")
     print("-" * 51)
     print(f"{'Volatility:':<15} {simulated_volatility:>8.2%}")
@@ -331,19 +346,67 @@ for i in range(int(starting_volatility * 100), int(ending_volatility * 100) + 1,
     print("-" * 51)
 
 
-# Volatility Sensitivity Graph
-plt.figure(figsize=(10, 6))
+#Volatility Sensitivity Graph
+fig, axes = plt.subplots(3, 2, figsize=(14, 12))
 
-plt.plot(volatilities, call_prices_volatility, label="Call Option Price")
-plt.plot(volatilities, put_prices_volatility, label="Put Option Price")
+#Graph1 Option Prices
+axes[0, 0].plot(volatilities, call_prices_volatility, label="Call Price", color = "blue")
+axes[0, 0].plot(volatilities, put_prices_volatility, label="Put Price", color = "green")
 
-plt.title("Option Prices vs Volatility")
-plt.xlabel("Volatility")
-plt.ylabel("Option Price ($)")
+axes[0, 0].set_title("Option Prices vs Volatility")
+axes[0, 0].set_xlabel("Volatility")
+axes[0, 0].set_ylabel("Option Price ($)")
 
-plt.legend()
-plt.grid(True)
+axes[0, 0].legend()
+axes[0, 0].grid(True)
 
+#Graph2 Delta
+axes[0, 1].plot(volatilities, call_deltas_volatility, label="Call Delta", color = "blue")
+axes[0, 1].plot(volatilities, put_deltas_volatility, label="Put Delta", color = "red")
+axes[0, 1].set_title("Delta vs Volatility")
+axes[0, 1].set_xlabel("Volatility")
+axes[0, 1].set_ylabel("Delta")
+axes[0, 1].legend()
+axes[0, 1].grid(True)
+
+#Graph3 Gamma
+plasma_color = plt.cm.plasma(0.5) 
+axes[1, 0].plot(volatilities, gammas_volatility, label="Gamma", color=plasma_color, linewidth=2.5)
+axes[1, 0].set_title("Gamma vs Volatility")
+axes[1, 0].set_xlabel("Volatility")
+axes[1, 0].set_ylabel("Gamma")
+axes[1, 0].legend()
+axes[1, 0].grid(True)
+
+#Graph4 Vega
+plasma_purple = plt.cm.plasma(0.1)
+axes[1, 1].plot(volatilities, vegas_volatility, label="Vega", color=plasma_purple, linewidth=2)
+axes[1, 1].set_title("Vega vs Volatility")
+axes[1, 1].set_xlabel("Volatility")
+axes[1, 1].set_ylabel("Vega")
+axes[1, 1].legend()
+axes[1, 1].grid(True)
+
+#Graph5 Theta
+vibrant_pink = plt.cm.plasma(0.55)
+axes[2, 0].plot(volatilities, call_thetas_volatility, label="Call Theta", color=vibrant_pink )
+axes[2, 0].plot(volatilities, put_thetas_volatility, label="Put Theta", color = "purple")
+axes[2, 0].set_title("Theta vs Volatility")
+axes[2, 0].set_xlabel("Volatility")
+axes[2, 0].set_ylabel("Theta")
+axes[2, 0].legend()
+axes[2, 0].grid(True)
+
+#Graph6 Rho
+axes[2, 1].plot(volatilities, call_rhos_volatility, label="Call Rho", color = "cyan")
+axes[2, 1].plot(volatilities, put_rhos_volatility, label="Put Rho", color = "magenta")
+axes[2, 1].set_title("Rho vs Volatility")
+axes[2, 1].set_xlabel("Volatility")
+axes[2, 1].set_ylabel("Rho")
+axes[2, 1].legend()
+axes[2, 1].grid(True)
+
+plt.tight_layout(pad=3.0, h_pad=4.0, w_pad=3.0)
 plt.show()
 
 
@@ -360,6 +423,15 @@ time_increment = float(input("Enter the time increment in years: "))
 times = []
 call_price_time = []
 put_price_time = []
+
+call_deltas_time = []
+put_deltas_time = []
+gammas_time = []
+vegas_time = []
+call_thetas_time = []
+put_thetas_time = []
+call_rhos_time = []
+put_rhos_time = []
 
 for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_increment * 100)):
     simulated_time = i / 100
@@ -396,6 +468,16 @@ for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_in
     simulated_call_rho_1_percent = simulated_call_rho / 100
     simulated_put_rho_1_percent = simulated_put_rho / 100
 
+
+    call_deltas_time.append(simulated_call_delta)
+    put_deltas_time.append(simulated_put_delta)
+    gammas_time.append(simulated_gamma)
+    vegas_time.append(simulated_vega)
+    call_thetas_time.append(simulated_call_theta)
+    put_thetas_time.append(simulated_put_theta)
+    call_rhos_time.append(simulated_call_rho)
+    put_rhos_time.append(simulated_put_rho)
+    
     print("")
     print("-" * 51)
     print(f"{'Time to Expiration:':<22} {simulated_time:>8.2f} years")
@@ -412,20 +494,67 @@ for i in range(int(starting_time * 100), int(ending_time * 100) + 1, int(time_in
     print("-" * 51)
 
 
-# Volatility Sensitivity Graph
-plt.figure(figsize=(10, 6))
+#Time Sensitivity Graph
+fig, axes = plt.subplots(3, 2, figsize=(14, 12))
 
-plt.plot(volatilities, call_prices_volatility, label="Call Option Price")
-plt.plot(volatilities, put_prices_volatility, label="Put Option Price")
+#Graph1 Option Prices
+axes[0, 0].plot(times, call_price_time, label="Call Price", color = "blue")
+axes[0, 0].plot(times, put_price_time, label="Put Price", color = "green")
 
-plt.title("Option Prices vs Time to Expiration")
-plt.ylabel("Option Price ($)")
-plt.xlabel("Time to Expiration (Years)")
+axes[0, 0].set_title("Option Prices vs Time(Years)")
+axes[0, 0].set_xlabel("Time(Years)")
+axes[0, 0].set_ylabel("Option Price ($)")
 
+axes[0, 0].legend()
+axes[0, 0].grid(True)
 
-plt.legend()
-plt.grid(True)
+#Graph2 Delta
+axes[0, 1].plot(times, call_deltas_time, label="Call Delta", color = "blue")
+axes[0, 1].plot(times, put_deltas_time, label="Put Delta", color = "red")
+axes[0, 1].set_title("Delta vs Time")
+axes[0, 1].set_xlabel("Time")
+axes[0, 1].set_ylabel("Delta")
+axes[0, 1].legend()
+axes[0, 1].grid(True)
 
+#Graph3 Gamma
+plasma_color = plt.cm.plasma(0.5) 
+axes[1, 0].plot(times, gammas_time, label="Gamma", color=plasma_color, linewidth=2.5)
+axes[1, 0].set_title("Gamma vs Time(Years)")
+axes[1, 0].set_xlabel("Time(Years)")
+axes[1, 0].set_ylabel("Gamma")
+axes[1, 0].legend()
+axes[1, 0].grid(True)
+
+#Graph4 Vega
+plasma_purple = plt.cm.plasma(0.1)
+axes[1, 1].plot(times, vegas_time, label="Vega", color=plasma_purple, linewidth=2)
+axes[1, 1].set_title("Vega vs Time")
+axes[1, 1].set_xlabel("Time")
+axes[1, 1].set_ylabel("Vega")
+axes[1, 1].legend()
+axes[1, 1].grid(True)
+
+#Graph5 Theta
+vibrant_pink = plt.cm.plasma(0.55)
+axes[2, 0].plot(times, call_thetas_time, label="Call Theta", color=vibrant_pink )
+axes[2, 0].plot(times, put_thetas_time, label="Put Theta", color = "purple")
+axes[2, 0].set_title("Theta vs Time(Years)")
+axes[2, 0].set_xlabel("Time(Years)")
+axes[2, 0].set_ylabel("Theta")
+axes[2, 0].legend()
+axes[2, 0].grid(True)
+
+#Graph6 Rho
+axes[2, 1].plot(times, call_rhos_time, label="Call Rho", color = "cyan")
+axes[2, 1].plot(times, put_rhos_time, label="Put Rho", color = "magenta")
+axes[2, 1].set_title("Rho vs Time(Years)")
+axes[2, 1].set_xlabel("Time(Years)")
+axes[2, 1].set_ylabel("Rho")
+axes[2, 1].legend()
+axes[2, 1].grid(True)
+
+plt.tight_layout(pad=3.0, h_pad=4.0, w_pad=3.0)
 plt.show()
 
 
@@ -438,6 +567,21 @@ print("")
 starting_rate = float(input("Enter the starting risk-free rate: "))
 ending_rate = float(input("Enter the ending risk-free rate: "))
 rate_increment = float(input("Enter the risk-free rate increment: "))
+
+
+risk_free_rates = []
+call_prices_rfr = []
+put_prices_rfr = []
+
+call_deltas_rfr = []
+put_deltas_rfr = []
+gammas_rfr = []
+vegas_rfr = []
+call_thetas_rfr = []
+put_thetas_rfr = []
+call_rhos_rfr = []
+put_rhos_rfr = []
+
 
 for i in range(int(starting_rate * 100), int(ending_rate * 100) + 1, int(rate_increment * 100)):
     simulated_rate = i / 100
@@ -452,6 +596,10 @@ for i in range(int(starting_rate * 100), int(ending_rate * 100) + 1, int(rate_in
 
     simulated_call_price = (stock_price * simulated_Normal_d1) - (strike_price * math.exp(-simulated_rate * time_to_expiration) * simulated_Normal_d2)
     simulated_put_price = (strike_price * math.exp(-simulated_rate * time_to_expiration) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
+
+    risk_free_rates.append(simulated_rate)
+    call_prices_rfr.append(simulated_call_price)
+    put_prices_rfr.append(simulated_put_price)
 
     simulated_call_delta = simulated_Normal_d1
     simulated_put_delta = simulated_Normal_d1 - 1
@@ -470,6 +618,17 @@ for i in range(int(starting_rate * 100), int(ending_rate * 100) + 1, int(rate_in
     simulated_call_rho_1_percent = simulated_call_rho / 100
     simulated_put_rho_1_percent = simulated_put_rho / 100
 
+
+    call_deltas_rfr.append(simulated_call_delta)
+    put_deltas_rfr.append(simulated_put_delta)
+    gammas_rfr.append(simulated_gamma)
+    vegas_rfr.append(simulated_vega)
+    call_thetas_rfr.append(simulated_call_theta)
+    put_thetas_rfr.append(simulated_put_theta)
+    call_rhos_rfr.append(simulated_call_rho)
+    put_rhos_rfr.append(simulated_put_rho)
+
+    
     print("")
     print("-" * 51)
     print(f"{'Risk-Free Rate:':<22} {simulated_rate:>8.2%}")
@@ -485,6 +644,71 @@ for i in range(int(starting_rate * 100), int(ending_rate * 100) + 1, int(rate_in
     print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
     print("-" * 51)
 
+
+#Time Sensitivity Graph
+fig, axes = plt.subplots(3, 2, figsize=(14, 12))
+
+#Graph1 Option Prices
+axes[0, 0].plot(times, call_prices_rfr, label="Call Price", color = "blue")
+axes[0, 0].plot(times, put_prices_rfr, label="Put Price", color = "green")
+
+axes[0, 0].set_title("Option Prices vs Risk Free Rate")
+axes[0, 0].set_xlabel("Risk Free Rate")
+axes[0, 0].set_ylabel("Option Price ($)")
+
+axes[0, 0].legend()
+axes[0, 0].grid(True)
+
+#Graph2 Delta
+axes[0, 1].plot(risk_free_rates, call_deltas_rfr, label="Call Delta", color = "blue")
+axes[0, 1].plot(risk_free_rates, put_deltas_rfr, label="Put Delta", color = "red")
+axes[0, 1].set_title("Delta vs Risk Free Rate")
+axes[0, 1].set_xlabel("Risk Free Rate")
+axes[0, 1].set_ylabel("Delta")
+axes[0, 1].legend()
+axes[0, 1].grid(True)
+
+#Graph3 Gamma
+plasma_color = plt.cm.plasma(0.5) 
+axes[1, 0].plot(times, gammas_time, label="Gamma", color=plasma_color, linewidth=2.5)
+axes[1, 0].set_title("Gamma vs Time(Year)git ")
+axes[1, 0].set_xlabel("Time(Years)")
+axes[1, 0].set_ylabel("Gamma")
+axes[1, 0].legend()
+axes[1, 0].grid(True)
+
+#Graph4 Vega
+plasma_purple = plt.cm.plasma(0.1)
+axes[1, 1].plot(times, vegas_time, label="Vega", color=plasma_purple, linewidth=2)
+axes[1, 1].set_title("Vega vs Time")
+axes[1, 1].set_xlabel("Time")
+axes[1, 1].set_ylabel("Vega")
+axes[1, 1].legend()
+axes[1, 1].grid(True)
+
+#Graph5 Theta
+vibrant_pink = plt.cm.plasma(0.55)
+axes[2, 0].plot(times, call_thetas_time, label="Call Theta", color=vibrant_pink )
+axes[2, 0].plot(times, put_thetas_time, label="Put Theta", color = "purple")
+axes[2, 0].set_title("Theta vs Time(Years)")
+axes[2, 0].set_xlabel("Time(Years)")
+axes[2, 0].set_ylabel("Theta")
+axes[2, 0].legend()
+axes[2, 0].grid(True)
+
+#Graph6 Rho
+axes[2, 1].plot(times, call_rhos_time, label="Call Rho", color = "cyan")
+axes[2, 1].plot(times, put_rhos_time, label="Put Rho", color = "magenta")
+axes[2, 1].set_title("Rho vs Time(Years)")
+axes[2, 1].set_xlabel("Time(Years)")
+axes[2, 1].set_ylabel("Rho")
+axes[2, 1].legend()
+axes[2, 1].grid(True)
+
+plt.tight_layout(pad=3.0, h_pad=4.0, w_pad=3.0)
+plt.show()
+
+
 #Strike Price Sensitivity Simulator
 print("=" * 51)
 print("STRIKE PRICE SENSITIVITY SIMULATOR".center(51))
@@ -494,6 +718,21 @@ print("")
 starting_strike = float(input("Enter the starting strike price: "))
 ending_strike = float(input("Enter the ending strike price: "))
 strike_increment = float(input("Enter the strike price increment: "))
+
+
+strike_prices = []
+call_prices_strike = []
+put_prices_strike = []
+
+call_deltas_strike = []
+put_deltas_strike = []
+gammas_strike = []
+vegas_strike = []
+call_thetas_strike = []
+put_thetas_strike = []
+call_rhos_strike = []
+put_rhos_strike = []
+
 
 for i in range(int(starting_strike * 100), int(ending_strike * 100) + 1, int(strike_increment * 100)):
     simulated_strike = i / 100
