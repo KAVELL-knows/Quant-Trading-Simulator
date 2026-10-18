@@ -15,13 +15,51 @@ def black_scholes_main_uses():
     print("3.  It helps calculate the Option Greeks (like Delta and Gamma) to manage hedging strategies.")
 
 
+while True:
+    try:
+        stock_price = float(input("Enter the current stock price: "))
+        if stock_price > 0:
+            break
+        print("Please re-enter a stock price greater than 0")
+    except ValueError:
+        print("Please re-enter a NUMERICAL VALUE for the stock price that is greater than 0")
 
 
-stock_price = float(input("Enter the current stock price: "))
-strike_price = float(input("Enter the strike price: "))
-time_to_expiration = float(input("Enter the time to expiration in years: "))
-risk_free_rate = float(input("Enter the risk-free interest rate: "))
-volatility = float(input("Enter the volatility: "))
+while True:
+    try:
+        strike_price = float(input("Enter the strike price: "))
+        if strike_price > 0:
+            break
+        print("Please re-enter a strike price greater than 0")
+    except ValueError:
+        print("Please re-enter a NUMERICAL VALUE for the strike price that is greater than 0")
+
+while True:
+    try:
+        time_to_expiration = float(input("Enter the time to expiration in years: "))
+        if time_to_expiration > 0:
+            break
+        print("Please re-enter a time to expiration price greater than 0")
+    except ValueError:
+        print("Please re-enter a NUMERICAL VALUE for the time to expiration that is greater than 0")
+
+while True:
+    try:
+        risk_free_rate = float(input("Enter the risk-free interest rate (e.g. 0.10 for 10%): "))
+        if risk_free_rate > -1:
+            break
+        print("Please re-enter a risk-free interest rate greater than -100%")
+    except ValueError:
+        print("Please re-enter a NUMERICAL VALUE for the risk-free interest rate that is greater than -100%")
+    
+while True:
+    try:
+        volatility = float(input("Enter the volatility (e.g. 0.10 for 10%): "))
+        if volatility > 0:
+            break
+        print("Please re-enter a volatility greater than 0")
+    except ValueError:
+        print("Please re-enter a NUMERICAL VALUE for the volatility that is greater than 0")
 
 d1 = (math.log(stock_price / strike_price) + (risk_free_rate + (volatility ** 2) / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
 d2 = d1 - (volatility * math.sqrt(time_to_expiration))
@@ -649,8 +687,8 @@ for i in range(int(starting_rate * 100), int(ending_rate * 100) + 1, int(rate_in
 fig, axes = plt.subplots(3, 2, figsize=(14, 12))
 
 #Graph1 Option Prices
-axes[0, 0].plot(times, call_prices_rfr, label="Call Price", color = "blue")
-axes[0, 0].plot(times, put_prices_rfr, label="Put Price", color = "green")
+axes[0, 0].plot(risk_free_rates, call_prices_rfr, label="Call Price", color = "blue")
+axes[0, 0].plot(risk_free_rates, put_prices_rfr, label="Put Price", color = "green")
 
 axes[0, 0].set_title("Option Prices vs Risk Free Rate")
 axes[0, 0].set_xlabel("Risk Free Rate")
@@ -670,37 +708,37 @@ axes[0, 1].grid(True)
 
 #Graph3 Gamma
 plasma_color = plt.cm.plasma(0.5) 
-axes[1, 0].plot(times, gammas_time, label="Gamma", color=plasma_color, linewidth=2.5)
-axes[1, 0].set_title("Gamma vs Time(Year)git ")
-axes[1, 0].set_xlabel("Time(Years)")
+axes[1, 0].plot(risk_free_rates, gammas_rfr, label="Gamma", color=plasma_color, linewidth=2.5)
+axes[1, 0].set_title("Gamma vs Risk Free Rate ")
+axes[1, 0].set_xlabel("Risk Free Rate")
 axes[1, 0].set_ylabel("Gamma")
 axes[1, 0].legend()
 axes[1, 0].grid(True)
 
 #Graph4 Vega
 plasma_purple = plt.cm.plasma(0.1)
-axes[1, 1].plot(times, vegas_time, label="Vega", color=plasma_purple, linewidth=2)
-axes[1, 1].set_title("Vega vs Time")
-axes[1, 1].set_xlabel("Time")
+axes[1, 1].plot(risk_free_rates, vegas_rfr, label="Vega", color=plasma_purple, linewidth=2)
+axes[1, 1].set_title("Vega vs Risk Free Rate")
+axes[1, 1].set_xlabel("Risk Free Rate")
 axes[1, 1].set_ylabel("Vega")
 axes[1, 1].legend()
 axes[1, 1].grid(True)
 
 #Graph5 Theta
 vibrant_pink = plt.cm.plasma(0.55)
-axes[2, 0].plot(times, call_thetas_time, label="Call Theta", color=vibrant_pink )
-axes[2, 0].plot(times, put_thetas_time, label="Put Theta", color = "purple")
-axes[2, 0].set_title("Theta vs Time(Years)")
-axes[2, 0].set_xlabel("Time(Years)")
+axes[2, 0].plot(risk_free_rates, call_thetas_rfr, label="Call Theta", color=vibrant_pink )
+axes[2, 0].plot(risk_free_rates, put_thetas_rfr, label="Put Theta", color = "purple")
+axes[2, 0].set_title("Theta vs Risk Free Rate")
+axes[2, 0].set_xlabel("Risk Free Rate")
 axes[2, 0].set_ylabel("Theta")
 axes[2, 0].legend()
 axes[2, 0].grid(True)
 
 #Graph6 Rho
-axes[2, 1].plot(times, call_rhos_time, label="Call Rho", color = "cyan")
-axes[2, 1].plot(times, put_rhos_time, label="Put Rho", color = "magenta")
-axes[2, 1].set_title("Rho vs Time(Years)")
-axes[2, 1].set_xlabel("Time(Years)")
+axes[2, 1].plot(risk_free_rates, call_rhos_rfr, label="Call Rho", color = "cyan")
+axes[2, 1].plot(risk_free_rates, put_rhos_rfr, label="Put Rho", color = "magenta")
+axes[2, 1].set_title("Rho vs Risk Free Rate")
+axes[2, 1].set_xlabel("Risk Free Rate")
 axes[2, 1].set_ylabel("Rho")
 axes[2, 1].legend()
 axes[2, 1].grid(True)
@@ -748,6 +786,10 @@ for i in range(int(starting_strike * 100), int(ending_strike * 100) + 1, int(str
     simulated_call_price = (stock_price * simulated_Normal_d1) - (simulated_strike * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_d2)
     simulated_put_price = (simulated_strike * math.exp(-risk_free_rate * time_to_expiration) * simulated_Normal_negd2) - (stock_price * simulated_Normal_negd1)
 
+    strike_prices.append(simulated_strike)
+    call_prices_strike.append(simulated_call_price)
+    put_prices_strike.append(simulated_put_price)
+
     simulated_call_delta = simulated_Normal_d1
     simulated_put_delta = simulated_Normal_d1 - 1
 
@@ -765,6 +807,17 @@ for i in range(int(starting_strike * 100), int(ending_strike * 100) + 1, int(str
     simulated_call_rho_1_percent = simulated_call_rho / 100
     simulated_put_rho_1_percent = simulated_put_rho / 100
 
+
+    call_deltas_strike.append(simulated_call_delta)
+    put_deltas_strike.append(simulated_put_delta)
+    gammas_strike.append(simulated_gamma)
+    vegas_strike.append(simulated_vega)
+    call_thetas_strike.append(simulated_call_theta)
+    put_thetas_strike.append(simulated_put_theta)
+    call_rhos_strike.append(simulated_call_rho)
+    put_rhos_strike.append(simulated_put_rho)
+
+
     print("")
     print("-" * 51)
     print(f"{'Strike Price:':<22} ${simulated_strike:>8.2f}")
@@ -779,3 +832,67 @@ for i in range(int(starting_strike * 100), int(ending_strike * 100) + 1, int(str
     print("-" * 51)
     print(f"{'Call Rho:':<15} {simulated_call_rho:>10.4f} | {'Put Rho:':<12} {simulated_put_rho:>10.4f}")
     print("-" * 51)
+
+
+#Strike Price Sensitivity Graph
+fig, axes = plt.subplots(3, 2, figsize=(14, 12))
+
+#Graph1 Option Prices
+axes[0, 0].plot(strike_prices, call_prices_strike, label="Call Price", color = "blue")
+axes[0, 0].plot(strike_prices, put_prices_strike, label="Put Price", color = "green")
+
+axes[0, 0].set_title("Option Prices vs Strike Price")
+axes[0, 0].set_xlabel("Strike Price")
+axes[0, 0].set_ylabel("Option Price ($)")
+
+axes[0, 0].legend()
+axes[0, 0].grid(True)
+
+#Graph2 Delta
+axes[0, 1].plot(strike_prices, call_deltas_strike, label="Call Delta", color = "blue")
+axes[0, 1].plot(strike_prices, put_deltas_strike, label="Put Delta", color = "red")
+axes[0, 1].set_title("Delta vs Strike Price")
+axes[0, 1].set_xlabel("Strike Price")
+axes[0, 1].set_ylabel("Delta")
+axes[0, 1].legend()
+axes[0, 1].grid(True)
+
+#Graph3 Gamma
+plasma_color = plt.cm.plasma(0.5) 
+axes[1, 0].plot(strike_prices, gammas_strike, label="Gamma", color=plasma_color, linewidth=2.5)
+axes[1, 0].set_title("Gamma vs Strike Price ")
+axes[1, 0].set_xlabel("Strike Price")
+axes[1, 0].set_ylabel("Gamma")
+axes[1, 0].legend()
+axes[1, 0].grid(True)
+
+#Graph4 Vega
+plasma_purple = plt.cm.plasma(0.1)
+axes[1, 1].plot(strike_prices, vegas_strike, label="Vega", color=plasma_purple, linewidth=2)
+axes[1, 1].set_title("Vega vs Strike Price")
+axes[1, 1].set_xlabel("Strike Price")
+axes[1, 1].set_ylabel("Vega")
+axes[1, 1].legend()
+axes[1, 1].grid(True)
+
+#Graph5 Theta
+vibrant_pink = plt.cm.plasma(0.55)
+axes[2, 0].plot(strike_prices, call_thetas_strike, label="Call Theta", color=vibrant_pink )
+axes[2, 0].plot(strike_prices, put_thetas_strike, label="Put Theta", color = "purple")
+axes[2, 0].set_title("Theta vs Strike Price")
+axes[2, 0].set_xlabel("Strike Price")
+axes[2, 0].set_ylabel("Theta")
+axes[2, 0].legend()
+axes[2, 0].grid(True)
+
+#Graph6 Rho
+axes[2, 1].plot(strike_prices, call_rhos_strike, label="Call Rho", color = "cyan")
+axes[2, 1].plot(strike_prices, put_rhos_strike, label="Put Rho", color = "magenta")
+axes[2, 1].set_title("Rho vs Strike Price")
+axes[2, 1].set_xlabel("Strike Price")
+axes[2, 1].set_ylabel("Rho")
+axes[2, 1].legend()
+axes[2, 1].grid(True)
+
+plt.tight_layout(pad=3.0, h_pad=4.0, w_pad=3.0)
+plt.show()

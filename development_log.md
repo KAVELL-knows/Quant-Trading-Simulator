@@ -2783,3 +2783,10 @@ DAY 101
 15/10/2026
 
 Today I continued doing work on the graphs. I was able to finish Time and I started risk free rate but didnt get a enough time to complete it. 
+
+DAY 102
+16/10/2026
+
+Today, I completed all the greeks graphs. I completed time risk free rate and also strike price. It was basically copy and paste of the other graphs.
+
+In terms of improvements I would like to make, I want the increment to be able to be decimals and now given and error when number equal to or less than 0 are inputed 
