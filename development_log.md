@@ -2790,3 +2790,41 @@ DAY 102
 Today, I completed all the greeks graphs. I completed time risk free rate and also strike price. It was basically copy and paste of the other graphs.
 
 In terms of improvements I would like to make, I want the increment to be able to be decimals and now given and error when number equal to or less than 0 are inputed 
+
+DAY 103
+17/10/2026
+
+Today, I wrote some while loops to give a value error and re prompt to re enter a number for inavalid cases in the prompt for the black scholes
+
+while True:
+    try:
+        stock_price = float(input("Enter the current stock price: "))
+        if stock_price > 0:
+            break
+        print("Please re-enter a stock price greater than 0")
+    except ValueError:
+        print("Please re-enter a NUMERICAL VALUE for the stock price that is greater than 0")
+
+I tested it out as well as the graphs for the greeks and everything works. 
+
+DAY 104
+18/10/2026
+
+I added into the while loop this line
+if not math.isfinite(strike_price):
+
+what it does is ensure that the strike price is not an infinite number like NaN, infinti and -infiniti
+
+I tested the values one more time and everything looks good. 
+
+Next, I created a new file and i began work on a Volatility Solver. I am going to use the bisection method and I have to do some research. I would ideally like to continue with the idea that someone who does not know what these data values mean can easily idenify the definitions and notes for it. 
+
+I wrote code to define the Volatility Soler and the method as well as what it does 
+
+I wrote some code to define notes for the purpose of the volatility solver as well as the assumpetion
+
+PURPOSE
+Implied volatility is the volatility value that makes the theoretical Black-Scholes option price equal to the observed market option price.
+
+Instead of calculating an option price from a known volatility, this program works backwards from the market price to estimate volatility.
+Tomorrow I want to finish the assumptions 

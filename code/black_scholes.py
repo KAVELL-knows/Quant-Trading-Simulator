@@ -18,6 +18,9 @@ def black_scholes_main_uses():
 while True:
     try:
         stock_price = float(input("Enter the current stock price: "))
+        if not math.isfinite(stock_price):
+            print("You enterred an INFINITE VALUE. Please dont!")
+            continue
         if stock_price > 0:
             break
         print("Please re-enter a stock price greater than 0")
@@ -28,6 +31,9 @@ while True:
 while True:
     try:
         strike_price = float(input("Enter the strike price: "))
+        if not math.isfinite(strike_price):
+            print("You enterred an INFINITE VALUE. Please dont!")
+            continue
         if strike_price > 0:
             break
         print("Please re-enter a strike price greater than 0")
@@ -37,6 +43,9 @@ while True:
 while True:
     try:
         time_to_expiration = float(input("Enter the time to expiration in years: "))
+        if not math.isfinite(time_to_expiration):
+            print("You enterred an INFINITE VALUE. Please dont!")
+            continue
         if time_to_expiration > 0:
             break
         print("Please re-enter a time to expiration price greater than 0")
@@ -46,6 +55,9 @@ while True:
 while True:
     try:
         risk_free_rate = float(input("Enter the risk-free interest rate (e.g. 0.10 for 10%): "))
+        if not math.isfinite(risk_free_rate):
+            print("You enterred an INFINITE VALUE. Please dont!")
+            continue
         if risk_free_rate > -1:
             break
         print("Please re-enter a risk-free interest rate greater than -100%")
@@ -55,6 +67,9 @@ while True:
 while True:
     try:
         volatility = float(input("Enter the volatility (e.g. 0.10 for 10%): "))
+        if not math.isfinite(volatility):
+            print("You enterred an INFINITE VALUE. Please dont!")
+            continue
         if volatility > 0:
             break
         print("Please re-enter a volatility greater than 0")
