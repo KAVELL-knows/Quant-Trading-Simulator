@@ -2828,3 +2828,13 @@ Implied volatility is the volatility value that makes the theoretical Black-Scho
 
 Instead of calculating an option price from a known volatility, this program works backwards from the market price to estimate volatility.
 Tomorrow I want to finish the assumptions 
+
+DAY 105
+19/10/2026
+
+Today, I completed the limitations, assumptions and the method. The idea is that the user can have to option to view these things which is why they are defined as functions. 
+
+Tomorrow, I want to begin the actual calculations.
+
+DAY 106
+20/10/2026
