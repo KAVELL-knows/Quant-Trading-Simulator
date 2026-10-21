@@ -43,3 +43,60 @@ def volatility_solver_limitations():
 
 def normal_distribution(x):
     return (1 + math.erf(x / math.sqrt(2))) / 2
+
+
+def black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, volatility, option_type):
+
+    d1 = ( math.log(stock_price / strike_price) + (risk_free_rate + volatility ** 2 / 2) * time_to_expiration) / (volatility * math.sqrt(time_to_expiration))
+    d2 = d1 - volatility * math.sqrt(time_to_expiration)
+
+    if option_type == "CALL":
+        option_price = (stock_price * normal_distribution(d1) - strike_price * math.exp(-risk_free_rate * time_to_expiration) * normal_distribution(d2))
+
+    elif option_type == "PUT":
+        option_price = ( strike_price * math.exp(-risk_free_rate * time_to_expiration) * normal_distribution(-d2) - stock_price * normal_distribution(-d1))
+
+    else:
+        raise ValueError("Option type must be CALL or PUT.")
+    return option_price
+
+
+def calculate_implied_volatility( stock_price, strike_price, time_to_expiration, risk_free_rate,
+    market_option_price, option_type):
+
+    lower_volatility = 0.00000000000001
+    upper_volatility = 1.0
+
+    
+    while upper_volatility < 100:
+
+        theoretical_price = black_scholes_price( stock_price, strike_price, time_to_expiration, risk_free_rate, 
+            upper_volatility, option_type )
+
+        if theoretical_price >= market_option_price:
+            break
+
+        upper_volatility *= 2
+
+
+    if theoretical_price < market_option_price:
+        print("Error: Could not find a suitable volatility range.")
+        return None
+
+
+    for i in range(100):
+
+        middle_volatility = ( lower_volatility + upper_volatility) / 2
+
+        theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate,
+            middle_volatility, option_type)
+        
+        if abs(theoretical_price - market_option_price) < 0.000001:
+            return middle_volatility
+
+        if theoretical_price < market_option_price:
+            lower_volatility = middle_volatility
+        else:
+            upper_volatility = middle_volatility
+
+    return (lower_volatility + upper_volatility) / 2

@@ -2838,3 +2838,28 @@ Tomorrow, I want to begin the actual calculations.
 
 DAY 106
 20/10/2026
+
+What I did today was begin the actual calculations. I wrote defined a function for the 5 parameters of the blackscholes
+as well as the option type and within that function I calculated d1 and d2 which would just be the same formula from the black scholes
+
+
+from here
+if the option type is call 
+
+the option price for call was calculated which would have been the same from before
+
+ln(stock price/ strike) + (risk free rate + root of volatility /2 ) * time to expiraiton / ( volatility * root time to expiration) 
+def black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, volatility, option_type):
+
+
+if the option price was put then I did
+
+strike * e^(risk free rate * time to expiration ) * normal distribution(-d2) - stock price * normal(-d1) 
+
+and finally if it wasnt put or call there was  a Value error
+
+NB : i used raise ValueError
+
+Raise Value error - it creates an error
+Except Value error - it catches and fixes and error 
+
