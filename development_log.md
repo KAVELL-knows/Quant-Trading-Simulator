@@ -2863,3 +2863,34 @@ NB : i used raise ValueError
 Raise Value error - it creates an error
 Except Value error - it catches and fixes and error 
 
+
+DAY 106
+20/10/2026
+
+
+What the code is supposed to do 
+
+1. Ask Black-Scholes what the option would be worth at 100% volatility.
+2. Compare that theoretical price with the actual market price.
+3. If the theoretical price is still too low, test 200%.
+4. If that is still too low, test 400%, then 800%, and so on.
+5. Stop once the theoretical price reaches or exceeds the market price.
+
+Today, I wrote code to calculate the implied volatilty 
+
+What I did was set a lower boundary and an upper boundary in volatility 
+
+lower_volatility = 0.00000000000001
+upper_volatility = 1.0
+
+What you want to do is you're searching for a volatility that produces the observed market option price.
+
+This is called a bracketing solution 
+
+Then, I set up a while loop and thin it i calculated the theoretical price
+if the prices is more than the market option  then double the upper volatility 
+
+if it is less then it couldnt find a suitable 
+    
+
+
