@@ -100,3 +100,27 @@ def calculate_implied_volatility( stock_price, strike_price, time_to_expiration,
             upper_volatility = middle_volatility
 
     return (lower_volatility + upper_volatility) / 2
+
+
+# Testing the Implied Volatility Solver
+
+stock_price = 100
+strike_price = 100
+time_to_expiration = 1
+risk_free_rate = 0.05
+market_option_price = 10.4506
+option_type = "CALL"
+
+implied_volatility = calculate_implied_volatility(
+    stock_price,
+    strike_price,
+    time_to_expiration,
+    risk_free_rate,
+    market_option_price,
+    option_type
+)
+
+print("")
+print("IMPLIED VOLATILITY RESULTS")
+print(f"Market Option Price: ${market_option_price:.4f}")
+print(f"Implied Volatility: {implied_volatility:.2%}")
