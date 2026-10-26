@@ -2865,7 +2865,7 @@ Except Value error - it catches and fixes and error
 
 
 DAY 106
-20/10/2026
+21/10/2026
 
 
 What the code is supposed to do 
@@ -2893,4 +2893,22 @@ if the prices is more than the market option  then double the upper volatility
 if it is less then it couldnt find a suitable 
     
 
+DAY 107
+22/10/2026
 
+So I set up a for loop to go through each  
+
+and then I calculated the middle volatiltiy with the low vol + upper vol // 2
+        
+then i found the absolute value which is the theoretical value - market value
+
+if theoretical_price < market_option_price:
+    lower_volatility = middle_volatility
+
+else:
+upper_volatility = middle_volatility
+
+Tomorrow what I wnat to do is test it check how reliable it is.
+
+DAY 108
+23/10/2026
