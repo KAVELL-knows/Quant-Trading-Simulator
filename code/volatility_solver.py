@@ -77,19 +77,18 @@ def calculate_implied_volatility( stock_price, strike_price, time_to_expiration,
             break
 
         upper_volatility *= 2
+    else:
+        raise ValueError("Could not find a suitable volatility range.")
 
 
     if theoretical_price < market_option_price:
-        print("Error: Could not find a suitable volatility range.")
+        print("NO Suitable Volatility Range Found!")
         return None
-
 
     for i in range(100):
 
         middle_volatility = ( lower_volatility + upper_volatility) / 2
-
-        theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate,
-            middle_volatility, option_type)
+        theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, middle_volatility, option_type)
         
         if abs(theoretical_price - market_option_price) < 0.000001:
             return middle_volatility
@@ -102,25 +101,37 @@ def calculate_implied_volatility( stock_price, strike_price, time_to_expiration,
     return (lower_volatility + upper_volatility) / 2
 
 
-# Testing the Implied Volatility Solver
+def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, risk_free_rate,
+    market_option_price, option_type):
 
-stock_price = 100
-strike_price = 100
-time_to_expiration = 1
-risk_free_rate = 0.05
-market_option_price = 10.4506
-option_type = "CALL"
+    if stock_price <= 0:
+        raise ValueError("Stock price must be greater than zero.")
 
-implied_volatility = calculate_implied_volatility(
-    stock_price,
-    strike_price,
-    time_to_expiration,
-    risk_free_rate,
-    market_option_price,
-    option_type
-)
+    if strike_price <= 0:
+        raise ValueError("Strike price must be greater than zero.")
 
-print("")
-print("IMPLIED VOLATILITY RESULTS")
-print(f"Market Option Price: ${market_option_price:.4f}")
-print(f"Implied Volatility: {implied_volatility:.2%}")
+    if time_to_expiration <= 0:
+        raise ValueError("Time to expiration must be greater than zero.")
+
+    if market_option_price < 0:
+        raise ValueError("Market option price cannot be negative.")
+
+    if option_type not in ["CALL", "PUT"]:
+        raise ValueError("Option type must be CALL or PUT")
+
+    discounted_strike_price = strike_price * math.exp(-risk_free_rate * time_to_expiration)
+
+    if option_type == "CALL":
+        minimum_option_price = max(stock_price - discounted_strike_price, 0) 
+        maximum_option_price = stock_price
+
+    else:
+        minimum_option_price = max(discounted_strike_price - stock_price, 0)
+        maximum_option_price = discounted_strike_price
+
+    if market_option_price < minimum_option_price:
+        raise ValueError("Market option price is below the theoretical minimum.")
+
+    if market_option_price > maximum_option_price:
+        raise ValueError("Market option price is above the theoretical maximum.")
+

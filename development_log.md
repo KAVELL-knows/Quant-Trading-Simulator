@@ -2908,7 +2908,87 @@ if theoretical_price < market_option_price:
 else:
 upper_volatility = middle_volatility
 
-Tomorrow what I wnat to do is test it check how reliable it is.
+Then, I checked how reliable it is
+
+Tomorrow, I want to be write code to calculate the implied volatilty. 
 
 DAY 108
 23/10/2026
+
+I defined  a function for calculate implied volatiltiy for the different inputs so 
+stock price, strike price, time to expiration, risk free rate, market option price, option type.
+
+I then wrote value erros to be given. So for example, if the stock price is less than 0 then a Value Error is returned indicating that the value must be more zero. 
+
+then for the option type what i did was if the option type was not CALL, PUT, then a value error is given CALL or PUT. 
+
+
+then i calculated the discounted strike price = strike price * e^(- risk free rate * time to expiration)
+
+Tomorrow I wnat to write the if statements for the option pricing
+
+DAY 109
+24/10/2026
+
+Something I realized, is that it is at the point where I am able to write the code fine but the issue is that I dont fully understand how this pricing model works. I wanted some time today and understand what we are doing and why. Until just 2 days ago everything was fine and made perfect sense to me.
+
+Lets say you buy a stock at $100
+
+then you would call the broker so that would called the call price 
+
+Lets say that stock then rises to $130, now your option price is $30
+If the stock price stays the same then the option price is $0 
+If the stock falls $70, then we can let the option expire with an expire value of $0
+
+Essentially, what is happening is that the you benefit when you buy the stock but you dont have to  buy the stock when you may be disadvantageous 
+
+Mathematically, this may be written as 
+
+    minimum option price = max(stock price - discounted strike_price, 0)
+
+    Lets say the stock falls $70, then by the formula, max(70-100, 0) = 0 
+
+    NB : that is the value at expiration, not necessarily what the option is worth today 
+        maximum_option_price = stock_price
+
+I wrote this up in code for if the CALL option was used
+
+
+In terms of volatility, lets say we have 2 stocks:
+Stock A has a narrow volaility
+Stock B has crazy up and down spikes and moves away more ( more volatile )
+
+The stock which has the potential to make more money would then be the Stock B
+Lets say the stock went bad, then the value exercised would just be 0, otherwise its a matter of we make profit or we lose nothing. 
+
+Tomorrow, I want to continue writing explanations and reasoning and start the PUT price 
+
+DAY 110
+25/10/2026
+
+Continue with explanation
+    else:
+        minimum_option_price = max(discounted_strike_price - stock_price, 0)
+        maximum_option_price = discounted_strike_price
+
+    if market_option_price < minimum_option_price:
+        raise ValueError("Market option price is below the theoretical minimum.")
+
+    if market_option_price > maximum_option_price:
+        raise ValueError("Market option price is above the theoretical maximum.")
+
+DAY 111
+26/10/2026
+
+How does the Put Option works. It gives you the right to sell a stock. You get the put option at $100 and the stock goes up to $130, then you can sell it at $100 with an exercise of 0. If the stock goes down to $70, your option has a value of $70
+
+the formula is max(Agreed selling price (K) - Stock market price at expiration(St), 0)
+
+
+I understand it now, if we have a call option at $100, that is now called the strike, if the stock rics to $150, we can now say right we have the right to buy this stock when it was $100.
+
+therefore if market option price < minimum option price, the market option price is below the theoretical minimum  and this unfavourable to us
+
+if market option price > maximum option price, market option price is above the theoretical maximum and unfavourable to us
+
+
