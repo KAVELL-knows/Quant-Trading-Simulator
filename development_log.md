@@ -2991,4 +2991,34 @@ therefore if market option price < minimum option price, the market option price
 
 if market option price > maximum option price, market option price is above the theoretical maximum and unfavourable to us
 
+If the price is below the minimum option price, the it is below the theoretical value
 
+If minimum option price == the market option price, the market price is at the theoretical minimum, therefore strictly positive implied volatility may not exist
+
+DAY 112
+26/10/2026
+
+
+How the bisection works. It is similar to a binary search
+
+The bisection method repeatedly cuts a range in half. To do that reliably, we first need a range that contains the answer.
+
+So we have a lower volatility of 0.0000000001 ( a number close to 0% ) and 1 which is like a volatiltiy of 100%
+
+If we check for the upper volatility but dont find it in the range 100% then we can continually double the % until we find a range which it appears. 
+
+
+To find the middle value in the bisection method ( just like the binary search)
+    
+    middle_volatility = (lower_volatility + upper_volatility) / 2
+
+    if the price difference < the tolerance theh that would be the answer and return the middle volatility>\
+        
+    if the theoretical price < the market option price then the lower vol would become the middle vol and remain the same
+
+    if the theorrtical price > the market optino then the upper vol = the middle vol
+            upper_volatility = middle_volatility
+
+    if  however it happens that no value is found an error should be returned
+
+    
