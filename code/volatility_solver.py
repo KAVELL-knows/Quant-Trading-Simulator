@@ -127,3 +127,32 @@ def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, 
             upper_volatility = middle_volatility
 
     raise ValueError("The solver did not reach the required price tolerance.")
+
+
+
+stock_price = 100
+strike_price = 100
+time_to_expiration = 1
+risk_free_rate = 0.05
+known_volatility = 0.20
+
+market_option_price = black_scholes_price(
+    stock_price,
+    strike_price,
+    time_to_expiration,
+    risk_free_rate,
+    known_volatility,
+    "PUT"
+)
+
+implied_volatility = calculate_implied_volatility(
+    stock_price,
+    strike_price,
+    time_to_expiration,
+    risk_free_rate,
+    market_option_price,
+    "PUT"
+)
+
+print(f"Market Put Price: ${market_option_price:.6f}")
+print(f"Implied Volatility: {implied_volatility:.2%}")
