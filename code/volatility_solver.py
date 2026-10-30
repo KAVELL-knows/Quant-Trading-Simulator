@@ -129,30 +129,37 @@ def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, 
     raise ValueError("The solver did not reach the required price tolerance.")
 
 
+try:
+    stock_price = float(input("Enter the current stock price: "))
+    strike_price = float(input("Enter the strike price: "))
+    time_to_expiration = float(input("Enter the time to expiration in years: "))
+    risk_free_rate = float(input("Enter the risk-free interest rate as a decimal (e.g. 0.33 for 33%): "))
+    market_option_price = float(input("Enter the market option price: "))
+    option_type = input("Enter the option type (CALL or PUT): ").upper()
+    implied_volatility = calculate_implied_volatility(stock_price, strike_price, time_to_expiration, risk_free_rate, market_option_price, option_type)
 
-stock_price = 100
-strike_price = 100
-time_to_expiration = 1
-risk_free_rate = 0.05
-known_volatility = 0.20
+    print("")
+    print("-" * 20)
+    print("IMPLIED VOLATILITY RESULTS")
+    print("-" * 20)
+    print(f"Option Type: {option_type}")
+    print(f"Market Option Price: ${market_option_price:.2f}")
+    print(f"Implied Volatility: {implied_volatility:.2%}")
 
-market_option_price = black_scholes_price(
-    stock_price,
-    strike_price,
-    time_to_expiration,
-    risk_free_rate,
-    known_volatility,
-    "PUT"
-)
+except ValueError as error:
+    print("")
+    print("Unable to calculate implied volatility.")
+    print(f"Reason: {error}")
 
-implied_volatility = calculate_implied_volatility(
-    stock_price,
-    strike_price,
-    time_to_expiration,
-    risk_free_rate,
-    market_option_price,
-    "PUT"
-)
 
-print(f"Market Put Price: ${market_option_price:.6f}")
-print(f"Implied Volatility: {implied_volatility:.2%}")
+
+
+volatilities = []
+option_prices = []
+
+for i in range(1, 101):
+    simulated_volatility = i / 100
+    theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, simulated_volatility, option_type)
+
+    volatilities.append(simulated_volatility * 100)
+    option_prices.append(theoretical_price)

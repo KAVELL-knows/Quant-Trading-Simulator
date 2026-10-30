@@ -2996,7 +2996,7 @@ If the price is below the minimum option price, the it is below the theoretical 
 If minimum option price == the market option price, the market price is at the theoretical minimum, therefore strictly positive implied volatility may not exist
 
 DAY 112
-26/10/2026
+27/10/2026
 
 
 How the bisection works. It is similar to a binary search
@@ -3022,3 +3022,29 @@ To find the middle value in the bisection method ( just like the binary search)
     if  however it happens that no value is found an error should be returned
 
     
+DAY 113
+28/10/2024
+
+Today I wrote the inputs for the implied vol solver. I used the try and except for this
+
+
+so what I did was a I prompted for the stock price, strike price, time to expiration, risk free rate, market option price and option type 
+
+
+except ValueError as error:
+    print("")
+    print("Unable to calculate implied volatility.")
+    print(f"Reason: {error}")
+
+basically we happen is if a value error was detected, that value would be saved as a variable called error
+and the that error is outputted 
+
+Next, I want to be able to do a graph and plot out Call Option vs the Implied Volatility 
+
+To do this we as we did before, we would need points to put on the graph so 
+
+we would have 100 plotted as we want for every percentage from 1 to 100 
+
+the simulated volatility would be i / 100 as we are converted percentages to decimals
+
+so to plot call option vs vol, i introduced a list called option prices and to it i appeneded the theoretical price  for each integer. I also made a list called volatility and i appended the simulated vol to it but i made sure to mulitply it by 100 to convert it back to a percentage 
