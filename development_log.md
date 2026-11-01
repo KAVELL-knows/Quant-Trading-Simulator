@@ -3048,3 +3048,29 @@ we would have 100 plotted as we want for every percentage from 1 to 100
 the simulated volatility would be i / 100 as we are converted percentages to decimals
 
 so to plot call option vs vol, i introduced a list called option prices and to it i appeneded the theoretical price  for each integer. I also made a list called volatility and i appended the simulated vol to it but i made sure to mulitply it by 100 to convert it back to a percentage 
+
+
+DAY 112
+29/10/2024
+
+I start by doing up the graoh for the Volatility versus Option Price
+
+I learnt that you could do different line types using linestyle="--"
+plt.axhline(y=market_option_price, label="Market Option Price", linestyle="--")
+plt.axvline(x=implied_volatility * 100, label="Implied Volatility",linestyle=":")
+
+
+I wanted to highlight to point where the market price is equal to the theoretical price
+
+To do this, I used plt.scatter(), and plugged in the axes, for the colour i chose red. I learnt that s = 100  means to choose to the size of the point and let it be 100. 
+
+zorder  - places the point above other components in the graph
+
+plt.scatter(implied_volatility * 100, market_option_price, color="red", s=100, label="Implied Volatility Point", zorder=5)
+
+plt.annotate( f"Implied Volatility: {implied_volatility:.2%}", (implied_volatility * 100, market_option_price), xytext=(15, 15), textcoords="offset points")
+
+xytext = (15, 15) - the position of the annotation
+
+textcoords="offset points
+In this case, it means the (15, 15) values represent offsets measured in typographic points, rather than actual graph coordinates

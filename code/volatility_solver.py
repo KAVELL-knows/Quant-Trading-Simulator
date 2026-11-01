@@ -1,7 +1,7 @@
 
 # Volatility Solver
 import math
-
+import matplotlib.pyplot as plt
 
 def volatility_solver_purpose():
     print("PURPOSE")
@@ -146,6 +146,33 @@ try:
     print(f"Market Option Price: ${market_option_price:.2f}")
     print(f"Implied Volatility: {implied_volatility:.2%}")
 
+
+
+
+    volatilities = []
+    option_prices = []
+
+    for i in range(1, 101):
+        simulated_volatility = i / 100
+        theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, simulated_volatility, option_type)
+
+        volatilities.append(simulated_volatility * 100)
+        option_prices.append(theoretical_price)
+
+
+    strike_prices = [80, 90, 100, 110, 120]
+    implied_volatilities = []
+
+    market_option_prices = [22.50, 15.20, 10.45, 6.80, 4.10] 
+
+    for i in range(len(strike_prices)):
+
+        current_strike_price = strike_prices[i]
+        current_market_price = market_option_prices[i]
+
+        volatility = calculate_implied_volatility( stock_price, current_strike_price, time_to_expiration, risk_free_rate, current_market_price, option_type)
+        implied_volatilities.append(volatility)
+
 except ValueError as error:
     print("")
     print("Unable to calculate implied volatility.")
@@ -153,13 +180,22 @@ except ValueError as error:
 
 
 
+#Graph plotting volatility versus option price
+plt.plot(volatilities, option_prices, label="Black-Scholes Theoretical Price")
 
-volatilities = []
-option_prices = []
+plt.axhline(y=market_option_price, label="Market Option Price", linestyle="--")
 
-for i in range(1, 101):
-    simulated_volatility = i / 100
-    theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, simulated_volatility, option_type)
+plt.axvline(x=implied_volatility * 100, label="Implied Volatility",linestyle=":")
 
-    volatilities.append(simulated_volatility * 100)
-    option_prices.append(theoretical_price)
+plt.xlabel("Volatility (%)")
+plt.ylabel("Option Price ($)")
+plt.title("Implied Volatility and Option Price Relationship")
+
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+plt.scatter( implied_volatility * 100, market_option_price, color="red", s=100, label="Implied Volatility Point", zorder=5)
+plt.annotate(f"Implied Volatility: {implied_volatility:.2%}", (implied_volatility * 100, market_option_price), xytext=(15, 15), textcoords="offset points")
+
