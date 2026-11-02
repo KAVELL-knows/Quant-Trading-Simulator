@@ -1,5 +1,4 @@
-
-# Volatility Solver
+#Volatility Solver
 import math
 import matplotlib.pyplot as plt
 
@@ -56,7 +55,8 @@ def black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free
     if option_type == "CALL":
         option_price = (stock_price * normal_distribution(d1) - strike_price * math.exp(-risk_free_rate * time_to_expiration) * normal_distribution(d2))
     elif option_type == "PUT":
-        option_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration) * normal_distribution(-d2) - stock_price * normal_distribution(-d1))
+        option_price = (
+            strike_price * math.exp(-risk_free_rate * time_to_expiration) * normal_distribution(-d2) - stock_price * normal_distribution(-d1))
     else:
         raise ValueError("Option type must be CALL or PUT.")
     return option_price
@@ -65,22 +65,17 @@ def black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free
 def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, risk_free_rate, market_option_price, option_type):
     if stock_price <= 0:
         raise ValueError("Stock price must be greater than zero.")
-
     if strike_price <= 0:
         raise ValueError("Strike price must be greater than zero.")
-
     if time_to_expiration <= 0:
         raise ValueError("Time to expiration must be greater than zero.")
-
     if market_option_price < 0:
         raise ValueError("Market option price cannot be negative.")
-
     option_type = option_type.upper()
 
     if option_type not in ["CALL", "PUT"]:
         raise ValueError("Option type must be CALL or PUT.")
-
-    discounted_strike_price = (strike_price * math.exp(-risk_free_rate * time_to_expiration))
+    discounted_strike_price = strike_price * math.exp(-risk_free_rate * time_to_expiration)
 
     if option_type == "CALL":
         minimum_option_price = max(stock_price - discounted_strike_price, 0)
@@ -103,9 +98,12 @@ def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, 
     upper_volatility = 1.0
 
     while upper_volatility < 100:
+
         theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, upper_volatility, option_type)
+
         if theoretical_price >= market_option_price:
             break
+
         upper_volatility *= 2
     else:
         raise ValueError("Could not find a suitable volatility range.")
@@ -115,10 +113,9 @@ def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, 
 
     for i in range(100):
         middle_volatility = (lower_volatility + upper_volatility) / 2
-
         theoretical_price = black_scholes_price(stock_price, strike_price, time_to_expiration, risk_free_rate, middle_volatility, option_type)
         price_difference = abs(theoretical_price - market_option_price)
-        
+
         if price_difference < price_tolerance:
             return middle_volatility
         if theoretical_price < market_option_price:
@@ -128,7 +125,6 @@ def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, 
 
     raise ValueError("The solver did not reach the required price tolerance.")
 
-
 try:
     stock_price = float(input("Enter the current stock price: "))
     strike_price = float(input("Enter the strike price: "))
@@ -136,6 +132,7 @@ try:
     risk_free_rate = float(input("Enter the risk-free interest rate as a decimal (e.g. 0.33 for 33%): "))
     market_option_price = float(input("Enter the market option price: "))
     option_type = input("Enter the option type (CALL or PUT): ").upper()
+
     implied_volatility = calculate_implied_volatility(stock_price, strike_price, time_to_expiration, risk_free_rate, market_option_price, option_type)
 
     print("")
@@ -145,9 +142,6 @@ try:
     print(f"Option Type: {option_type}")
     print(f"Market Option Price: ${market_option_price:.2f}")
     print(f"Implied Volatility: {implied_volatility:.2%}")
-
-
-
 
     volatilities = []
     option_prices = []
@@ -159,43 +153,70 @@ try:
         volatilities.append(simulated_volatility * 100)
         option_prices.append(theoretical_price)
 
-
     strike_prices = [80, 90, 100, 110, 120]
+    market_option_prices = [22.50, 15.20, 10.45, 6.80, 4.10]
     implied_volatilities = []
 
-    market_option_prices = [22.50, 15.20, 10.45, 6.80, 4.10] 
-
     for i in range(len(strike_prices)):
-
         current_strike_price = strike_prices[i]
         current_market_price = market_option_prices[i]
 
-        volatility = calculate_implied_volatility( stock_price, current_strike_price, time_to_expiration, risk_free_rate, current_market_price, option_type)
-        implied_volatilities.append(volatility)
+        try:
+            volatility = calculate_implied_volatility(stock_price, current_strike_price, time_to_expiration, risk_free_rate, current_market_price, option_type)
+
+            implied_volatilities.append(volatility)
+
+        except ValueError as error:
+            print(f"Strike ${current_strike_price}: {error}")
+            implied_volatilities.append(None)
+
+    print("")
+    print("-" * 40)
+    print("IMPLIED VOLATILITY BY STRIKE PRICE")
+    print("-" * 40)
+
+    for i in range(len(strike_prices)):
+        if implied_volatilities[i] is not None:
+            print(f"Strike Price: ${strike_prices[i]:.2f} | "
+                f"Implied Volatility: {implied_volatilities[i]:.2%}")
+
+        else:
+            print(f"Strike Price: ${strike_prices[i]:.2f} | No valid result")
+
+    plt.figure()
+    plt.plot(volatilities, option_prices, label="Black-Scholes Theoretical Price")
+    plt.axhline(y=market_option_price, label="Market Option Price", linestyle="--")
+    plt.axvline(x=implied_volatility * 100, label="Implied Volatility", linestyle=":")
+    plt.scatter(implied_volatility * 100, market_option_price, color="red", s=100, label="Implied Volatility Point", zorder=5)
+
+    plt.annotate(f"Implied Volatility: {implied_volatility:.2%}", (implied_volatility * 100, market_option_price), xytext=(15, 15), textcoords="offset points")
+
+    plt.xlabel("Volatility (%)")
+    plt.ylabel("Option Price ($)")
+    plt.title("Implied Volatility and Option Price Relationship")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    valid_strike_prices = []
+    valid_implied_volatilities = []
+
+    for i in range(len(strike_prices)):
+        if implied_volatilities[i] is not None:
+            valid_strike_prices.append(strike_prices[i])
+            valid_implied_volatilities.append(implied_volatilities[i] * 100)
+
+    plt.figure()
+    plt.plot(valid_strike_prices, valid_implied_volatilities, marker="o", label="Implied Volatility")
+
+    plt.xlabel("Strike Price ($)")
+    plt.ylabel("Implied Volatility (%)")
+    plt.title("Implied Volatility Smile")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 except ValueError as error:
     print("")
     print("Unable to calculate implied volatility.")
     print(f"Reason: {error}")
-
-
-
-#Graph plotting volatility versus option price
-plt.plot(volatilities, option_prices, label="Black-Scholes Theoretical Price")
-
-plt.axhline(y=market_option_price, label="Market Option Price", linestyle="--")
-
-plt.axvline(x=implied_volatility * 100, label="Implied Volatility",linestyle=":")
-
-plt.xlabel("Volatility (%)")
-plt.ylabel("Option Price ($)")
-plt.title("Implied Volatility and Option Price Relationship")
-
-plt.legend()
-plt.grid(True)
-plt.show()
-
-
-plt.scatter( implied_volatility * 100, market_option_price, color="red", s=100, label="Implied Volatility Point", zorder=5)
-plt.annotate(f"Implied Volatility: {implied_volatility:.2%}", (implied_volatility * 100, market_option_price), xytext=(15, 15), textcoords="offset points")
-
