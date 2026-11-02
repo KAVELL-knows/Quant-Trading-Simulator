@@ -3074,3 +3074,22 @@ xytext = (15, 15) - the position of the annotation
 
 textcoords="offset points
 In this case, it means the (15, 15) values represent offsets measured in typographic points, rather than actual graph coordinates
+
+DAY 113
+30/10/2024
+
+Today I want to calc the implied vol for multiple strikes prices rather than just one. 
+
+strike_prices = []
+i created a list with mulitple options of strike prices  and well as market prices
+
+market_option_prices = [] 
+
+Next, all I had to do was create a for loop to do a graph for each strike and run the same implied vol function.
+for i in range(len(strike_prices)):
+
+    current_strike_price = strike_prices[i]
+    current_market_price = market_option_prices[i]
+
+    volatility = calculate_implied_volatility()
+    implied_volatilities.append(volatility)
