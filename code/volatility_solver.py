@@ -1,6 +1,7 @@
 #Volatility Solver
 import math
 import matplotlib.pyplot as plt
+import yfinance as yf
 
 def volatility_solver_purpose():
     print("PURPOSE")
@@ -122,7 +123,6 @@ def calculate_implied_volatility(stock_price, strike_price, time_to_expiration, 
             lower_volatility = middle_volatility
         else:
             upper_volatility = middle_volatility
-
     raise ValueError("The solver did not reach the required price tolerance.")
 
 try:
@@ -220,3 +220,22 @@ except ValueError as error:
     print("")
     print("Unable to calculate implied volatility.")
     print(f"Reason: {error}")
+
+#using the real options values
+symbol = input("Enter stock symbol: ").upper()
+stock = yf.Ticker(symbol)
+
+expiration_dates = stock.options
+print(expiration_dates)
+
+expiration_date = input("Enter an expiration date: ")
+options_chain = stock.option_chain(expiration_date)
+
+calls = options_chain.calls
+puts = options_chain.puts
+print(calls)
+print(calls.head())
+print(puts)
+print(puts.head())
+
+print(calls.columns)

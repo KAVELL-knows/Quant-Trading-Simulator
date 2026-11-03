@@ -3093,3 +3093,51 @@ for i in range(len(strike_prices)):
 
     volatility = calculate_implied_volatility()
     implied_volatilities.append(volatility)
+
+DAY 114
+31/10/2026
+
+I wrote a for loop to go through each each strike price in the listand appended each volatility, else a Value error is given.
+
+
+DAY 115
+1/11/2026
+
+I wrote code to display the graph it self for the strike price, this would have been the same as it was before
+
+plt.figure()
+    plt.plot(valid_strike_prices, valid_implied_volatilities, marker="o", label="Implied Volatility")
+
+for the x axes i used strike price, y axes i used implied vol
+and if a wrong value was given a value error
+
+once i completed the graph for the strike price i tested out the data and ran the code. At first i was getting an error but eventually  i was able to fix it as i made a typo when spelling volatility in my variable
+
+DAY 116
+2/11/2026
+
+Today, I want to utilize the real option prices rather than simulated prices. This will be easy as the option prices are provided by the same yfinance library which i downloaded
+
+so all i have to do is prompt a stock ticker and then set that to options
+
+expiration_dates = stock.options
+.options accesses an attribute of the yfinance Ticker object that retrieves available expiration dates
+
+An options chain is a table containing all the available call and put option contracts for a particular stock and expiration date.
+
+
+expiration_date = input("Enter an expiration date: ")
+options_chain = stock.option_chain(expiration_date)
+
+When the user enter a date, we retrieve the actual contracts, from there it could either be put or call
+
+then we save it as a a variable so options_chain.call stores call in the variable calls 
+calls = options_chain.calls
+puts = options_chain.puts
+
+In terms of output
+calls.head()   - this is the first 5 call contracts
+puts.head()    - this is the first 5 put contracts
+
+calls.columns - this would show all the available columns in the dataframe
+example contractSymbol, lastTradeDate, strike, lastPrice, bid
