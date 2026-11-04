@@ -3141,3 +3141,26 @@ puts.head()    - this is the first 5 put contracts
 
 calls.columns - this would show all the available columns in the dataframe
 example contractSymbol, lastTradeDate, strike, lastPrice, bid
+
+DAY 117
+3/11/2026
+calls = options_chain.calls
+puts = options_chain.puts
+
+i outputted some valyes from both the call and put prices, including strike, lastPrice, bid and ask 
+call_strikes = calls["strike"]
+
+i calculated the midpoint using the formula bid + ask / 2
+
+all_midpoint = (calls["bid"] + calls["ask"]) / 2
+put_midpoint = (puts["bid"] + puts["ask"]) / 2
+
+and i added it to the dataframe. What I to be able to do is access individual values within those DataFrames
+and use that value to calc the implied vol of each call.
+
+i then created a table for ask bid midpoint
+print(calls[["strike", "bid", "ask", "midpoint"]].head())
+for both the calls and the put 
+
+DAY 118
+4/11/2026

@@ -226,16 +226,42 @@ symbol = input("Enter stock symbol: ").upper()
 stock = yf.Ticker(symbol)
 
 expiration_dates = stock.options
-print(expiration_dates)
 
 expiration_date = input("Enter an expiration date: ")
 options_chain = stock.option_chain(expiration_date)
 
 calls = options_chain.calls
 puts = options_chain.puts
+
+call_strikes = calls["strike"]
+call_prices = calls["lastPrice"]
+put_prices = puts["lastPrice"]
+
+call_bid = calls["bid"]
+call_ask = calls["ask"]
+
+put_bid = puts["bid"]
+put_ask = puts["ask"]
+
+call_midpoint = (calls["bid"] + calls["ask"]) / 2
+put_midpoint = (puts["bid"] + puts["ask"]) / 2
+
+#add midpint to the calls and puts dataframes
+calls["midpoint"] = call_midpoint
+puts["midpoint"] = put_midpoint
+
+
+print(expiration_dates)
 print(calls)
 print(calls.head())
 print(puts)
 print(puts.head())
-
 print(calls.columns)
+print(call_strikes)
+print(call_prices)
+print(put_prices)
+print(call_midpoint.head())
+print(put_midpoint.head())
+
+print(calls[["strike", "bid", "ask", "midpoint"]].head())
+print(puts[["strike", "bid", "ask", "midpoint"]].head())
