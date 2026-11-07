@@ -2,6 +2,8 @@
 import math
 import matplotlib.pyplot as plt
 import yfinance as yf
+from datetime import datetime
+
 
 def volatility_solver_purpose():
     print("PURPOSE")
@@ -270,9 +272,48 @@ stock_data = stock.history(period="5d")
 stock_price = stock_data["Close"].iloc[-1]
 print(stock_price)
 
-from datetime import datetime
+
 current_date = datetime.now().date()
 expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d").date()
 
 days_to_expiration = (expiration_date - current_date).days
 time_to_expiration = days_to_expiration / 365
+
+calls = calls.dropna(subset=["bid", "ask", "strike"])
+puts = puts.dropna(subset=["bid", "ask", "strike"])
+
+calls = calls[(calls["bid"] > 0) & (calls["ask"] > 0) & (calls["ask"] >= calls["bid"])].copy()
+puts = puts[(puts["bid"] > 0) & (puts["ask"] > 0) & (puts["ask"] >= puts["bid"])].copy()
+
+calls["midpoint"] = (calls["bid"] + calls["ask"]) / 2
+puts["midpoint"] = (puts["bid"] + puts["ask"]) / 2
+
+print("Valid call contracts:", len(calls))
+print("Valid put contracts:", len(puts))
+
+
+print(calls[["strike", "bid", "ask", "midpoint"]].head())
+print(puts[["strike", "bid", "ask", "midpoint"]].head())
+
+
+if not calls.empty:
+
+    first_call = calls.iloc[0]
+
+    call_strike_price = float(first_call["strike"])
+    call_market_option_price = float(first_call["midpoint"])
+
+    try:
+        call_implied_volatility = calculate_implied_volatility(stock_price, call_strike_price, time_to_expiration, risk_free_rate, call_market_option_price, "CALL")
+        print("")
+        print("FIRST CALL CONTRACT")
+        print("-------------------")
+        print(f"Strike Price: ${call_strike_price:.2f}")
+        print(f"Market Price: ${call_market_option_price:.2f}")
+        print(f"Implied Volatility: {call_implied_volatility:.2%}")
+
+    except ValueError as error:
+        print(f"Could not calculate implied volatility: {error}")
+
+else:
+    print("No valid call contracts available.")

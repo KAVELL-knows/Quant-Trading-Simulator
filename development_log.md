@@ -3164,3 +3164,66 @@ for both the calls and the put
 
 DAY 118
 4/11/2026
+
+Today, I learnt to use more features on the date library on python
+
+
+current_date = datetime.now().date()
+expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d").date()
+days_to_expiration = (expiration_date - current_date).days
+time_to_expiration = days_to_expiration / 365
+
+
+
+datetime.now() - retrieves the current date and time from your computer
+.date() -  this uses only the date and not the time
+.days() - extract no of days from calendar 
+
+
+datetime.strptime() - converts the expiration date from a string into a date object
+"%Y-%m-%d" tells Python how the date is formatted.
+
+Dividing by 365 converts that duration into years since the Black-Scholes model requires time to expiration in years rather than days
+
+DAY 118
+05/11/2026
+
+Not every option contract returned by Yahoo Finance will have a usable market price
+So what we want to do is filter the data 
+
+calls = calls.dropna(subset=["bid", "ask", "strike"])
+
+this check the columns, bid ask and strike and removes the blank values
+
+We also want to remove contracts where the bid or ask is zero, or where the ask is lower than the bid
+calls = calls[(calls["bid"] > 0) &(calls["ask"] > 0) &(calls["ask"] >= calls["bid"])].copy()
+
+calls["bid"] > 0  - this checks whether each bid in the column is greater than 0 
+calls["ask"] >= calls["bid"] - this checks whether the ask price is greater than or equal to the bid price
+
+.copy() creates an independent copy of the resulting DataFrame which new columns could be added
+
+after this the number of contract may change so we have to re calc the midpoint
+bid + ask /2 
+
+DAY 119
+06/11/2026
+
+After re calcing the mid point, i stored it in a column. What I want to do today is calc the implied volatility for each contract. 
+
+what i did was 
+
+if the first one to not be emtpy is idenitifed, that would be the first in the list 
+
+call_strike_price = float(first_call["strike"])
+this retrieves the strike price from that particular options contract
+
+call_market_option_price = float(first_call["midpoint"])
+this retrieves the midpoint from that particular option contract 
+
+All I had to do from here is calculate the implied volatility using the function i defined ealier. 
+and print the Strike price, Market price and implied volatility 
+If there was a value error than the ValueError was given 
+
+else:
+and if there were no empty contract, I would print no valid call contracts available
