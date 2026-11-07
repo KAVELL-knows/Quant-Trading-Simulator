@@ -265,3 +265,14 @@ print(put_midpoint.head())
 
 print(calls[["strike", "bid", "ask", "midpoint"]].head())
 print(puts[["strike", "bid", "ask", "midpoint"]].head())
+
+stock_data = stock.history(period="5d")
+stock_price = stock_data["Close"].iloc[-1]
+print(stock_price)
+
+from datetime import datetime
+current_date = datetime.now().date()
+expiration_date = datetime.strptime(expiration_date, "%Y-%m-%d").date()
+
+days_to_expiration = (expiration_date - current_date).days
+time_to_expiration = days_to_expiration / 365
