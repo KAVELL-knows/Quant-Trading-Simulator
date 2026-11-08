@@ -3227,3 +3227,22 @@ If there was a value error than the ValueError was given
 
 else:
 and if there were no empty contract, I would print no valid call contracts available
+
+
+DAY 120
+07/11/2026
+Today, I am going to calculate the implied volatility for every call contract
+
+This was very easy to do as I think I am starting the understand how it works. So firstly, I set up a while loop to go though each contract row in the calls and from there I got the mid point and the strike price and used that to calculate the implied vol.
+
+
+for i, contract in calls.iterrows():
+
+.iterrows() is a pandas function that looks at your option chain data row-by-row
+
+What I did was pull out the mid point price and the strike price using
+    call_strike_price = float(contract["strike"])
+    call_market_option_price = float(contract["midpoint"])
+
+I them re calculated the implied volatlity and print out the 3 columns showing 10 rows of data
+Also as usual, if the data was invalid, a Value Error would be given. 

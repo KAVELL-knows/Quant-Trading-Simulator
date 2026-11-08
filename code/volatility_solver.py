@@ -317,3 +317,24 @@ if not calls.empty:
 
 else:
     print("No valid call contracts available.")
+
+#calc contract for every call
+call_implied_volatilities = []
+
+for i, contract in calls.iterrows():
+
+    call_strike_price = float(contract["strike"])
+    call_market_option_price = float(contract["midpoint"])
+
+    try:
+        implied_volatility = calculate_implied_volatility(stock_price, call_strike_price, time_to_expiration, risk_free_rate, call_market_option_price, "CALL")
+
+    except ValueError:
+        implied_volatility = None
+    call_implied_volatilities.append(implied_volatility)
+
+calls["calculated_implied_volatility"] = call_implied_volatilities
+print("")
+print("CALL IMPLIED VOLATILITIES")
+print("-------------------------")
+print(calls[["strike", "midpoint", "calculated_implied_volatility"]].head(10))
