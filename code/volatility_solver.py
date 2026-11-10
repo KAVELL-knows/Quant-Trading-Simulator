@@ -338,3 +338,45 @@ print("")
 print("CALL IMPLIED VOLATILITIES")
 print("-------------------------")
 print(calls[["strike", "midpoint", "calculated_implied_volatility"]].head(10))
+
+
+#implied volatility for every put contract
+put_implied_volatilities = []
+
+for index, contract in puts.iterrows():
+
+    put_strike_price = float(contract["strike"])
+    put_market_option_price = float(contract["midpoint"])
+
+    try:
+        implied_volatility = calculate_implied_volatility(stock_price, put_strike_price, time_to_expiration, risk_free_rate, put_market_option_price, "PUT")
+    except ValueError:
+        implied_volatility = None
+    put_implied_volatilities.append(implied_volatility)
+
+
+puts["calculated_implied_volatility"] = put_implied_volatilities
+print("")
+print("PUT IMPLIED VOLATILITIES")
+print("------------------------")
+print(puts[["strike", "midpoint", "calculated_implied_volatility"]].head(10))
+
+#plotting begins
+calls_plot = calls.dropna(subset=["calculated_implied_volatility"]).copy()
+puts_plot = puts.dropna(subset=["calculated_implied_volatility"]).copy()
+
+calls_plot = calls_plot.sort_values("strike")
+puts_plot = puts_plot.sort_values("strike")
+
+plt.figure(figsize=(10, 6))
+plt.plot(calls_plot["strike"], calls_plot["calculated_implied_volatility"] * 100, marker="o", label="Call Implied Volatility")
+
+plt.plot(puts_plot["strike"], puts_plot["calculated_implied_volatility"] * 100, marker="o", label="Put Implied Volatility")
+
+plt.xlabel("Strike Price ($)")
+plt.ylabel("Implied Volatility (%)")
+plt.title("Implied Volatility Smile - " + symbol)
+
+plt.legend()
+plt.grid(True)
+plt.show()

@@ -3246,3 +3246,27 @@ What I did was pull out the mid point price and the strike price using
 
 I them re calculated the implied volatlity and print out the 3 columns showing 10 rows of data
 Also as usual, if the data was invalid, a Value Error would be given. 
+
+DAY 121
+08/11/2026
+
+Today, I began by writing code for the calc implied vol for every put.
+
+What I did was copy over the code and change call to put
+
+I also did the plotting for these values so we can have the graph. 
+To do this, I removed all the contracts where the solver returned None
+
+calls_plot = calls.dropna(subset=["calculated_implied_volatility"]).copy()
+
+and i sorted the values according the the strike prices from the lowest strike price to the highest
+
+calls_plot = calls_plot.sort_values("strike")
+puts_plot = puts_plot.sort_values("strike")
+
+As for the graph I did the same thing I usually do, a size of 10 x 6, o for the marker
+
+I plotted Implied Volatility (%) versus Strike Price ($) 
+
+DAY 122
+09/11/2026
