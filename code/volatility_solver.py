@@ -380,3 +380,79 @@ plt.title("Implied Volatility Smile - " + symbol)
 plt.legend()
 plt.grid(True)
 plt.show()
+
+
+#larp because of test tmr
+
+
+# Prepare call and put data for plotting
+
+calls_plot = calls.dropna(
+    subset=["calculated_implied_volatility"]
+).copy()
+
+puts_plot = puts.dropna(
+    subset=["calculated_implied_volatility"]
+).copy()
+
+
+# Remove zero or negative implied volatility values
+
+calls_plot = calls_plot[
+    calls_plot["calculated_implied_volatility"] > 0
+].copy()
+
+puts_plot = puts_plot[
+    puts_plot["calculated_implied_volatility"] > 0
+].copy()
+
+
+# Sort contracts by strike price
+
+calls_plot = calls_plot.sort_values("strike")
+puts_plot = puts_plot.sort_values("strike")
+
+
+# Plot implied volatility smile
+
+plt.figure(figsize=(12, 7))
+
+
+# Plot call implied volatility
+
+if not calls_plot.empty:
+
+    plt.plot(
+        calls_plot["strike"],
+        calls_plot["calculated_implied_volatility"] * 100,
+        marker="o",
+        label="Call Implied Volatility"
+    )
+
+
+# Plot put implied volatility
+
+if not puts_plot.empty:
+
+    plt.plot(
+        puts_plot["strike"],
+        puts_plot["calculated_implied_volatility"] * 100,
+        marker="o",
+        label="Put Implied Volatility"
+    )
+
+
+# Graph formatting
+
+plt.xlabel("Strike Price ($)")
+plt.ylabel("Implied Volatility (%)")
+
+plt.title(
+    f"Implied Volatility Smile/Skew - {symbol} - {expiration_date}"
+)
+
+plt.legend()
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
