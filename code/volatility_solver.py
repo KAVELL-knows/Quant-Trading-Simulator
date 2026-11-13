@@ -399,52 +399,37 @@ puts_plot = puts_plot.sort_values("strike")
 # Plot implied volatility smile
 plt.figure(figsize=(12, 7))
 if not calls_plot.empty:
-
     plt.plot(calls_plot["strike"], calls_plot["calculated_implied_volatility"] * 100, marker="o", label="Call Implied Volatility")
-
 
 # Plot put implied volatility
 if not puts_plot.empty:
-
     plt.plot(puts_plot["strike"], puts_plot["calculated_implied_volatility"] * 100, marker="o", label="Put Implied Volatility")
-
-
-# Graph formatting
 
 plt.xlabel("Strike Price ($)")
 plt.ylabel("Implied Volatility (%)")
 plt.title(f"Implied Volatility Smile/Skew - {symbol} - {expiration_date}")
 plt.legend()
 plt.grid(True)
-
 plt.tight_layout()
 plt.show()
 
 
-#continiueing into crap
-
-# REAL OPTIONS IMPLIED VOLATILITY SURFACE
-
+#REAL OPTIONS IMPLIED VOLATILITY SURFACE
 symbol = input("Enter stock symbol: ").upper()
 stock = yf.Ticker(symbol)
-
 expiration_dates = stock.options
 
 print("\nAVAILABLE EXPIRATION DATES")
-
 for date in expiration_dates:
     print(date)
 
 selected_expirations = expiration_dates[:8]
-
 print("\nSelected expiration dates:")
 print(selected_expirations)
 
 stock_data = stock.history(period="5d")
 stock_price = stock_data["Close"].iloc[-1]
-
 risk_free_rate = 0.0472
-
 implied_volatility_data = []
 
 for expiration in selected_expirations:
@@ -456,16 +441,13 @@ for expiration in selected_expirations:
     if days_to_expiration <= 0:
         continue
     time_to_expiration = days_to_expiration / 365
-
     options_chain = stock.option_chain(expiration)
 
     calls = options_chain.calls.copy()
     puts = options_chain.puts.copy()
 
-
     calls = calls.dropna(subset=["bid", "ask", "strike"])
     puts = puts.dropna(subset=["bid", "ask", "strike"])
-
 
     calls = calls[(calls["bid"] > 0) & (calls["ask"] > 0) & (calls["ask"] >= calls["bid"])].copy()
     puts = puts[(puts["bid"] > 0) & (puts["ask"] > 0) & (puts["ask"] >= puts["bid"])].copy()
@@ -474,116 +456,52 @@ for expiration in selected_expirations:
     puts["midpoint"] = (puts["bid"] + puts["ask"]) / 2
 
 
-    # Calculate implied volatility for calls
+    #calculate implied volatility for calls
     for index, contract in calls.iterrows():
 
         strike_price = float(contract["strike"])
         market_option_price = float(contract["midpoint"])
 
         try:
+            implied_volatility = calculate_implied_volatility(stock_price, strike_price, time_to_expiration, risk_free_rate, market_option_price, "CALL")
 
-            implied_volatility = calculate_implied_volatility(
-                stock_price,
-                strike_price,
-                time_to_expiration,
-                risk_free_rate,
-                market_option_price,
-                "CALL"
-            )
-
-            implied_volatility_data.append({
-                "Expiration": expiration,
-                "Days to Expiration": days_to_expiration,
-                "Strike": strike_price,
-                "Option Type": "CALL",
-                "Implied Volatility": implied_volatility
-            })
+            implied_volatility_data.append({"Expiration": expiration, "Days to Expiration": days_to_expiration, "Strike": strike_price, "Option Type": "CALL" "Implied Volatility": implied_volatility})
 
         except ValueError:
             continue
 
-
-    # Calculate implied volatility for puts
     for index, contract in puts.iterrows():
-
         strike_price = float(contract["strike"])
         market_option_price = float(contract["midpoint"])
-
         try:
+            implied_volatility = calculate_implied_volatility(stock_price, strike_price, time_to_expiration, risk_free_rate, market_option_price, "PUT")
 
-            implied_volatility = calculate_implied_volatility(
-                stock_price,
-                strike_price,
-                time_to_expiration,
-                risk_free_rate,
-                market_option_price,
-                "PUT"
-            )
-
-            implied_volatility_data.append({
-                "Expiration": expiration,
-                "Days to Expiration": days_to_expiration,
-                "Strike": strike_price,
-                "Option Type": "PUT",
-                "Implied Volatility": implied_volatility
-            })
+            implied_volatility_data.append({"Expiration": expiration, "Days to Expiration": days_to_expiration, "Strike": strike_price, "Option Type": "PUT", "Implied Volatility": implied_volatility})
 
         except ValueError:
             continue
 
-
-# Convert all results into a DataFrame
 implied_volatility_surface = pd.DataFrame(implied_volatility_data)
-
-
-# Display the calculated results
 print("\nIMPLIED VOLATILITY SURFACE DATA")
-
 print(implied_volatility_surface.head(20))
-
 print("\nTotal contracts analysed:",
       len(implied_volatility_surface))
 
+surface_data = implied_volatility_surface.groupby(["Days to Expiration", "Strike"])["Implied Volatility"].mean().reset_index()
 
-# Combine call and put observations at matching strikes and expirations
-surface_data = implied_volatility_surface.groupby(
-    ["Days to Expiration", "Strike"]
-)["Implied Volatility"].mean().reset_index()
-
-
-# Create the 3D implied volatility surface
 if len(surface_data) >= 3:
-
     figure = plt.figure(figsize=(12, 8))
-
     axis = figure.add_subplot(111, projection="3d")
-
-    surface = axis.plot_trisurf(
-        surface_data["Strike"],
-        surface_data["Days to Expiration"],
-        surface_data["Implied Volatility"] * 100,
-        cmap="viridis",
-        edgecolor="none"
-    )
+    surface = axis.plot_trisurf(surface_data["Strike"], surface_data["Days to Expiration"], surface_data["Implied Volatility"] * 100, cmap="viridis", edgecolor="none")
 
     axis.set_xlabel("Strike Price ($)")
     axis.set_ylabel("Days to Expiration")
     axis.set_zlabel("Implied Volatility (%)")
 
-    axis.set_title(
-        f"Implied Volatility Surface - {symbol}"
-    )
-
-    figure.colorbar(
-        surface,
-        ax=axis,
-        label="Implied Volatility (%)",
-        shrink=0.6
-    )
+    axis.set_title(f"Implied Volatility Surface - {symbol}")
+    figure.colorbar(surface, ax=axis, label="Implied Volatility (%)", shrink=0.6)
 
     plt.tight_layout()
     plt.show()
-
 else:
-
     print("Not enough valid contracts to create the 3D surface.")
