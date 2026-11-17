@@ -3270,3 +3270,18 @@ I plotted Implied Volatility (%) versus Strike Price ($)
 
 DAY 122
 09/11/2026
+
+I want to plot the data on a graph. To do this, I have to implied volatility values you calculated for your call and put options, cleans the data, sorts it, and then plots everything on a graph.
+
+
+this emove zero or negative implied volatility values
+calls_plot = calls_plot[calls_plot["calculated_implied_volatility"] > 0].copy()
+
+to sort according to sort contracts by strike price
+calls_plot = calls_plot.sort_values("strike")
+
+As for the actual graph I did a graph of12 x 7 
+
+DAY 123
+10/11/2026
+
