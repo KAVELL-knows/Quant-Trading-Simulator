@@ -3285,3 +3285,35 @@ As for the actual graph I did a graph of12 x 7
 DAY 123
 10/11/2026
 
+Today I want to 
+
+
+Need some larp about whta dud last few days
+
+DAY 124 
+11/11/2026
+
+
+DAY 125
+12/11/2026
+
+DAY 126
+13/11/2026
+
+Today I want to test and polish up the 3d Graph
+
+Dimension	What it represents
+X	        Strike price
+Y	        Days until expiration
+Z	        Implied volatility
+
+
+
+DAY 127
+14/11/2026
+
+What I did today was improve the 3D graph
+I started by removed the double 3D graph
+
+I also introduced an if statement so that it can plot points more than 10
+  if len(surface_data) >= 3:
