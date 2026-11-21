@@ -3285,17 +3285,32 @@ As for the actual graph I did a graph of12 x 7
 DAY 123
 10/11/2026
 
-Today I want to 
+Today, I worked on combining the implied volatility data from my call and put options to create a more complete visualization of the volatility smile.
 
+After calculating the implied volatility for both calls and puts, I plotted both sets of values on the same graph. This allowed me to compare how implied volatility changes depending on the strike price and the type of option.
 
-Need some larp about whta dud last few days
+I also worked on cleaning the data before plotting it to ensure that invalid implied volatility values would not interfere with the graph.
+
 
 DAY 124 
 11/11/2026
 
+Today, I began expanding my implied volatility calculations beyond a single expiration date.
+
+Instead of analysing only one options chain, I started retrieving multiple expiration dates using yfinance. This allowed me to access options with different time periods remaining before expiration.
+
+I began organizing the options data so that I could calculate implied volatility using both the strike price and the time remaining until expiration.
+
 
 DAY 125
 12/11/2026
+
+Today, I continued developing the implied volatility surface by combining options data from multiple expiration dates.
+
+For each expiration, I calculated the number of days remaining and converted it into time to expiration in years. I then retrieved the corresponding calls and puts and calculated their implied volatilities.
+
+I stored the results together in a collection of data so that I could later use the strike prices, expiration times and implied volatility values to construct a three-dimensional visualization.
+
 
 DAY 126
 13/11/2026
@@ -3317,3 +3332,116 @@ I started by removed the double 3D graph
 
 I also introduced an if statement so that it can plot points more than 10
   if len(surface_data) >= 3:
+
+
+To close off the day, I tested the graph to make sure everything worked  properly 
+
+DAY 128
+15/11/2026
+
+Today, I want to work on improving the accuracy of your volatility surface by:
+1. Remove unrealistic IV outliers
+2. Separate Calls and Puts instead of averaging them together
+3. Handle missing strikes and expiration combinations
+4. Improve the surface so it is more readable and financially meaningful
+
+This is how filtering works..
+This implied volatility dataframe may look like this:
+Strike	Days to Expiration	Implied Volatility
+100	          30	            0.25
+105           30	            0.31
+110	          30	            0.00
+115	          30	            3.85
+120	          30               -0.15
+
+What we are going is checking each row in the implied volatility column to see if we can find any values that are negative and also =< 200% so what 
+
+implied_volatility_surface = implied_volatility_surface[(implied_volatility_surface["Implied Volatility"] > 0) and
+(implied_volatility_surface["Implied Volatility"] <= 2.0)].copy()
+
+I then calculated how many contracts were removed
+filtered_contract_count = len(implied_volatility_surface)
+
+removed_contracts = original_contract_count - filtered_contract_count
+
+print("\nIV OUTLIER FILTER")
+print("Original contracts:", original_contract_count)
+print("Removed contracts:", removed_contracts)
+print("Remaining contracts:", filtered_contract_count)
+
+
+DAY 129
+16/11/2026
+
+Today I want to group the surface data
+
+so i grouped the data by days to expiration as well as the strike 
+
+and and then find the mean 
+
+reset_index() turns those grouped index values back into regular columns in the resulting DataFrame
+
+surface_data = implied_volatility_surface.groupby(["Days to Expiration", "Strike"])["Implied Volatility"].mean().reset_index()
+
+DAY 130
+17/11/2026
+
+I want to re-orgnize the data from this
+Days	  Strike	  Option Type	IV
+30	       100	          CALL	   0.25
+30	       100	          PUT	   0.29
+30	       105	          CALL	   0.24
+30	       105	          PUT	   0.27
+
+To this
+Days	Strike	CALL IV  	PUT IV
+30	     100	0.25	     0.29
+30	     105	0.24	     0.27
+
+
+iv_comparison = implied_volatility_surface.pivot_table(index=["Days to Expiration", "Strike"], columns="Option Type", values="Implied Volatility")
+print("\nCALL AND PUT IV COMPARISON")
+print(iv_comparison.head(20))
+
+DAY 131
+18/11/2026
+
+Today I found the spread between Call and Put and then convert it to a percentage 
+
+iv_comparison["IV Spread"] = iv_comparison["PUT"] - iv_comparison["CALL"]
+iv_comparison["IV Spread (%)"] = iv_comparison["IV Spread"] * 100
+
+PUT IV is higher than CALL IV, indicating relatively more expensive implied volatility for puts.
+CALL IV is higher than PUT IV at that strike and expiration.
+Call and put implied volatilities are similar.
+
+Tomorrow, I want to add in a ranking feature. 
+
+DAY 132
+19/11/2026
+
+put_dominance = iv_comparison.sort_values("IV Spread (%)", ascending=False)
+print("\nHIGHEST PUT-CALL IV SPREADS")
+print(put_dominance.head(10))
+print("\nHIGHEST CALL IV SPREADS")
+print(put_dominance.tail(10))
+
+
+sort_values() sorts the DataFrame by the IV spread.
+ascending=False puts the largest positive spreads at the top.
+head(10) displays the 10 largest spreads.
+tail(10) displays the 10 smallest spreads, which will generally be the most negative spreads.
+
+DAY 133
+20/11/2026
+
+Today I want to plot the graph for the IV Spread
+
+I prepared the pivoted CALL and PUT IV comparison DataFrame for plotting by resetting its multi-index, removing missing spread values, and sorting the observations by strike price.
+
+I plotted plt.ylabelPUT - CALL IV Spread Percentage Points versus Call-Put IV Spread Analysis
+
+Above zero: PUT IV is higher than CALL IV.
+Below zero: CALL IV is higher than PUT IV.
+Crossing zero: The relationship between call and put IV changes at that strike.
+Larger positive values: A larger put-versus-call volatility difference.
