@@ -463,16 +463,15 @@ for expiration in selected_expirations:
 implied_volatility_surface = pd.DataFrame(implied_volatility_data)
 print("\nIMPLIED VOLATILITY SURFACE DATA")
 print(implied_volatility_surface.head(20))
-print("\nTotal contracts analysed:",
-      len(implied_volatility_surface))
+print("\nTotal contracts analysed:", len(implied_volatility_surface))
 
 if not implied_volatility_surface.empty:
     surface_data = implied_volatility_surface.groupby(["Days to Expiration", "Strike"])["Implied Volatility"].mean().reset_index()
-    if len(surface_data) >= 3:
+    if len(surface_data) >= 10:
         figure = plt.figure(figsize=(12, 8))
         axis = figure.add_subplot(111, projection="3d")
+        surface = axis.plot_trisurf(surface_data["Strike"], surface_data["Days to Expiration"], surface_data["Implied Volatility"] * 100, cmap="viridis", edgecolor="none")
 
-        surface = axis.plot_trisurf( surface_data["Strike"], surface_data["Days to Expiration"], surface_data["Implied Volatility"] * 100, cmap="viridis", edgecolor="none")
         axis.set_xlabel("Strike Price ($)")
         axis.set_ylabel("Days to Expiration")
         axis.set_zlabel("Implied Volatility (%)")
@@ -481,24 +480,99 @@ if not implied_volatility_surface.empty:
         figure.colorbar(surface, ax=axis, label="Implied Volatility (%)", shrink=0.6)
         plt.tight_layout()
         plt.show()
+
     else:
         print("Not enough valid contracts to create the 3D surface.")
 else:
     print("No valid implied volatility data was collected.")
 
-if len(surface_data) >= 3:
-    figure = plt.figure(figsize=(12, 8))
-    axis = figure.add_subplot(111, projection="3d")
-    surface = axis.plot_trisurf(surface_data["Strike"], surface_data["Days to Expiration"], surface_data["Implied Volatility"] * 100, cmap="viridis", edgecolor="none")
+#im so confused now 
+original_contract_count = len(implied_volatility_surface)
 
-    axis.set_xlabel("Strike Price ($)")
-    axis.set_ylabel("Days to Expiration")
-    axis.set_zlabel("Implied Volatility (%)")
+implied_volatility_surface = implied_volatility_surface[(implied_volatility_surface["Implied Volatility"] > 0) and
+(implied_volatility_surface["Implied Volatility"] <= 2.0)].copy()
 
-    axis.set_title(f"Implied Volatility Surface - {symbol}")
-    figure.colorbar(surface, ax=axis, label="Implied Volatility (%)", shrink=0.6)
+filtered_contract_count = len(implied_volatility_surface)
 
-    plt.tight_layout()
-    plt.show()
-else:
-    print("Not enough valid contracts to create the 3D surface.")
+removed_contracts = original_contract_count - filtered_contract_count
+
+print("\nIV OUTLIER FILTER")
+print("Original contracts:", original_contract_count)
+print("Removed contracts:", removed_contracts)
+print("Remaining contracts:", filtered_contract_count)
+
+surface_data = implied_volatility_surface.groupby(["Days to Expiration", "Strike"])["Implied Volatility"].mean().reset_index()
+
+
+# CALL AND PUT IV COMPARISON
+iv_comparison = implied_volatility_surface.pivot_table(index=["Days to Expiration", "Strike"], columns="Option Type", values="Implied Volatility")
+print("\nCALL AND PUT IV COMPARISON")
+print(iv_comparison.head(20))
+
+# CALL AND PUT IV SPREAD
+iv_comparison["IV Spread"] = iv_comparison["PUT"] - iv_comparison["CALL"]
+iv_comparison["IV Spread (%)"] = iv_comparison["IV Spread"] * 100
+print("\nCALL AND PUT IV SPREAD")
+print(iv_comparison.head(20))
+
+
+# RANKING IV SPREADS
+put_dominance = iv_comparison.sort_values("IV Spread (%)", ascending=False)
+
+print("\nHIGHEST PUT-CALL IV SPREADS")
+print(put_dominance.head(10))
+print("\nHIGHEST CALL IV SPREADS")
+print(put_dominance.tail(10))
+
+
+# PREPARING IV SPREAD GRAPH DATA
+iv_spread_data = iv_comparison.reset_index()
+iv_spread_data = iv_spread_data.dropna(subset=["IV Spread (%)"])
+iv_spread_data = iv_spread_data.sort_values("Strike")
+
+plt.figure(figsize=(12, 7))
+
+for days, expiration_group in iv_spread_data.groupby("Days to Expiration"):
+
+    plt.plot(expiration_group["Strike"], expiration_group["IV Spread (%)"], marker="o", label=f"{days} Days")
+
+plt.axhline(y=0, linestyle="--")
+plt.xlabel("Strike Price ($)")
+plt.ylabel("PUT - CALL IV Spread (Percentage Points)")
+plt.title(f"Call-Put IV Spread Analysis - {symbol}")
+
+plt.legend(title="Expiration")
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
+
+
+# CALL-PUT IV SPREAD HEATMAP
+
+iv_heatmap_data = iv_spread_data.pivot_table(index="Days to Expiration", columns="Strike",values="IV Spread (%)")
+
+plt.figure(figsize=(14, 8))
+heatmap = plt.imshow(iv_heatmap_data, aspect="auto", origin="lower", cmap="RdYlGn", interpolation="nearest"
+)
+
+plt.colorbar(heatmap, label="PUT - CALL IV Spread (%)")
+
+plt.xlabel("Strike Price ($)")
+plt.ylabel("Days to Expiration")
+
+plt.title(f"Call-Put IV Spread Heatmap - {symbol}")
+
+plt.xticks(
+    range(len(iv_heatmap_data.columns)),
+    iv_heatmap_data.columns,
+    rotation=45
+)
+
+plt.yticks(
+    range(len(iv_heatmap_data.index)),
+    iv_heatmap_data.index
+)
+
+plt.tight_layout()
+plt.show()
