@@ -3445,3 +3445,55 @@ Above zero: PUT IV is higher than CALL IV.
 Below zero: CALL IV is higher than PUT IV.
 Crossing zero: The relationship between call and put IV changes at that strike.
 Larger positive values: A larger put-versus-call volatility difference.
+
+DAY 134
+21/11/2026
+
+Today i built the heat map for the call put iv spread heatmap 
+
+I firstly started with the pivot table which 
+structures the data into a matrix:
+- Rows become expiration periods.
+- Columns become strike prices.
+- Each cell contains the IV spread for that combination.
+
+iv_heatmap_data = iv_spread_data.pivot_table(index="Days to Expiration", columns="Strike", values="IV Spread (%)")
+
+
+I used Matplotlib's imshow() to create the heatmap, added a colour scale to represent spread magnitude, and labelled the axes to make the data easier to interpret. I also implemented symmetrical colour limits around zero to distinguish positive and negative volatility spreads more meaningfully.
+
+
+heatmap = plt.imshow(iv_heatmap_data, aspect="auto", origin="lower", cmap="RdYlGn", interpolation="nearest")
+
+aspect="auto" allows the chart to resize to the figure dimensions.
+origin="lower" places the first row at the bottom.
+cmap="RdYlGn" uses a red-yellow-green colour scheme.
+interpolation="nearest" prevents colours from blending between cells.
+
+
+DAY 135
+22/11/2026
+
+Today, I want to test out the heat map for the implied volatility using a thorough set of data.
+
+I created a new file to test the values and I named it iv_heatmap_test
+
+Lower strikes → generally positive spreads (PUT IV higher)
+Higher strikes → spreads gradually decrease and become negative
+Longer expirations → slightly different skew patterns
+
+In terms of data I want to test, I used 7 expirations and 12 strike prices
+
+so we have to make up some values.
+
+strikes = np.arange(85, 116, 2.5)
+this means that the strike starts at the 85 and goes up to 115 and each differ by 2.5 increments so there are 13 strikes here.
+for the expiration dates i chose expiration_days = [7, 14, 30, 60, 90, 180, 365]
+
+by looping through:
+for days in expiration_days:
+    for strike in strikes:
+
+this would set up a matric of 7 expirations x 13 strikes there for 91 rows of data values
+
+Tomorrow I will set up the math for the IV spread. 
