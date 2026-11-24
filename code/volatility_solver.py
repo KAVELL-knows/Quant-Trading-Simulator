@@ -549,30 +549,21 @@ plt.show()
 
 
 # CALL-PUT IV SPREAD HEATMAP
-
 iv_heatmap_data = iv_spread_data.pivot_table(index="Days to Expiration", columns="Strike",values="IV Spread (%)")
 
 plt.figure(figsize=(14, 8))
-heatmap = plt.imshow(iv_heatmap_data, aspect="auto", origin="lower", cmap="RdYlGn", interpolation="nearest"
-)
+
+spread_limit = iv_heatmap_data.abs().max().max()
+
+heatmap = plt.imshow(iv_heatmap_data, aspect="auto", origin="lower", cmap="RdYlGn", interpolation="nearest", vmin=-spread_limit, vmax=spread_limit)
 
 plt.colorbar(heatmap, label="PUT - CALL IV Spread (%)")
-
 plt.xlabel("Strike Price ($)")
 plt.ylabel("Days to Expiration")
 
 plt.title(f"Call-Put IV Spread Heatmap - {symbol}")
-
-plt.xticks(
-    range(len(iv_heatmap_data.columns)),
-    iv_heatmap_data.columns,
-    rotation=45
-)
-
-plt.yticks(
-    range(len(iv_heatmap_data.index)),
-    iv_heatmap_data.index
-)
+plt.xticks(range(len(iv_heatmap_data.columns)), iv_heatmap_data.columns, rotation=45 )
+plt.yticks(range(len(iv_heatmap_data.index)), iv_heatmap_data.index)
 
 plt.tight_layout()
 plt.show()

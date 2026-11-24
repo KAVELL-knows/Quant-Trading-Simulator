@@ -3497,3 +3497,35 @@ for days in expiration_days:
 this would set up a matric of 7 expirations x 13 strikes there for 91 rows of data values
 
 Tomorrow I will set up the math for the IV spread. 
+
+DAY 136
+23/11/2026
+
+This generates a random set of numbers such that each time the code i re ran the same order of random  numbers are generated. 
+rng = np.random.default_rng(42)
+np is NumPy, which you imported as numpy.
+random refers to generating random numbers.
+default_rng() creates a modern NumPy random generator.
+42 is the seed.
+
+For the intial spread, I did:
+ spread = 8 - (strike - 100) * 0.75
+
+ We multiply that difference by 0.75 to control how quickly the spread changes as the strike moves away from 100.
+ The number 8 was an arbitary value which I chose
+
+ Strike	  Calculation       Spread
+85	    4 − (−15 × 0.75)	+19.25
+90	    4 − (−10 × 0.75)	+15.50
+100	    4 − (0 × 0.75)	     +8.00
+110	    4 − (10 × 0.75)	     +1.50
+115	    4 − (15 × 0.75)	     −3.25
+
+spread = spread * (1 + days / 365 * 0.15) + rng.normal(0, 1.2)
+
+
+New Spread = Base Spread * Expiration Adjustment + Random Noise
+
+the data appended to synthetic are Days to Expiration, Strike, IV Spread (%)
+iv_spread_data = pd.DataFrame(synthetic_data)
+
