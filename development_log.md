@@ -3529,3 +3529,34 @@ New Spread = Base Spread * Expiration Adjustment + Random Noise
 the data appended to synthetic are Days to Expiration, Strike, IV Spread (%)
 iv_spread_data = pd.DataFrame(synthetic_data)
 
+DAY 137
+24/11/2026
+
+Today I want to comples the matrix
+I first started by setting up a pivot table
+
+pivot() — rearranges data, but expects only one value for each index/column combination
+pivot_table() — can also handle duplicate combinations by aggregating them (by default, taking their mean).
+
+iv_heatmap_data = iv_spread_data.pivot_table(index="Days to Expiration", columns="Strike", values="IV Spread (%)")
+
+How the pivot table works is it organizes data into a table
+so something like
+Days to Expiration	         Strike	            IV Spread (%)
+7	                          85.0	              15.6
+7	                          87.5	              13.4
+
+index="Days to Expiration"
+This tells Pandas:
+Make the different expiration days become the rows of my new table.
+
+Your rows will be:
+7, 14, 30, 60, 90, 180, 365.
+
+
+I then printed the data this is what gives us the 7 x 13 matrix
+
+DAY 138
+25/11/2026
+
+Today I want to start plotting the actual heat map.
