@@ -30,11 +30,9 @@ fig, ax = plt.subplots(figsize=(15, 9))
 fig.patch.set_facecolor("#0b0f17")
 ax.set_facecolor("#151a24")
 
-# CREATE HEATMAP
 heatmap = ax.imshow(iv_heatmap_data, aspect="auto", origin="lower", cmap="RdYlGn", interpolation="nearest", vmin=-spread_limit, vmax=spread_limit)
 
-# ZERO-SPREAD CONTOUR
-ax.contour(np.arange(len(iv_heatmap_data.columns)), np.arange(len(iv_heatmap_data.index)), iv_heatmap_data.values, levels=[0], colors="white", linewidths= )
+ax.contour(np.arange(len(iv_heatmap_data.columns)), np.arange(len(iv_heatmap_data.index)), iv_heatmap_data.values, levels=[0], colors="white", linewidths= 3)
 
 # DISPLAY VALUES INSIDE EACH CELL
 for row in range(len(iv_heatmap_data.index)):

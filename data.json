@@ -346,5 +346,24 @@
         ],
         "User Name": "Charles",
         "Encrytion code": "YE42O"
+    },
+    "javaughn": {
+        "Starting Balance": 1234567890.0,
+        "Current Cash": 1234289869.7962341,
+        "Portfolio Value": 278020.20376586914,
+        "Total Equity": 1234567890.0,
+        "Current Holdings": {
+            "NVDA": 1234.0
+        },
+        "Trade History": [
+            [
+                "Buy",
+                "NVDA",
+                1234.0,
+                278020.20376586914
+            ]
+        ],
+        "User Name": "javaughn",
+        "Encrytion code": "RG152WU0WNVUJQQ01FY61H6ZJW"
     }
 }
